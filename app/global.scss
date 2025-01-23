@@ -60,6 +60,7 @@ body {
   font-family: "Ownglyph_ParkDaHyun", sans-serif;
   font-weight: 400;
   overflow-y: scroll;
+
   #root {
     background-color: var(--color-bg);
     min-height: 100vh;
@@ -90,9 +91,13 @@ li {
 }
 
 a {
-  cursor: pointer;
   color: inherit;
   text-decoration: none;
+}
+
+a,
+button {
+  cursor: pointer;
 }
 
 input,
