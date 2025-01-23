@@ -1,0 +1,25 @@
+/* MainButton.module.css */
+.main-button {
+  width: 350px;
+  height: 52px;
+  background-color: #f5da7f;
+  color: white;
+  font-size: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 52px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.main-button:hover {
+  background-color: #ecd26b;
+  transform: scale(1.03);
+}
+
+.main-button:active {
+  transform: scale(0.97);
+}
