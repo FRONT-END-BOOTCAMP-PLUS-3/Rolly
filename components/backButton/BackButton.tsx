@@ -2,11 +2,11 @@
 import { useRouter } from "next/navigation";
 import styles from "./BackButton.module.scss";
 
-interface BackButton {
+interface BackButtonProps {
   className?: string;
 }
 
-const BackButton: React.FC<BackButton> = ({ className }) => {
+const BackButton: React.FC<BackButtonProps> = ({ className }) => {
   const router = useRouter();
 
   const handleBack = () => {
