@@ -1,0 +1,12 @@
+.scroll-container {
+  display: flex;
+  gap: 12px;
+  margin-bottom: var(--size-gap);
+  margin-right: calc(-1 * var(--size-gap));
+  padding-right: var(--size-gap);
+  overflow-x: scroll;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
