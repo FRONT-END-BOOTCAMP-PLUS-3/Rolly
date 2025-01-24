@@ -1,0 +1,10 @@
+.bottom-sheet {
+  position: fixed;
+  bottom: 0;
+  padding: 36px var(--size-gap) 52px;
+  margin-left: calc(-1 * var(--size-gap));
+  max-width: var(--size-max-width);
+  width: 100%;
+  background-color: var(--color-white);
+  border-radius: 20px 20px 0 0;
+}
