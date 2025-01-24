@@ -1,12 +1,12 @@
 /* MainButton.module.css */
 .main-button {
-  width: 350px;
-  height: 52px;
+  width: 100%;
+  padding: 14px 80px 14px 80px;
+  text-align: center;
   background-color: var(--color-primary);
   color: var(--color-white);
   font-size: var(--font-size-lg);
   border: none;
   border-radius: 52px;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
