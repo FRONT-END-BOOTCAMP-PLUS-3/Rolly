@@ -1,0 +1,17 @@
+.item-box {
+  display: inline-block;
+  flex-shrink: 0;
+  background-color: var(--color-tertiary);
+  border-radius: 4px;
+}
+
+.text {
+  padding: 5px 20px;
+  text-align: center;
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-1);
+}
+
+.image {
+  padding: 12px;
+}
