@@ -20,7 +20,7 @@ type TextInputModalContent = {
   title: string;
   body?: string;
   input: "text";
-  maxLength: number;
+  maxLength?: number;
 };
 
 export type ModalProps = {
