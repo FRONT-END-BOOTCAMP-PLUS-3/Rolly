@@ -6,14 +6,19 @@ export type ModalContent =
 type TextModalContent = {
   title: string;
   body?: string;
+  input?: never;
 };
 
-type RadioInputModalContent = TextModalContent & {
+type RadioInputModalContent = {
+  title: string;
+  body?: string;
   input: "radio";
   radioOptions: string[];
 };
 
-type TextInputModalContent = TextModalContent & {
+type TextInputModalContent = {
+  title: string;
+  body?: string;
   input: "text";
   maxLength: number;
 };
