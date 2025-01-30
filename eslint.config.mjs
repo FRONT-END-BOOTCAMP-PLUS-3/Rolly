@@ -20,7 +20,11 @@ const eslintConfig = [
     files: ["**/*.ts", "**/*.tsx"],
     rules: {
       "react/react-in-jsx-scope": "off",
-      "prettier/prettier": ["error", { singleQuote: false, semi: true }],
+      "prettier/prettier": [
+        "error",
+        { singleQuote: false, semi: true },
+        { endOfLine: "auto" },
+      ],
     },
     plugins: { eslintPluginPrettier },
   },
