@@ -15,6 +15,7 @@ type RadioInputModalContent = TextModalContent & {
 
 type TextInputModalContent = TextModalContent & {
   input: "text";
+  maxLength: number;
 };
 
 export type ModalProps = {

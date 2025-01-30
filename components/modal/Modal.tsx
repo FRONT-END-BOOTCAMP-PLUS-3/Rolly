@@ -129,6 +129,7 @@ export default Modal;
         title: "롤리의 이름을 작성해주세요.",
         body: "최대 12자까지 가능해요!",
         input: "text",
+        maxLength: 12,
       },
     ]}
     onConfirm={() => toggleModal()}

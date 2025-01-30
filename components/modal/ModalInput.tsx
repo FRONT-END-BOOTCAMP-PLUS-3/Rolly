@@ -16,7 +16,7 @@ const ModalInput = ({ content, onChange }: ModalnInputProps) => {
       <input
         type="text"
         name="modal_text"
-        maxLength={12}
+        maxLength={content.maxLength}
         onChange={(e) => onChange(e.target.name, e.target.value)}
       />
     );
