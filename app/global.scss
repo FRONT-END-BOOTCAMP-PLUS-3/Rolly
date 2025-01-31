@@ -14,6 +14,14 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "SUIT-Bold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Bold.woff2")
+    format("woff2");
+  font-weight: bold;
+  font-style: normal;
+}
+
 :root {
   /* Primary */
   --color-primary: #f5da7f;
@@ -122,10 +130,6 @@ input {
 
 ::placeholder {
   font-family: inherit;
-}
-
-label {
-  display: block;
 }
 
 img {
