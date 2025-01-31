@@ -25,7 +25,7 @@ type TextInputModalContent = {
 
 export type ModalProps = {
   contents: ModalContent[];
-  onConfirm: (formdata?: unknown) => void;
+  onConfirm: (formdata?: FormData) => void;
   onCancel: () => void;
   isOpen: boolean;
   confirmText?: string;
