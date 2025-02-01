@@ -1,0 +1,36 @@
+.input-field {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  margin-bottom: 33px;
+}
+
+.input-label {
+  font-family: "SUIT-Bold", sans-serif;
+  color: var(--color-gray-2);
+  font-size: var(--font-size-micro);
+}
+
+.input-element {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #333;
+  background: transparent;
+  padding: 4px 0;
+  width: 100%;
+  border-bottom: 1px solid var(--color-primary);
+
+  &::placeholder {
+    color: #bbb;
+    font-size: var(--font-size-xs);
+  }
+}
+
+.underline {
+  height: 2px;
+  width: 100%;
+  background-color: var(--color-primary);
+  margin-top: 4px;
+}
