@@ -1,61 +1,140 @@
-"use client";
 import styles from "./RollyListItem.module.scss";
+import useToggle from "@/hooks/useToggle";
+import Modal from "../modal/Modal";
+import { useEffect, useState } from "react";
 
-interface RollyListItemProps {
+type RollyListItemProps = {
   title: string;
   date: string;
-  onClick: () => void;
+  id: number;
   variant: "created" | "saved";
-  lockBtn?: {
-    onLock: () => void;
-  };
-  actionBtn: {
-    onDelete: () => void; // 삭제 버튼 동작
-    onReply: () => void; // 답장 버튼 동작
-  };
-}
+  onClick: () => void;
+  onLock?: (id: number) => Promise<void>;
+  onDelete?: () => void;
+  onReply?: () => void;
+  isLocked: boolean; // 잠금 상태 전달
+};
 
 const RollyListItem: React.FC<RollyListItemProps> = ({
+  id,
   title,
   date,
-  onClick,
   variant,
-  lockBtn,
-  actionBtn,
+  onClick,
+  onReply,
+  onDelete,
+  onLock,
+  isLocked: initialIsLocked, // props로 받은 초기 잠금 상태
 }) => {
-  const isCreated = variant === "created";
-  const btnIcon = isCreated ? "/icons/delete.svg" : "/icons/reply.svg";
-  const btnHandler = isCreated ? actionBtn.onDelete : actionBtn.onReply;
+  // variant를 상태로 저장하여 변경되지 않도록 고정
+  const [variantType] = useState(variant);
+  const isCreated = variantType === "created";
+
+  const [isLockModalOpen, toggleLockModal] = useToggle(false); // Lock 모달
+  const [isDeleteModalOpen, toggleDeleteModal] = useToggle(false); // Delete 모달
+  const [isReplyModalOpen, toggleReplyModal] = useToggle(false); // Reply 모달
+
+  // 실제 isLocked 상태를 useState로 관리
+  const [isLocked, setIsLocked] = useState(initialIsLocked);
+  // Supabase에서 가져온 잠금 상태가 변경되면 업데이트
+  useEffect(() => {
+    setIsLocked(initialIsLocked);
+  }, [initialIsLocked]);
+
+  const handleConfirmLock = async () => {
+    if (onLock) {
+      await onLock(id); // Supabase 업데이트
+      setIsLocked(true); // 로컬 상태 업데이트
+    }
+    toggleLockModal();
+  };
+
+  const handleConfirmDelete = () => {
+    if (onDelete) onDelete();
+    toggleDeleteModal();
+  };
+
+  const handleConfirmReply = () => {
+    if (onReply) onReply();
+    toggleReplyModal();
+  };
 
   const handleListClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLElement;
-
+    if (isLockModalOpen || isDeleteModalOpen || isReplyModalOpen) {
+      event.stopPropagation();
+      return;
+    }
     if (!target.closest(".lock") && !target.closest(".action")) {
       onClick();
     }
   };
   return (
     <div className={styles["rolly-list-item"]} onClick={handleListClick}>
-      <div className={styles["list"]}>
+      <div className={styles["wrapper"]}>
         <p className={styles["title"]}>{title}</p>
-        {lockBtn && isCreated && (
-          <button
-            className="lock"
-            onClick={(event) => {
-              event.stopPropagation();
-              lockBtn?.onLock();
-            }}
-          >
+        {/* lock 버튼: isCreated가 true일 때만 표시하고, isLocked 상태가 되면 안 보이도록 */}
+        {isCreated && !isLocked && (
+          <button className="lock" onClick={toggleLockModal}>
             <img src="/icons/lock.svg" alt="Lock" className={styles["lock"]} />
           </button>
         )}
       </div>
-      <div className={styles["list"]}>
+      <div className={styles["wrapper"]}>
         <p className={styles["date"]}>{date}</p>
-        <button className="action" onClick={btnHandler}>
-          <img src={btnIcon} alt="isCreated" className={styles["action"]} />
-        </button>
+        {/* delete 버튼: isCreated가 true이면 항상 유지 */}
+        {isCreated ? (
+          <button className="action" onClick={toggleDeleteModal}>
+            <img src="/icons/delete.svg" alt="delete" />
+          </button>
+        ) : (
+          onReply && (
+            <button className="action" onClick={toggleReplyModal}>
+              <img src="/icons/reply.svg" alt="reply" />
+            </button>
+          )
+        )}
       </div>
+
+      <Modal
+        contents={[
+          {
+            title: "롤리를 완성하시겠어요?",
+            body: "완성 후에는 메세지를 작성할 수 없어요!",
+          },
+        ]}
+        confirmText={"완성"}
+        cancelText={"취소"}
+        onConfirm={handleConfirmLock}
+        onCancel={toggleLockModal}
+        isOpen={isLockModalOpen}
+      />
+
+      <Modal
+        contents={[
+          {
+            title: "롤리를 삭제하시겠어요?",
+          },
+        ]}
+        confirmText={"삭제"}
+        cancelText={"취소"}
+        onConfirm={handleConfirmDelete}
+        onCancel={toggleDeleteModal}
+        isOpen={isDeleteModalOpen}
+      />
+
+      <Modal
+        contents={[
+          {
+            title: "답장을 보내시겠어요?",
+          },
+        ]}
+        confirmText={"네"}
+        cancelText={"아니오"}
+        onConfirm={handleConfirmReply}
+        onCancel={toggleReplyModal}
+        isOpen={isReplyModalOpen}
+      />
     </div>
   );
 };
