@@ -7,7 +7,7 @@ import MainButton from "@/components/mainButton/MainButton";
 import BackButton from "@/components/backButton/BackButton";
 import styles from "./page.module.scss";
 
-const LoginPage = () => {
+const Login = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -70,4 +70,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Login;

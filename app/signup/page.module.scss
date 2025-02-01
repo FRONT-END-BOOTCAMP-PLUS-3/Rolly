@@ -1,0 +1,50 @@
+.signup-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-header {
+  display: flex;
+  width: 100%;
+  margin-top: 36px;
+  margin-bottom: 50px;
+}
+
+.signup-title {
+  flex-grow: 1;
+  text-align: center;
+  padding-right: 10px;
+  font-size: var(--font-size-xxl);
+}
+
+.signup-body {
+  width: 100%;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.signup-footer {
+  position: absolute;
+  bottom: 44px;
+  left: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.signup-link {
+  margin-bottom: 20px;
+  color: var(--color-gray-1);
+  a {
+    color: #f5da7f;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
