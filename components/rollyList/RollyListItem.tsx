@@ -32,7 +32,6 @@ const RollyListItem: React.FC<RollyListItemProps> = ({
 
   const [isLockModalOpen, toggleLockModal] = useToggle(false); // Lock 모달
   const [isDeleteModalOpen, toggleDeleteModal] = useToggle(false); // Delete 모달
-  const [isReplyModalOpen, toggleReplyModal] = useToggle(false); // Reply 모달
 
   // 실제 isLocked 상태를 useState로 관리
   const [isLocked, setIsLocked] = useState(initialIsLocked);
@@ -54,14 +53,9 @@ const RollyListItem: React.FC<RollyListItemProps> = ({
     toggleDeleteModal();
   };
 
-  const handleConfirmReply = () => {
-    if (onReply) onReply();
-    toggleReplyModal();
-  };
-
   const handleListClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLElement;
-    if (isLockModalOpen || isDeleteModalOpen || isReplyModalOpen) {
+    if (isLockModalOpen || isDeleteModalOpen) {
       event.stopPropagation();
       return;
     }
@@ -89,7 +83,7 @@ const RollyListItem: React.FC<RollyListItemProps> = ({
           </button>
         ) : (
           onReply && (
-            <button className="action" onClick={toggleReplyModal}>
+            <button className="action" onClick={onReply}>
               <img src="/icons/reply.svg" alt="reply" />
             </button>
           )
@@ -121,19 +115,6 @@ const RollyListItem: React.FC<RollyListItemProps> = ({
         onConfirm={handleConfirmDelete}
         onCancel={toggleDeleteModal}
         isOpen={isDeleteModalOpen}
-      />
-
-      <Modal
-        contents={[
-          {
-            title: "답장을 보내시겠어요?",
-          },
-        ]}
-        confirmText={"네"}
-        cancelText={"아니오"}
-        onConfirm={handleConfirmReply}
-        onCancel={toggleReplyModal}
-        isOpen={isReplyModalOpen}
       />
     </div>
   );
