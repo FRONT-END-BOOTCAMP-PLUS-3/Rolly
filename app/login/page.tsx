@@ -6,6 +6,7 @@ import AuthInput from "@/components/authInput/AuthInput";
 import MainButton from "@/components/mainButton/MainButton";
 import BackButton from "@/components/backButton/BackButton";
 import styles from "./page.module.scss";
+//import supabase from "@/utils/supabase/supabaseClient";
 
 const Login = () => {
   const router = useRouter();

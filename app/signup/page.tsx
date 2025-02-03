@@ -6,30 +6,48 @@ import AuthInput from "@/components/authInput/AuthInput";
 import MainButton from "@/components/mainButton/MainButton";
 import BackButton from "@/components/backButton/BackButton";
 import styles from "./page.module.scss";
+import supabase from "@/utils/supabase/supabaseClient";
 
 const SignUp = () => {
   const router = useRouter();
-  const [nickname, setNickname] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSignUp = async () => {
-    if (!nickname || !email || !password) {
+  const validateSignUpInput = (
+    name: string,
+    email: string,
+    password: string
+  ) => {
+    if (!name || !email || !password) {
       setErrorMessage("모든 필드를 입력해주세요.");
-      return;
+      return false;
     }
+    return true;
+  };
 
+  const performSignUp = async () => {
     try {
-      // 회원가입 로직 추가 예정
-      const isSuccess = true; // 임시 로직
-      if (isSuccess) {
-        router.push("/intro");
-      } else {
-        setErrorMessage("회원가입에 실패했습니다.");
-      }
-    } catch {
-      setErrorMessage("회원가입 중 오류가 발생했습니다.");
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { name } },
+      });
+
+      if (error) throw error;
+
+      console.log("회원가입 성공:", data.user);
+      router.push("/intro");
+    } catch (error) {
+      console.error("회원가입 중 오류 발생:", error);
+      setErrorMessage((error as Error).message);
+    }
+  };
+
+  const handleSignUp = async () => {
+    if (validateSignUpInput(name, email, password)) {
+      await performSignUp();
     }
   };
 
@@ -44,8 +62,8 @@ const SignUp = () => {
         <AuthInput
           label="닉네임"
           placeholder="닉네임을 입력하세요"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
 
         <AuthInput
