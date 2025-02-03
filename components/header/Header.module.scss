@@ -2,9 +2,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
   height: 48px;
+
   h2 {
     font-size: var(--font-size-xl);
     color: var(--color-black);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: normal;
+  }
+
+  >div:last-child {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
   }
 }
