@@ -6,11 +6,7 @@ interface ItemBoxProps {
 }
 
 const ItemBox: React.FC<ItemBoxProps> = ({ variant, children }) => {
-  return (
-    <button className={`${styles["item-box"]} ${styles[variant]}`}>
-      {children}
-    </button>
-  );
+  return <button className={`${styles[variant]}`}>{children}</button>;
 };
 
 export default ItemBox;
