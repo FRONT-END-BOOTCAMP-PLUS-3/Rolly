@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import AuthInput from "@/components/authInput/AuthInput";
 import MainButton from "@/components/mainButton/MainButton";
@@ -15,12 +15,13 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isFormComplete, setIsFormComplete] = useState(false);
+
+  useEffect(() => {
+    setIsFormComplete(!!(name && email && password && confirmPassword));
+  }, [name, email, password, confirmPassword]);
 
   const validateSignUpInput = () => {
-    if (!name || !email || !password || !confirmPassword) {
-      setErrorMessage("모든 필드를 입력해주세요.");
-      return false;
-    }
     // 이메일 형식 검사
     if (!/\S+@\S+\.\S+/.test(email)) {
       setErrorMessage("유효하지 않은 이메일 주소입니다.");
@@ -112,7 +113,11 @@ const SignUp = () => {
       </div>
 
       <div className={styles["signup-footer"]}>
-        <MainButton text="회원가입" onClick={handleSignUp} />
+        <MainButton
+          text="회원가입"
+          onClick={handleSignUp}
+          disabled={!isFormComplete}
+        />
       </div>
     </div>
   );

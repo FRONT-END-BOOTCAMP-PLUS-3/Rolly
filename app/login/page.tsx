@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import AuthInput from "@/components/authInput/AuthInput";
 import MainButton from "@/components/mainButton/MainButton";
@@ -16,15 +16,13 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
   const [isAlertOpen, setAlertOpen] = useState(false);
+  const [isFormComplete, setIsFormComplete] = useState(false);
+
+  useEffect(() => {
+    setIsFormComplete(!!(email && password));
+  }, [email, password]);
 
   const handleLogin = async () => {
-    if (!email || !password) {
-      setAlertTitle("로그인 중 오류 발생");
-      setErrorMessage("이메일과 비밀번호를 입력해주세요.");
-      setAlertOpen(true);
-      return;
-    }
-
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email,
@@ -89,7 +87,11 @@ const Login = () => {
         <div className={styles["signup-link"]}>
           처음 오셨다면 <a href="/signup">간편 회원가입</a> 하세요!
         </div>
-        <MainButton text="로그인" onClick={handleLogin} />
+        <MainButton
+          text="로그인"
+          onClick={handleLogin}
+          disabled={!isFormComplete}
+        />
       </div>
     </div>
   );
