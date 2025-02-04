@@ -22,7 +22,7 @@
 }
 
 .error-message {
-  color: #ff5b45; // 향후 변수로 변경
+  color: var(--color-error);
   text-align: center;
   margin: 10px 0;
 }
