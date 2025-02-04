@@ -22,7 +22,7 @@
 }
 
 .error-message {
-  color: red;
+  color: #ff5b45; // 향후 변수로 변경
   text-align: center;
   margin: 10px 0;
 }
@@ -35,16 +35,4 @@
   padding-right: 20px;
   text-align: center;
   width: 100%;
-}
-
-.signup-link {
-  margin-bottom: 20px;
-  color: var(--color-gray-1);
-  a {
-    color: #f5da7f;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 }
