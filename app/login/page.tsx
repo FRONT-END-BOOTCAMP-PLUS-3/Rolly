@@ -6,7 +6,7 @@ import AuthInput from "@/components/authInput/AuthInput";
 import MainButton from "@/components/mainButton/MainButton";
 import BackButton from "@/components/backButton/BackButton";
 import styles from "./page.module.scss";
-//import supabase from "@/utils/supabase/supabaseClient";
+import supabase from "@/utils/supabase/supabaseClient";
 
 const Login = () => {
   const router = useRouter();
@@ -21,15 +21,21 @@ const Login = () => {
     }
 
     try {
-      // 로그인 로직 추가 예정
-      const isValid = true; // 임시 로직
-      if (isValid) {
-        router.push("/intro");
-      } else {
-        setErrorMessage("이메일 또는 비밀번호가 잘못되었습니다.");
-      }
-    } catch {
-      setErrorMessage("로그인 중 오류가 발생했습니다.");
+      // Supabase 로그인 로직
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+
+      if (error) throw error; // 오류 발생 시 에러를 throw
+
+      console.log("로그인 성공:", data); // 로그인 성공시 사용자 정보를 콘솔에 출력
+      router.push("/intro"); // 로그인 성공 후 디렉션
+    } catch (error) {
+      console.error("로그인 중 오류 발생:", error);
+      setErrorMessage(
+        (error as Error).message || "로그인 중 오류가 발생했습니다."
+      );
     }
   };
 
