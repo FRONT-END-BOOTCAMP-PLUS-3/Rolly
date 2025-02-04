@@ -1,24 +1,63 @@
 @font-face {
   font-family: "Ownglyph_ParkDaHyun";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2411-3@1.0/Ownglyph_ParkDaHyun.woff2")
-    format("woff2");
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2411-3@1.0/Ownglyph_ParkDaHyun.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "SUIT-Regular";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2")
-    format("woff2");
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "SUIT-Bold";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Bold.woff2")
-    format("woff2");
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Bold.woff2") format("woff2");
   font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'bakdahyeon';
+  src: url('/fonts/bakdahyeon.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'memoaenokja';
+  src: url('/fonts/memoaenokja.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ryuryuche';
+  src: url('/fonts/ryuryuche.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ryuttungche';
+  src: url('/fonts/ryuttungche.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SejongGeulggot';
+  src: url('/fonts/SejongGeulggot.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LeeSeoyun';
+  src: url('/fonts/LeeSeoyun.ttf') format('truetype');
+  font-weight: normal;
   font-style: normal;
 }
 
@@ -55,7 +94,7 @@
   --font-size-xxl: clamp(40px, 4vw, 42px);
 
   /* size */
-  --size-max-width: 600px;
+  --size-max-width: 500px;
   --size-gap: 20px;
 }
 
