@@ -1,11 +1,11 @@
 .item-box {
-  display: inline-block;
   flex-shrink: 0;
   background-color: var(--color-tertiary);
   border-radius: 4px;
 }
 
 .text {
+  @extend .item-box;
   padding: 5px 20px;
   text-align: center;
   font-size: var(--font-size-lg);
@@ -13,5 +13,6 @@
 }
 
 .image {
+  @extend .item-box;
   padding: 12px;
 }

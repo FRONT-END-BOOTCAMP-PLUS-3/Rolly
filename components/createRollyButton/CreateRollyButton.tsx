@@ -8,10 +8,7 @@ interface CreateRollyButtonProps {
 const CreateRollyButton: React.FC<CreateRollyButtonProps> = ({ onClick }) => {
   return (
     <button className={styles["create-rolly-button"]} onClick={onClick}>
-      <img
-        src="/icons/rollyCreate.svg" //
-        alt="롤리 만들기!"
-      />
+      <img src="/icons/create-rolly.svg" alt="롤리 만들기!" />
       <p>롤리 만들기!</p>
     </button>
   );
