@@ -14,5 +14,7 @@
 
 .image {
   @extend .item-box;
-  padding: 12px;
+  width: 100px;
+  height: 100px;
+  padding: 4px;
 }
