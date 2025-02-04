@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import AuthInput from "@/components/authInput/AuthInput";
 import MainButton from "@/components/mainButton/MainButton";
 import BackButton from "@/components/backButton/BackButton";
-import Modal from "@/components/modal/Modal";
+import Alert from "@/components/alert/Alert";
 import styles from "./page.module.scss";
 import supabase from "@/utils/supabase/supabaseClient";
 
@@ -14,12 +14,14 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("");
+  const [isAlertOpen, setAlertOpen] = useState(false);
 
   const handleLogin = async () => {
     if (!email || !password) {
+      setAlertTitle("로그인 중 오류 발생");
       setErrorMessage("이메일과 비밀번호를 입력해주세요.");
-      setModalOpen(true);
+      setAlertOpen(true);
       return;
     }
 
@@ -28,23 +30,29 @@ const Login = () => {
         email: email,
         password: password,
       });
-
-      if (error) throw error;
-
+      if (error) {
+        console.error("로그인 중 오류 발생:", error.message);
+        if (error.message.toLowerCase().includes("invalid login credentials")) {
+          setAlertTitle("이메일 혹은 비밀번호가 맞지 않습니다.");
+          setErrorMessage("다시 확인해주세요!");
+        } else {
+          setAlertTitle("로그인 도중 오류가 발생했습니다.");
+          setErrorMessage("잠시 후 다시 시도해주세요!");
+        }
+        setAlertOpen(true);
+        return;
+      }
       console.log("로그인 성공:", data);
       router.push("/intro");
     } catch (error) {
-      console.error("로그인 중 오류 발생:", error);
-      if (error instanceof Error) {
-        setErrorMessage(error.message || "로그인 중 오류가 발생했습니다.");
-      } else {
-        setErrorMessage("로그인 중 오류가 발생했습니다.");
-      }
-      setModalOpen(true);
+      console.error("로그인 중 예외 발생:", error);
+      setAlertTitle("로그인 도중 오류가 발생했습니다.");
+      setErrorMessage("잠시 후 다시 시도해주세요!");
+      setAlertOpen(true);
     }
   };
 
-  const closeModal = () => setModalOpen(false);
+  const closeAlert = () => setAlertOpen(false);
 
   return (
     <div className={styles["login-container"]}>
@@ -69,18 +77,11 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Modal
-          contents={[
-            {
-              title: "로그인 오류",
-              body: errorMessage,
-            },
-          ]}
-          onConfirm={closeModal}
-          onCancel={closeModal}
-          isOpen={isModalOpen}
-          confirmText="확인"
-          cancelText="닫기"
+        <Alert
+          title={alertTitle}
+          body={errorMessage}
+          isOpen={isAlertOpen}
+          onClose={closeAlert}
         />
       </div>
 
