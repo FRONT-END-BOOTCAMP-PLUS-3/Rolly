@@ -4,7 +4,7 @@ import styles from "./MainButton.module.scss";
 interface MainButtonProps {
   text: string;
   onClick: () => void;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 const MainButton: React.FC<MainButtonProps> = ({ text, onClick, disabled }) => {
