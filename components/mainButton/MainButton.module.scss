@@ -1,6 +1,10 @@
 /* MainButton.module.css */
 .main-button {
-  width: 100%;
+  position: fixed;
+  z-index: 1000;
+  bottom: 24px;
+  max-width: calc(var(--size-max-width) - 2 * var(--size-gap));
+  width: calc(100% - 2 * var(--size-gap));
   padding: 12px 0;
   text-align: center;
   border-radius: 52px;
