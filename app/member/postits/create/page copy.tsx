@@ -83,7 +83,12 @@ const Index = () => {
             </ItemBox>
           ))}
         </ScrollContainer>
-        <MainButton text={"다음"} />
+        <MainButton
+          text={"다음"}
+          onClick={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
       </BottomSheet>
     </div>
   );
