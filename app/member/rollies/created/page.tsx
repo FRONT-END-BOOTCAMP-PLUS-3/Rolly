@@ -8,12 +8,10 @@ import styles from "./page.module.scss";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import CreatedRollyListItemDto from "@/application/usecases/rolly/dto/CreatedRollyListItemDto";
+import CreatedRollyDto from "@/application/usecases/rolly/dto/CreatedRollyDto";
 
 const Index: React.FC = () => {
-  const [rollyListItems, setRollyListItem] = useState<
-    CreatedRollyListItemDto[]
-  >([]);
+  const [rollyListItems, setRollyListItem] = useState<CreatedRollyDto[]>([]);
   const router = useRouter();
 
   useEffect(() => {

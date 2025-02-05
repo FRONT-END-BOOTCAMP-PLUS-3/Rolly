@@ -1,4 +1,4 @@
-export default interface CreatedRollyListItemDto {
+export default interface CreatedRollyDto {
   id: number;
   typeId: number;
   title: string;

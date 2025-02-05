@@ -1,5 +1,5 @@
 import { Rolly } from "@/domain/entities/Rolly";
 
-export interface CreatedRollyListItemRepository {
+export interface CreatedRollyRepository {
   findRollies(): Promise<Rolly[]>;
 }

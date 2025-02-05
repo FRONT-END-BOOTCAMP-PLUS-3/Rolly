@@ -1,10 +1,8 @@
 import { Rolly } from "@/domain/entities/Rolly";
-import { CreatedRollyListItemRepository } from "@/domain/repositories/CreatedRollyListItemRepository";
+import { CreatedRollyRepository } from "@/domain/repositories/CreatedRollyRepository";
 import supabase from "@/utils/supabase/supabaseClient";
 
-export class SbCreatedRollyListItemRepository
-  implements CreatedRollyListItemRepository
-{
+export class SbCreatedRollyRepository implements CreatedRollyRepository {
   async findRollies(): Promise<Rolly[]> {
     // // 현재 로그인한 사용자 정보 가져오기
     // 아직 로그인 구현 안되어있음
