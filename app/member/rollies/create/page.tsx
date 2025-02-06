@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import useToggle from "@/hooks/useToggle";
 import useRollyCreateStore from "@/application/state/useRollyCreateStore";
+import useUserIdStore from "@/application/state/useUserIdStore";
 import { FormData } from "@/components/modal/Modal.type";
 import BottomSheet from "@/components/bottomSheet/BottomSheet";
 import ScrollContainer from "@/components/scrollContainer/ScrollContainer";
@@ -17,7 +18,6 @@ import Rolly from "@/components/rolly/Rolly";
 
 import { DfUploadImageUsecase } from "@/application/usecases/rolly/DfUploadImageUsecase";
 
-const TEMP_USER_ID = "15911709-59d8-47f5-9448-0c825ee184fb";
 const INITIAL_PHRASE = "문구를 입력해주세요";
 const ROLLY_THEMES = [
   "hbd",
@@ -31,6 +31,7 @@ const ROLLY_THEMES = [
 const CreateRollies = () => {
   const router = useRouter();
   const { type, title } = useRollyCreateStore();
+  const { userId } = useUserIdStore();
   const [theme, setTheme] = useState("hbd");
   const [phrase, setPhrase] = useState(INITIAL_PHRASE);
   const [file, setFile] = useState<File>();
@@ -93,7 +94,7 @@ const CreateRollies = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: TEMP_USER_ID,
+          userId: userId,
           typeId: type,
           title: title,
           image: imageUrl,
