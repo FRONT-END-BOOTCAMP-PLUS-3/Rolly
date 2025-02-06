@@ -8,7 +8,22 @@ import BackButton from "@/components/backButton/BackButton";
 import Alert from "@/components/alert/Alert";
 import styles from "./page.module.scss";
 import supabase from "@/utils/supabase/supabaseClient";
-import useUserIdStore from "@/application/state/useUserIdStore";
+import { create } from "zustand";
+import { UUID } from "@/types/common";
+
+type State = {
+  id: UUID;
+};
+
+type Action = {
+  setId: (type: State["id"]) => void;
+};
+
+// Zustand store 설정
+const useUserIdStore = create<State & Action>((set) => ({
+  id: "00000000-0000-0000-0000-000000000000",
+  setId: (id) => set({ id }),
+}));
 
 const Login = () => {
   // const router = useRouter();
