@@ -1,22 +1,39 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import AuthInput from "@/components/authInput/AuthInput";
 import MainButton from "@/components/mainButton/MainButton";
 import BackButton from "@/components/backButton/BackButton";
 import Alert from "@/components/alert/Alert";
 import styles from "./page.module.scss";
 import supabase from "@/utils/supabase/supabaseClient";
+import { create } from "zustand";
+import { UUID } from "@/types/common";
+
+type State = {
+  id: UUID;
+};
+
+type Action = {
+  setId: (type: State["id"]) => void;
+};
+
+// Zustand store 설정
+const useUserIdStore = create<State & Action>((set) => ({
+  id: "00000000-0000-0000-0000-000000000000",
+  setId: (id) => set({ id }),
+}));
 
 const Login = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [alertTitle, setAlertTitle] = useState("");
   const [isAlertOpen, setAlertOpen] = useState(false);
   const [isFormComplete, setIsFormComplete] = useState(false);
+  const { setId } = useUserIdStore();
 
   useEffect(() => {
     setIsFormComplete(!!(email && password));
@@ -40,8 +57,9 @@ const Login = () => {
         setAlertOpen(true);
         return;
       }
-      console.log("로그인 성공:", data);
-      router.push("/intro");
+      if (data.user) {
+        setId(data.user.id); // Zustand store에 사용자 ID 저장
+      }
     } catch (error) {
       console.error("로그인 중 예외 발생:", error);
       setAlertTitle("로그인 도중 오류가 발생했습니다.");
@@ -66,7 +84,6 @@ const Login = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-
         <AuthInput
           label="비밀번호"
           placeholder="8자 이상이며, 숫자와 특수문자를 포함해야 합니다."
@@ -74,7 +91,6 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
         <Alert
           title={alertTitle}
           body={errorMessage}
