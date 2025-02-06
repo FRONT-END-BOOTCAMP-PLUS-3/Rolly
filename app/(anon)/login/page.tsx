@@ -42,8 +42,16 @@ const Login = () => {
         setAlertOpen(true);
         return;
       }
-      if (data.user) {
-        setId(data.user.id); // Zustand store에 사용자 ID 저장
+      if (data.session) {
+        // 세션 정보를 sessionStorage에 저장
+        sessionStorage.setItem(
+          "supabase.auth.token",
+          JSON.stringify(data.session)
+        );
+        // Zustand store에 사용자 ID 저장
+        setId(data.user.id);
+        // localStorage에서 인증 관련 데이터 제거
+        await supabase.auth.signOut();
       }
     } catch (error) {
       console.error("로그인 중 예외 발생:", error);
