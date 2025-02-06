@@ -1,0 +1,15 @@
+.vertical-scroll-container {
+  display: flex;
+  flex-direction: row;
+  margin-left: 6px;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: var(--size-gap);
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 250px;
+}
+
+.vertical-scroll-container::-webkit-scrollbar {
+  display: none;
+}

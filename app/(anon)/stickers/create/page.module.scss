@@ -1,0 +1,25 @@
+.textField {
+  position: relative;
+  width: 100%;
+}
+
+.textArea {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 100%;
+  border: none;
+  padding: 25%;
+  background: transparent;
+  color: var(--color-gray-1);
+  font-size: var(--font-size-md);
+}
+
+.textArea::-webkit-scrollbar {
+  display: none;
+}
+
+.postit-theme-bg {
+  width: 100%;
+  object-fit: cover;
+}
