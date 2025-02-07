@@ -10,8 +10,12 @@ type Action = {
 };
 
 const useUserIdStore = create<State & Action>((set) => ({
-  userId: "00000000-0000-0000-0000-000000000000",
-  setUserId: (userId) => set({ userId }),
+  userId:
+    localStorage.getItem("userId") || "00000000-0000-0000-0000-000000000000",
+  setUserId: (userId) => {
+    localStorage.setItem("userId", id); // id를 localStorage에 저장
+    set({ userId });
+  },
 }));
 
 export default useUserIdStore;
