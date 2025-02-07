@@ -9,15 +9,17 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import CreatedRollyDto from "@/application/usecases/rolly/dto/CreatedRollyDto";
+import useUserIdStore from "@/application/state/useUserIdStore";
 
 const Index: React.FC = () => {
   const [rollyListItems, setRollyListItem] = useState<CreatedRollyDto[]>([]);
   const router = useRouter();
-
   useEffect(() => {
+    const userId = useUserIdStore.getState().id;
     const fetchData = async () => {
-      const response = await fetch("/api/rollies");
+      const response = await fetch(`/api/rollies?userId=${userId}`);
       const data = await response.json();
+      console.log(data);
       setRollyListItem(data);
     };
     fetchData();
