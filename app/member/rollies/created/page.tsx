@@ -13,9 +13,10 @@ import useUserIdStore from "@/application/state/useUserIdStore";
 
 const Index: React.FC = () => {
   const [rollyItems, setRollyItems] = useState<CreatedRollyDto[]>([]);
+  const { userId } = useUserIdStore();
   const router = useRouter();
+
   useEffect(() => {
-    const userId = useUserIdStore.getState().userId;
     const fetchData = async () => {
       const response = await fetch(`/api/rollies?userId=${userId}`);
       const data = await response.json();
@@ -23,7 +24,7 @@ const Index: React.FC = () => {
       setRollyItems(data);
     };
     fetchData();
-  }, []);
+  }, [userId]);
 
   const handleItemClick = (id: number) => {
     router.push(`/member/rollies/${id}`);
