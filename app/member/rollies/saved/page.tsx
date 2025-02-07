@@ -24,11 +24,11 @@ const Index: React.FC = () => {
     fetchData();
   }, []);
 
-  const handleItemClick = (id: number) => {
+  const navigateToRolly = (id: number) => {
     router.push(`/member/rollies/${id}`);
   };
 
-  const handleReply = () => {
+  const navigateToReply = () => {
     router.push(`/member/reply/`);
   };
   return (
@@ -44,9 +44,9 @@ const Index: React.FC = () => {
             id={rollyItem.id}
             title={rollyItem.title}
             date={rollyItem.createdAt.slice(0, 10)}
-            onClick={() => handleItemClick(rollyItem.id)}
+            onClick={() => navigateToRolly(rollyItem.id)}
             variant={"saved"}
-            onReply={rollyItem.typeId === 1 ? handleReply : undefined}
+            onReply={rollyItem.typeId === 1 ? navigateToReply : undefined}
             isLocked={true}
           />
         ))}
