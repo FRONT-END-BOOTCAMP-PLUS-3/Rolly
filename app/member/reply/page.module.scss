@@ -1,0 +1,18 @@
+.textarea {
+  width: 100%;
+  margin-top: 28px;
+  border: 1px solid var(--color-primary);
+  border-radius: 10px;
+  color: var(--color-gray-1);
+  padding: 10px;
+  font-size: var(--font-size-lg)
+}
+
+.reply-button {
+  position: fixed;
+  bottom: 0;
+  max-width: var(--size-max-width);
+  width: 100%;
+  margin-left: calc(-1 * var(--size-gap));
+  padding: 36px var(--size-gap) 52px;
+}
