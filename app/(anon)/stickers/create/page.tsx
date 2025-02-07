@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
+import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import BottomSheet from "@/components/bottomSheet/BottomSheet";
 import ItemBox from "@/components/itemBox/ItemBox";
 import MainButton from "@/components/mainButton/MainButton";
@@ -13,10 +14,15 @@ import BackButton from "@/components/backButton/BackButton";
 interface Sticker {
   id: number;
   src: string;
+  x_position: number; // sticker의 x축 위치
+  y_position: number; // sticker의 y축 위치
+  rotation: number;
+  scale: number; // sticker의 크기
 }
 
 const Stickers: React.FC = () => {
   const [selectedStickers, setSelectedStickers] = useState<Sticker[]>([]); // 상태를 배열로 변경
+  const [isDragging, setIsDragging] = useState<boolean>(false); // 드래그 상태 관리
   const stickerList: string[] = [
     "1.svg",
     "2.svg",
@@ -30,31 +36,90 @@ const Stickers: React.FC = () => {
     "10.svg",
   ];
 
+  const draggableRef = useRef<HTMLImageElement>(null!);
+
   const handleSelectSticker = (src: string) => {
     const newSticker: Sticker = {
       id: selectedStickers.length + 1, // id는 현재 선택된 스티커 수 + 1
       src: src,
+      x_position: 0,
+      y_position: 0,
+      rotation: 0,
+      scale: 1,
     };
     setSelectedStickers([...selectedStickers, newSticker]); // 기존 스티커 배열에 새로운 스티커 추가
   };
+
+  // 드래그 중 위치 업데이트
+  const handleDrag = (e: DraggableEvent, data: DraggableData, id: number) => {
+    setIsDragging(true); // 드래그 시작 시 상태 업데이트
+
+    // 해당 스티커의 위치 업데이트
+    setSelectedStickers((prevState) =>
+      prevState.map((sticker) =>
+        sticker.id === id
+          ? { ...sticker, x_position: data.x, y_position: data.y } // x, y 위치 업데이트
+          : sticker
+      )
+    );
+  };
+
+  // // handleDrag에서 바로 위치 업데이트
+  // const handleDrag = (e: DraggableEvent, data: DraggableData) => {
+  //   if (!selectedStickers) return;
+  //   setSelectedStickers({
+  //     ...selectedStickers,
+  //     position_x: data.x,
+  //     position_y: data.y,
+  //   });
+  // };
+
+  // 드래그 끝났을 때 위치 업데이트
+  const handleStop = (e: DraggableEvent, data: DraggableData, id: number) => {
+    setIsDragging(false); // 드래그 종료 시 상태 변경
+    // 해당 스티커의 최종 위치를 업데이트
+    setSelectedStickers((prevState) =>
+      prevState.map((sticker) =>
+        sticker.id === id
+          ? { ...sticker, x_position: data.x, y_position: data.y } // 최종 x, y 위치 업데이트
+          : sticker
+      )
+    );
+  };
+
   return (
     <div>
       <Header leftContent={<BackButton />} title="스티커" />
       <div className={styles["rolly-field"]}>
         {selectedStickers.map((sticker) => (
-          <Image
+          <Draggable
+            nodeRef={draggableRef}
             key={sticker.id}
-            src={`/images/sticker/${sticker.src}`}
-            alt={`Sticker ${sticker.id}`}
-            width={55}
-            height={55}
-            style={{
-              position: "absolute",
-              left: "45%", // Centering the sticker
-              cursor: "pointer",
-              top: `${sticker.id * 60}px`, // 스티커들이 겹치지 않도록 top을 다르게 설정
-            }}
-          />
+            position={{ x: sticker.x_position, y: sticker.y_position }} // 스티커의 위치 설정
+            onDrag={(e, data) => handleDrag(e, data, sticker.id)} // 드래그 중 위치 업데이트
+            onStop={(e, data) => handleStop(e, data, sticker.id)} // 드래그 끝났을 때 위치 업데이트
+            disabled={
+              isDragging &&
+              sticker.id !== selectedStickers[selectedStickers.length - 1]?.id
+            } // 드래그 상태에 따라 다른 스티커 이동을 방지
+          >
+            <div ref={draggableRef}>
+              <Image
+                key={sticker.id}
+                src={`/images/sticker/${sticker.src}`}
+                alt={`Sticker ${sticker.id}`}
+                width={55}
+                height={55}
+                style={{
+                  position: "absolute",
+                  left: `${sticker.x_position}px`, // x 위치 적용
+                  top: `${sticker.y_position}px`, // y 위치 적용
+                  cursor: "pointer",
+                  transform: `rotate(${sticker.rotation}deg)`,
+                }}
+              />
+            </div>
+          </Draggable>
         ))}
       </div>
 
