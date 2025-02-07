@@ -3,5 +3,5 @@ export default interface CreatedRollyDto {
   typeId: number;
   title: string;
   isLocked: boolean;
-  createAt: string;
+  createdAt: string;
 }

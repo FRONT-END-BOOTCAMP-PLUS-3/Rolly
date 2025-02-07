@@ -3,22 +3,24 @@
 import BackButton from "@/components/backButton/BackButton";
 import CreateRollyButton from "@/components/createRollyButton/CreateRollyButton";
 import Header from "@/components/header/Header";
-import RollyListItem from "@/components/rollyListItem/RollyListItem";
+import RollyItem from "@/components/rollyItem/RollyItem";
 import styles from "./page.module.scss";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import CreatedRollyDto from "@/application/usecases/rolly/dto/CreatedRollyDto";
+import useUserIdStore from "@/application/state/useUserIdStore";
 
 const Index: React.FC = () => {
-  const [rollyListItems, setRollyListItem] = useState<CreatedRollyDto[]>([]);
+  const [rollyItems, setRollyItems] = useState<CreatedRollyDto[]>([]);
   const router = useRouter();
-
   useEffect(() => {
+    const userId = useUserIdStore.getState().userId;
     const fetchData = async () => {
-      const response = await fetch("/api/rollies");
+      const response = await fetch(`/api/rollies?userId=${userId}`);
       const data = await response.json();
-      setRollyListItem(data);
+      console.log(data);
+      setRollyItems(data);
     };
     fetchData();
   }, []);
@@ -31,7 +33,7 @@ const Index: React.FC = () => {
     await fetch(`/api/rollies/${id}`, {
       method: "POST",
     });
-    setRollyListItem((prev) =>
+    setRollyItems((prev) =>
       prev.map((item) => (item.id === id ? { ...item, isLocked: true } : item))
     );
   };
@@ -41,7 +43,7 @@ const Index: React.FC = () => {
       method: "DELETE",
     });
 
-    setRollyListItem((prev) => prev.filter((item) => item.id !== id));
+    setRollyItems((prev) => prev.filter((item) => item.id !== id));
   };
 
   return (
@@ -56,17 +58,17 @@ const Index: React.FC = () => {
       </div>
       <p className={styles["list-title"]}>롤리 리스트</p>
       <div className={styles["list"]}>
-        {rollyListItems.map((rollyListItem) => (
-          <RollyListItem
-            key={rollyListItem.id}
-            id={rollyListItem.id}
-            title={rollyListItem.title}
-            date={rollyListItem.createAt.toString().slice(0, 10)}
-            onClick={() => handleItemClick(rollyListItem.id)}
+        {rollyItems.map((rollyItem) => (
+          <RollyItem
+            key={rollyItem.id}
+            id={rollyItem.id}
+            title={rollyItem.title}
+            date={rollyItem.createdAt.toString().slice(0, 10)}
+            onClick={() => handleItemClick(rollyItem.id)}
             variant={"created"}
-            onLock={() => handleLock(rollyListItem.id)}
-            onDelete={() => handleDelete(rollyListItem.id)}
-            isLocked={rollyListItem.isLocked}
+            onLock={() => handleLock(rollyItem.id)}
+            onDelete={() => handleDelete(rollyItem.id)}
+            isLocked={rollyItem.isLocked}
           />
         ))}
       </div>

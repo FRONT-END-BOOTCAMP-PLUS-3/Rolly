@@ -1,25 +1,27 @@
-import { CreatedRollyRepository } from "@/domain/repositories/CreatedRollyRepository";
+import { RollyRepository } from "@/domain/repositories/RollyRepository";
 import CreatedRollyDto from "./dto/CreatedRollyDto";
+import { UUID } from "@/types/common";
 
 export class DfCreatedRollyUsecase {
-  private repository: CreatedRollyRepository;
+  private repository: RollyRepository;
 
-  constructor(repository: CreatedRollyRepository) {
+  constructor(repository: RollyRepository) {
     this.repository = repository;
   }
 
-  async execute(): Promise<CreatedRollyDto[]> {
-    const createdRollyListItems = await this.repository.findRollies();
+  async execute(userId: UUID): Promise<CreatedRollyDto[]> {
+    const createdRollyItems = await this.repository.findCreatedRollies(userId);
 
-    const createdRollyListItemDtos: CreatedRollyDto[] =
-      createdRollyListItems.map((createdRollyListItem) => ({
-        id: createdRollyListItem.id,
-        typeId: createdRollyListItem.typeId,
-        title: createdRollyListItem.title,
-        isLocked: createdRollyListItem.isLocked,
-        createAt: createdRollyListItem.createdAt,
-      }));
+    const createdRollyItemDtos: CreatedRollyDto[] = createdRollyItems.map(
+      (createdRollyItem) => ({
+        id: createdRollyItem.id,
+        typeId: createdRollyItem.typeId,
+        title: createdRollyItem.title,
+        isLocked: createdRollyItem.isLocked,
+        createdAt: createdRollyItem.createdAt,
+      })
+    );
 
-    return createdRollyListItemDtos;
+    return createdRollyItemDtos;
   }
 }
