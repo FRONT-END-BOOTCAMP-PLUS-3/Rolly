@@ -1,38 +1,30 @@
-import { RollyRepository } from "@/domain/repositories/RollyRepository";
-import { SavedRollyRepository } from "@/domain/repositories/SavedRollyRepository";
 import SavedRollyDto from "./dto/SavedRollyDto";
+import { UUID } from "@/types/common";
+import { SbRollyRepository } from "@/infrastructure/repositories/SbRollyRepository";
+import { SbSavedRollyRepository } from "@/infrastructure/repositories/SbSavedRollyRepository";
 
 export class DfSavedRollyUsecase {
-  private savedRollyRepository: SavedRollyRepository;
-  private rollyRepository: RollyRepository;
   constructor(
-    savedRollyRepository: SavedRollyRepository,
-    rollyRepository: RollyRepository
-  ) {
-    this.savedRollyRepository = savedRollyRepository;
-    this.rollyRepository = rollyRepository;
-  }
-  async execute(userId: number): Promise<SavedRollyDto[]> {
-    // 1. saves 테이블에서 엔티티 조회
-    const savedList = await this.savedRollyRepository.getSavedList(userId);
-    if (savedList.length === 0) return [];
+    private savedRollyRepository: SbSavedRollyRepository,
+    private rollyRepository: SbRollyRepository
+  ) {}
+  async execute(userId: UUID): Promise<SavedRollyDto[]> {
+    // 1. userId로 saves 테이블에서 rollyId 가져오기
+    const savedRollies =
+      await this.savedRollyRepository.findSavedRollyIds(userId);
+    const rollyIds = savedRollies.map((saved) => saved.rollyId);
 
-    // 2. 중복 제거한 rollyId 목록 만들기
-    const rollyIds = Array.from(new Set(savedList.map((s) => s.rollyId)));
+    if (rollyIds.length === 0) return [];
 
-    // 3. rolly 엔티티 조회
-    const rollyList = await this.rollyRepository.getRollyListByIds(rollyIds);
+    // 2. rolly 테이블에서 rolly 정보 가져오기
+    const rollies = await this.rollyRepository.findSavedRollies(rollyIds);
 
-    // 4. saved 엔티티와 rolly 엔티티를 매핑하여 DTO 생성
-    const dtos: SavedRollyDto[] = savedList.map((saved) => {
-      const rolly = rollyList.find((r) => r.id === saved.rollyId);
-      return {
-        typeId: rolly ? (rolly.typeId as number) : 0, // 만약 rolly 정보가 없다면 기본값 처리
-        title: rolly ? rolly.title : "",
-        createdAt: saved.createdAt,
-      };
-    });
-
-    return dtos;
+    // 3. DTO 변환 후 반환
+    return rollies.map((rolly) => ({
+      id: rolly.id,
+      typeId: rolly.typeId,
+      title: rolly.title,
+      createdAt: rolly.createdAt,
+    }));
   }
 }

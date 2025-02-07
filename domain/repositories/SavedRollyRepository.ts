@@ -1,10 +1,6 @@
-// import { Rolly } from "../entities/Rolly";
-
-// export interface SavedRollyRepository {
-//   getRollyListByIds(ids: number[]): Promise<Rolly[]>;
-// }
-import { Saved } from "../entities/Saved";
+import { UUID } from "@/types/common";
+import { Saves } from "../entities/Saves";
 
 export interface SavedRollyRepository {
-  getSavedList(userId: number): Promise<Saved[]>;
+  findSavedRollyIds(userId: UUID): Promise<Saves[]>;
 }

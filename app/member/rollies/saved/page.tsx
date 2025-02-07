@@ -1,59 +1,57 @@
-// "use client";
+"use client";
 
-// import BackButton from "@/components/backButton/BackButton";
-// import Header from "@/components/header/Header";
-// import styles from "./page.module.scss";
-// import { useRouter } from "next/navigation";
-// import RollyListItemDto from "@/application/usecases/rollyListItem/dto/RollyListItemDto";
-// import { useEffect, useState } from "react";
-// import { SbRollyListItemRepository } from "@/infrastructure/repositories/SbRollyListItemRepository";
-// import { DfRollyListItemUsecase } from "@/application/usecases/rollyListItem/DfRollyListItemUsecase";
-// import RollyListItem from "@/components/rollyListItem/RollyListItem";
+import BackButton from "@/components/backButton/BackButton";
+import Header from "@/components/header/Header";
+import styles from "./page.module.scss";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import RollyItem from "@/components/rollyItem/RollyItem";
+import SavedRollyDto from "@/application/usecases/rolly/dto/SavedRollyDto";
+import useUserIdStore from "@/application/state/useUserIdStore";
 
-// const Index: React.FC = () => {
-//   const [rollyListItems, setRollyListItem] = useState<RollyListItemDto[]>([]);
-//   const repository = new SbRollyListItemRepository();
-//   const rollyListItemUsecase = new DfRollyListItemUsecase(repository);
-//   const router = useRouter();
+const Index: React.FC = () => {
+  const [rollyItems, setRollyItem] = useState<SavedRollyDto[]>([]);
+  const router = useRouter();
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const data = await rollyListItemUsecase.execute();
-//       console.log("Fetched Rolly List:", data);
-//       setRollyListItem(data);
-//     };
+  useEffect(() => {
+    const userId = useUserIdStore.getState().userId;
+    const fetchData = async () => {
+      const response = await fetch(`/api/saves?userId=${userId}`);
+      const data = await response.json();
+      setRollyItem(data);
+    };
 
-//     fetchData();
-//   }, []);
+    fetchData();
+  }, []);
 
-//   const handleItemClick = (id: number) => {
-//     router.push(`/rollies/${id}`);
-//   };
+  const handleItemClick = (id: number) => {
+    router.push(`/member/rollies/${id}`);
+  };
 
-//   const handleReply = () => {
-//     router.push(`/reply/`);
-//   };
-//   return (
-//     <div>
-//       <div className={styles["header"]}>
-//         <Header leftContent={<BackButton />} title="내가 받은 롤리" />
-//       </div>
-//       <p className={styles["list-title"]}>롤리 리스트</p>
-//       <div className={styles["list"]}>
-//         {rollyListItems.map((rollyListItem) => (
-//           <RollyListItem
-//             key={rollyListItem.id}
-//             id={rollyListItem.id}
-//             title={rollyListItem.title}
-//             date={rollyListItem.createAt.slice(0, 10)}
-//             onClick={() => handleItemClick(rollyListItem.id)}
-//             variant={"saved"}
-//             onReply={rollyListItem.typeId === 1 ? handleReply : undefined}
-//             isLocked={true}
-//           />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-// export default Index;
+  const handleReply = () => {
+    router.push(`/member/reply/`);
+  };
+  return (
+    <div>
+      <div className={styles["header"]}>
+        <Header leftContent={<BackButton />} title="내가 받은 롤리" />
+      </div>
+      <p className={styles["list-title"]}>롤리 리스트</p>
+      <div className={styles["list"]}>
+        {rollyItems.map((rollyItem) => (
+          <RollyItem
+            key={rollyItem.id}
+            id={rollyItem.id}
+            title={rollyItem.title}
+            date={rollyItem.createdAt.slice(0, 10)}
+            onClick={() => handleItemClick(rollyItem.id)}
+            variant={"saved"}
+            onReply={rollyItem.typeId === 1 ? handleReply : undefined}
+            isLocked={true}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+export default Index;
