@@ -18,7 +18,7 @@ const Login = () => {
   const [alertTitle, setAlertTitle] = useState("");
   const [isAlertOpen, setAlertOpen] = useState(false);
   const [isFormComplete, setIsFormComplete] = useState(false);
-  const { setId } = useUserIdStore();
+  const { setUserId } = useUserIdStore();
 
   useEffect(() => {
     setIsFormComplete(!!(email && password));
@@ -49,7 +49,7 @@ const Login = () => {
           JSON.stringify(data.session)
         );
         // Zustand store에 사용자 ID 저장
-        setId(data.user.id);
+        setUserId(data.user.id);
         // localStorage에서 인증 관련 데이터 제거
         await supabase.auth.signOut();
       }
