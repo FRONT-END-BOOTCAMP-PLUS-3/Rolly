@@ -2,16 +2,16 @@ import { create } from "zustand";
 import { UUID } from "@/types/common";
 
 type State = {
-  id: UUID;
+  userId: UUID;
 };
 
 type Action = {
-  setId: (type: State["id"]) => void;
+  setUserId: (type: State["userId"]) => void;
 };
 
 const useUserIdStore = create<State & Action>((set) => ({
-  id: "00000000-0000-0000-0000-000000000000",
-  setId: (id) => set({ id }),
+  userId: "00000000-0000-0000-0000-000000000000",
+  setUserId: (userId) => set({ userId }),
 }));
 
 export default useUserIdStore;
