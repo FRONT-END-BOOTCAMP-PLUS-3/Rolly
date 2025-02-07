@@ -1,16 +1,16 @@
-import { CreatedRollyRepository } from "@/domain/repositories/CreatedRollyRepository";
+import { RollyRepository } from "@/domain/repositories/RollyRepository";
 import CreatedRollyDto from "./dto/CreatedRollyDto";
 import { UUID } from "@/types/common";
 
 export class DfCreatedRollyUsecase {
-  private repository: CreatedRollyRepository;
+  private repository: RollyRepository;
 
-  constructor(repository: CreatedRollyRepository) {
+  constructor(repository: RollyRepository) {
     this.repository = repository;
   }
 
   async execute(userId: UUID): Promise<CreatedRollyDto[]> {
-    const createdRollyListItems = await this.repository.findRollies(userId);
+    const createdRollyListItems = await this.repository.createdRolly(userId);
 
     const createdRollyListItemDtos: CreatedRollyDto[] =
       createdRollyListItems.map((createdRollyListItem) => ({

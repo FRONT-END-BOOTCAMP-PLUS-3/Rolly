@@ -15,7 +15,7 @@ const Index: React.FC = () => {
   const [rollyListItems, setRollyListItem] = useState<CreatedRollyDto[]>([]);
   const router = useRouter();
   useEffect(() => {
-    const userId = useUserIdStore.getState().id;
+    const userId = useUserIdStore.getState().userId;
     const fetchData = async () => {
       const response = await fetch(`/api/rollies?userId=${userId}`);
       const data = await response.json();
