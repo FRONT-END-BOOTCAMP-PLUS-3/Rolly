@@ -36,12 +36,30 @@ export async function POST(req: NextRequest) {
   }
 }
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const userId = searchParams.get("userId"); // 쿼리에서 userId 가져오기
-  const createdRollyRepository = new SbRollyRepository();
-  const createdRollyUsecase = new DfCreatedRollyUsecase(createdRollyRepository);
-  const createdRollyDto: CreatedRollyDto[] = await createdRollyUsecase.execute(
-    userId as UUID
-  );
-  return NextResponse.json(createdRollyDto);
+  try {
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get("userId"); // 쿼리에서 userId 가져오기
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: "userId is required" },
+        { status: 400 }
+      );
+    }
+
+    const createdRollyRepository = new SbRollyRepository();
+    const createdRollyUsecase = new DfCreatedRollyUsecase(
+      createdRollyRepository
+    );
+    const createdRollyDto: CreatedRollyDto[] =
+      await createdRollyUsecase.execute(userId as UUID);
+
+    return NextResponse.json(createdRollyDto);
+  } catch (error) {
+    console.error("Error fetching created Rolly:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }

@@ -10,7 +10,8 @@ export class DfCreatedRollyUsecase {
   }
 
   async execute(userId: UUID): Promise<CreatedRollyDto[]> {
-    const createdRollyListItems = await this.repository.createdRolly(userId);
+    const createdRollyListItems =
+      await this.repository.findCreatedRollies(userId);
 
     const createdRollyListItemDtos: CreatedRollyDto[] =
       createdRollyListItems.map((createdRollyListItem) => ({

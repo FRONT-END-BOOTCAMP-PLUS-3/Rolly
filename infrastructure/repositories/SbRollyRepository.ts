@@ -30,35 +30,40 @@ export class SbRollyRepository implements RollyRepository {
       throw error;
     }
   }
-  async createdRolly(userId: UUID): Promise<Rolly[]> {
-    // 저장한 user id를 불러와서 쿼리에 사용
-    const { data, error } = await supabase
-      .from("rolly")
-      .select("*")
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false });
 
-    if (error) {
-      console.error("Error fetching rolly list:", error);
+  async findCreatedRollies(userId: UUID): Promise<Rolly[]> {
+    try {
+      // 저장한 user id를 불러와서 쿼리에 사용
+      const { data, error } = await supabase
+        .from("rolly")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        throw new Error(`Error fetching rolly list: ${error.message}`);
+      }
+
+      return (
+        data?.map(
+          ({
+            user_id: userId,
+            type_id: typeId,
+            is_locked: isLocked,
+            created_at: createdAt,
+            ...rest
+          }) => ({
+            userId,
+            typeId,
+            isLocked,
+            createdAt,
+            ...rest,
+          })
+        ) || []
+      );
+    } catch (error) {
+      console.error(error);
       return [];
     }
-
-    return (
-      data.map(
-        ({
-          user_id: userId,
-          type_id: typeId,
-          is_locked: isLocked,
-          created_at: createdAt,
-          ...rest
-        }) => ({
-          userId,
-          typeId,
-          isLocked,
-          createdAt,
-          ...rest,
-        })
-      ) || null
-    );
   }
 }
