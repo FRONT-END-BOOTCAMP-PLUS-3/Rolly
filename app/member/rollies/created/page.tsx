@@ -17,13 +17,13 @@ const Index: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCreatedRollies = async () => {
       const response = await fetch(`/api/rollies?userId=${userId}`);
       const data = await response.json();
       console.log(data);
       setRollyItems(data);
     };
-    fetchData();
+    fetchCreatedRollies();
   }, [userId]);
 
   const handleItemClick = (id: number) => {

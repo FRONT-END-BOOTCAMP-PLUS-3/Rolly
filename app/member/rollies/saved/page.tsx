@@ -15,13 +15,13 @@ const Index: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchSavedRollies = async () => {
       const response = await fetch(`/api/saves?userId=${userId}`);
       const data = await response.json();
       setRollyItems(data);
     };
 
-    fetchData();
+    fetchSavedRollies();
   }, [userId]);
 
   const navigateToRolly = (id: number) => {
