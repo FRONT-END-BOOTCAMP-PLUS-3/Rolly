@@ -1,6 +1,7 @@
 import supabase from "@/utils/supabase/supabaseClient";
 import { Rolly } from "@/domain/entities/Rolly";
 import { RollyRepository } from "@/domain/repositories/RollyRepository";
+import { UUID } from "@/types/common";
 
 export class SbRollyRepository implements RollyRepository {
   async createRolly(rolly: Rolly): Promise<number> {
@@ -27,6 +28,42 @@ export class SbRollyRepository implements RollyRepository {
     } catch (error) {
       console.error("Rolly 생성 실패:", (error as Error).message);
       throw error;
+    }
+  }
+
+  async findCreatedRollies(userId: UUID): Promise<Rolly[]> {
+    try {
+      // 저장한 user id를 불러와서 쿼리에 사용
+      const { data, error } = await supabase
+        .from("rolly")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        throw new Error(`Error fetching rolly list: ${error.message}`);
+      }
+
+      return (
+        data?.map(
+          ({
+            user_id: userId,
+            type_id: typeId,
+            is_locked: isLocked,
+            created_at: createdAt,
+            ...rest
+          }) => ({
+            userId,
+            typeId,
+            isLocked,
+            createdAt,
+            ...rest,
+          })
+        ) || []
+      );
+    } catch (error) {
+      console.error(error);
+      return [];
     }
   }
   async getRollyListByIds(ids: number[]): Promise<Rolly[]> {
