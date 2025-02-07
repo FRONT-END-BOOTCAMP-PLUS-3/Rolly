@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import BottomSheet from "@/components/bottomSheet/BottomSheet";
@@ -23,6 +23,14 @@ interface Sticker {
 const Stickers: React.FC = () => {
   const [selectedStickers, setSelectedStickers] = useState<Sticker[]>([]); // 상태를 배열로 변경
   const [isDragging, setIsDragging] = useState<boolean>(false); // 드래그 상태 관리
+  const draggableRef = useRef<HTMLDivElement>(null);
+
+  // 마우스를 떼면 드래그 상태 해제
+  const handleMouseUp = useCallback(() => {
+    console.log("Mouse up event triggered. Is dragging:", isDragging);
+    if (isDragging) setIsDragging(false);
+  }, [isDragging]);
+
   const stickerList: string[] = [
     "1.svg",
     "2.svg",
@@ -36,8 +44,6 @@ const Stickers: React.FC = () => {
     "10.svg",
   ];
 
-  const draggableRef = useRef<HTMLImageElement>(null!);
-
   const handleSelectSticker = (src: string) => {
     const newSticker: Sticker = {
       id: selectedStickers.length + 1, // id는 현재 선택된 스티커 수 + 1
@@ -50,8 +56,13 @@ const Stickers: React.FC = () => {
     setSelectedStickers([...selectedStickers, newSticker]); // 기존 스티커 배열에 새로운 스티커 추가
   };
 
+  const handleDragStart = (e: React.DragEvent) => {
+    e.preventDefault();
+    console.log("Drag start event prevented");
+  };
   // 드래그 중 위치 업데이트
   const handleDrag = (e: DraggableEvent, data: DraggableData, id: number) => {
+    console.log("Dragging sticker:", id, "Position:", data.x, data.y);
     setIsDragging(true); // 드래그 시작 시 상태 업데이트
 
     // 해당 스티커의 위치 업데이트
@@ -76,6 +87,13 @@ const Stickers: React.FC = () => {
 
   // 드래그 끝났을 때 위치 업데이트
   const handleStop = (e: DraggableEvent, data: DraggableData, id: number) => {
+    console.log(
+      "Stopped dragging sticker:",
+      id,
+      "Final Position:",
+      data.x,
+      data.y
+    );
     setIsDragging(false); // 드래그 종료 시 상태 변경
     // 해당 스티커의 최종 위치를 업데이트
     setSelectedStickers((prevState) =>
@@ -87,15 +105,24 @@ const Stickers: React.FC = () => {
     );
   };
 
+  // 마우스 이벤트 등록 및 해제
+  useEffect(() => {
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging, handleMouseUp]);
+
   return (
     <div>
       <Header leftContent={<BackButton />} title="스티커" />
       <div className={styles["rolly-field"]}>
         {selectedStickers.map((sticker) => (
           <Draggable
-            nodeRef={draggableRef}
+            nodeRef={draggableRef as React.RefObject<HTMLElement>}
             key={sticker.id}
             position={{ x: sticker.x_position, y: sticker.y_position }} // 스티커의 위치 설정
+            onStart={() => console.log("Drag started for sticker:", sticker.id)}
             onDrag={(e, data) => handleDrag(e, data, sticker.id)} // 드래그 중 위치 업데이트
             onStop={(e, data) => handleStop(e, data, sticker.id)} // 드래그 끝났을 때 위치 업데이트
             disabled={
@@ -103,7 +130,7 @@ const Stickers: React.FC = () => {
               sticker.id !== selectedStickers[selectedStickers.length - 1]?.id
             } // 드래그 상태에 따라 다른 스티커 이동을 방지
           >
-            <div ref={draggableRef}>
+            <div ref={draggableRef} onDragStart={handleDragStart}>
               <Image
                 key={sticker.id}
                 src={`/images/sticker/${sticker.src}`}
@@ -112,8 +139,6 @@ const Stickers: React.FC = () => {
                 height={55}
                 style={{
                   position: "absolute",
-                  left: `${sticker.x_position}px`, // x 위치 적용
-                  top: `${sticker.y_position}px`, // y 위치 적용
                   cursor: "pointer",
                   transform: `rotate(${sticker.rotation}deg)`,
                 }}
