@@ -10,18 +10,18 @@ export class DfCreatedRollyUsecase {
   }
 
   async execute(userId: UUID): Promise<CreatedRollyDto[]> {
-    const createdRollyListItems =
-      await this.repository.findCreatedRollies(userId);
+    const createdRollyItems = await this.repository.findCreatedRollies(userId);
 
-    const createdRollyListItemDtos: CreatedRollyDto[] =
-      createdRollyListItems.map((createdRollyListItem) => ({
-        id: createdRollyListItem.id,
-        typeId: createdRollyListItem.typeId,
-        title: createdRollyListItem.title,
-        isLocked: createdRollyListItem.isLocked,
-        createAt: createdRollyListItem.createdAt,
-      }));
+    const createdRollyItemDtos: CreatedRollyDto[] = createdRollyItems.map(
+      (createdRollyItem) => ({
+        id: createdRollyItem.id,
+        typeId: createdRollyItem.typeId,
+        title: createdRollyItem.title,
+        isLocked: createdRollyItem.isLocked,
+        createdAt: createdRollyItem.createdAt,
+      })
+    );
 
-    return createdRollyListItemDtos;
+    return createdRollyItemDtos;
   }
 }

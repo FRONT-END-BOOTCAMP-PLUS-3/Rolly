@@ -1,9 +1,9 @@
-import styles from "./RollyListItem.module.scss";
+import styles from "./RollyItem.module.scss";
 import useToggle from "@/hooks/useToggle";
 import Modal from "../modal/Modal";
 import { useEffect, useState } from "react";
 
-type RollyListItemProps = {
+type RollyItemProps = {
   title: string;
   date: string;
   id: number;
@@ -15,7 +15,7 @@ type RollyListItemProps = {
   isLocked: boolean; // 잠금 상태 전달
 };
 
-const RollyListItem: React.FC<RollyListItemProps> = ({
+const RollyItem: React.FC<RollyItemProps> = ({
   id,
   title,
   date,
@@ -120,4 +120,4 @@ const RollyListItem: React.FC<RollyListItemProps> = ({
   );
 };
 
-export default RollyListItem;
+export default RollyItem;
