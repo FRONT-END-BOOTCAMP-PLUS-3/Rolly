@@ -24,6 +24,7 @@ const Stickers: React.FC = () => {
   const [selectedStickers, setSelectedStickers] = useState<Sticker[]>([]); // 상태를 배열로 변경
   const [isDragging, setIsDragging] = useState<boolean>(false); // 드래그 상태 관리
   const draggableRef = useRef<HTMLDivElement>(null);
+  const fieldRef = useRef<HTMLDivElement>(null);
 
   // 마우스를 떼면 드래그 상태 해제
   const handleMouseUp = useCallback(() => {
@@ -75,16 +76,6 @@ const Stickers: React.FC = () => {
     );
   };
 
-  // // handleDrag에서 바로 위치 업데이트
-  // const handleDrag = (e: DraggableEvent, data: DraggableData) => {
-  //   if (!selectedStickers) return;
-  //   setSelectedStickers({
-  //     ...selectedStickers,
-  //     position_x: data.x,
-  //     position_y: data.y,
-  //   });
-  // };
-
   // 드래그 끝났을 때 위치 업데이트
   const handleStop = (e: DraggableEvent, data: DraggableData, id: number) => {
     console.log(
@@ -114,9 +105,9 @@ const Stickers: React.FC = () => {
   }, [isDragging, handleMouseUp]);
 
   return (
-    <div>
+    <div className={styles["stickersContainer"]}>
       <Header leftContent={<BackButton />} title="스티커" />
-      <div className={styles["rolly-field"]}>
+      <div className={styles["rolly-field"]} ref={fieldRef}>
         {selectedStickers.map((sticker) => (
           <Draggable
             nodeRef={draggableRef as React.RefObject<HTMLElement>}
@@ -125,6 +116,16 @@ const Stickers: React.FC = () => {
             onStart={() => console.log("Drag started for sticker:", sticker.id)}
             onDrag={(e, data) => handleDrag(e, data, sticker.id)} // 드래그 중 위치 업데이트
             onStop={(e, data) => handleStop(e, data, sticker.id)} // 드래그 끝났을 때 위치 업데이트
+            bounds={
+              fieldRef.current
+                ? {
+                    top: 0,
+                    left: 0,
+                    right: fieldRef.current.clientWidth - 60,
+                    bottom: fieldRef.current.clientHeight - 430, //유동적으로 조절
+                  }
+                : undefined
+            }
             disabled={
               isDragging &&
               sticker.id !== selectedStickers[selectedStickers.length - 1]?.id
