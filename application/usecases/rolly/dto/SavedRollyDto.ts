@@ -1,7 +1,6 @@
-export default interface CreatedRollyDto {
+export default interface SavedRollyDto {
   id: number;
   typeId: number;
   title: string;
-  isLocked: boolean;
   createdAt: string;
 }
