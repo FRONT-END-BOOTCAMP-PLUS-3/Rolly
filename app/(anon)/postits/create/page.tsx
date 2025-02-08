@@ -4,39 +4,62 @@ import ItemBox from "@/components/itemBox/ItemBox";
 import MainButton from "@/components/mainButton/MainButton";
 import ScrollContainer from "@/components/scrollContainer/ScrollContainer";
 import styles from "./page.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "@/components/header/Header";
 import BackButton from "@/components/backButton/BackButton";
 
 const Index = () => {
-  const [selectedImage, setSelectedImage] = useState<string>("clover.svg");
+  const [selectedPostit, setSelectedPostit] = useState<string>("");
   const [selectedFont, setSelectedFont] = useState<string>("");
+  const [postits, setPostits] = useState<string[]>([]);
+  const [fonts, setFonts] = useState<{ font: string; name: string }[]>([]);
 
-  const images = [
-    "clover.svg",
-    "flower.svg",
-    "heart1.svg",
-    "heart2.svg",
-    "heart3.svg",
-    "square1.svg",
-    "square2.svg",
-    "square3.svg",
-    "circle1.svg",
-    "circle2.svg",
-  ];
+  useEffect(() => {
+    const fetchPostits = async () => {
+      try {
+        const response = await fetch("/api/postitthemes/");
+        if (!response.ok) {
+          throw new Error("Failed to fetch postits");
+        }
+        const data = await response.json();
 
-  const fonts = [
-    { name: "박다현체", value: "bakdahyeon" },
-    { name: "메모앤옥자체", value: "memoaenokja" },
-    { name: "이서윤체", value: "LeeSeoyun" },
-    { name: "류류체", value: "ryuryuche" },
-    { name: "류뚱체", value: "ryuttungche" },
-    { name: "세종글꽃체", value: "SejongGeulggot" },
-  ];
+        if (!data.success || !data.data) {
+          throw new Error("Invalid response format");
+        }
+
+        const postitNames = data.data.map(
+          (item: { name: string }) => item.name
+        ); // ✅ API 응답 구조 반영
+        setPostits(postitNames);
+        setSelectedPostit(postitNames[0] || ""); // 기본 선택값 설정
+      } catch (error) {
+        console.error("Error fetching postits:", error);
+      }
+    };
+    const fetchFonts = async () => {
+      try {
+        const response = await fetch("/api/fontfamilies/");
+        if (!response.ok) {
+          throw new Error("Failed to fetch fonts");
+        }
+        const data = await response.json();
+
+        if (!data.success || !data.data) {
+          throw new Error("Invalid response format");
+        }
+
+        setFonts(data.data);
+      } catch (error) {
+        console.error("Error fetching fonts:", error);
+      }
+    };
+    fetchFonts();
+    fetchPostits();
+  }, []);
 
   // 이미지 클릭 시 해당 이미지를 상태에 저장
   const handleImageClick = (value: string) => {
-    setSelectedImage(value);
+    setSelectedPostit(value);
   };
 
   return (
@@ -45,7 +68,7 @@ const Index = () => {
 
       <div className={styles["textField"]}>
         <img
-          src={`/images/postit-theme/${selectedImage}`}
+          src={`/images/postit-theme/${selectedPostit}.svg`}
           className={styles["postit-theme-bg"]}
         />
         <textarea
@@ -64,21 +87,21 @@ const Index = () => {
           {fonts.map((font, index) => (
             <ItemBox key={index} variant="text">
               <div
-                onClick={() => setSelectedFont(font.value)}
-                style={{ fontFamily: font.value }}
+                onClick={() => setSelectedFont(font.name)}
+                style={{ fontFamily: font.name }}
               >
-                {font.name}
+                {font.font}
               </div>
             </ItemBox>
           ))}
         </ScrollContainer>
         <ScrollContainer>
-          {images.map((image, index) => (
+          {postits.map((postit, index) => (
             <ItemBox key={index} variant="image">
               <img
-                src={`/images/postit-theme/${image}`}
-                alt={`image-${index}`}
-                onClick={() => handleImageClick(image)}
+                src={`/images/postit-theme/${postit}.svg`}
+                alt={`postit-${index}`}
+                onClick={() => handleImageClick(postit)}
               />
             </ItemBox>
           ))}
