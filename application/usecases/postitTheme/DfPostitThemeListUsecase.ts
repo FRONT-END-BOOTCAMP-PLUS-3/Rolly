@@ -7,6 +7,9 @@ export class DfPostitThemeListUsecase {
   async execute(): Promise<PostitThemeListDto[]> {
     const postitThemeList = await this.repository.getAll();
 
-    return postitThemeList.map((postitTheme) => ({ name: postitTheme.name }));
+    return postitThemeList.map((postitTheme) => ({
+      id: postitTheme.id,
+      name: postitTheme.name,
+    }));
   }
 }

@@ -8,6 +8,7 @@ export class DfFontFamilyListUsecase {
     const fontFamilyList = await this.repository.getAll();
 
     return fontFamilyList.map((fontFamily) => ({
+      id: fontFamily.id,
       font: fontFamily.font,
       name: fontFamily.name,
     }));
