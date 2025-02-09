@@ -120,6 +120,8 @@ body {
     min-height: 100vh;
     padding: 60px var(--size-gap) 88px;
     position: relative;
+    display: flex;
+    flex-direction: column;
   }
 }
 
