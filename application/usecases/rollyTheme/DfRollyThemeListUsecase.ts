@@ -1,12 +1,15 @@
 import { RollyThemeRepository } from "@/domain/repositories/RollyThemeRepository";
-import { RollyThemeListDto } from "./dto/RollyThemeListDto";
+import { RollyThemeDto } from "./dto/RollyThemeDto";
 
 export class DfRollyThemeListUsecase {
   constructor(private repository: RollyThemeRepository) {}
 
-  async execute(): Promise<RollyThemeListDto[]> {
+  async execute(): Promise<RollyThemeDto[]> {
     const rollyThemeList = await this.repository.getAll();
 
-    return rollyThemeList.map((rollyTheme) => ({ name: rollyTheme.name }));
+    return rollyThemeList.map((rollyTheme) => ({
+      id: rollyTheme.id,
+      name: rollyTheme.name,
+    }));
   }
 }

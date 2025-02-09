@@ -1,4 +1,4 @@
-export interface FontFamilyListDto {
+export interface FontFamilyDto {
   id: number;
   font: string;
   name: string;
