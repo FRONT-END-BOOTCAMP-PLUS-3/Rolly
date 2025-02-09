@@ -163,7 +163,11 @@ const Stickers: React.FC = () => {
       <BottomSheet>
         <VerticalScrollContainer>
           {stickerList.map((sticker, index) => (
-            <ItemBox key={index} variant="image">
+            <ItemBox
+              key={index}
+              variant="image"
+              onClick={() => handleSelectSticker(sticker)}
+            >
               <Image
                 src={`/images/sticker/${sticker}`}
                 alt={`Sticker ${index}`}
