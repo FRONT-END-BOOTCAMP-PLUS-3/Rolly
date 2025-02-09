@@ -18,6 +18,7 @@ interface Sticker {
   y_position: number; // sticker의 y축 위치
   rotation: number;
   scale: number; // sticker의 크기
+  isSelected?: boolean;
 }
 
 const Stickers: React.FC = () => {
@@ -28,7 +29,6 @@ const Stickers: React.FC = () => {
 
   // 마우스를 떼면 드래그 상태 해제
   const handleMouseUp = useCallback(() => {
-    console.log("Mouse up event triggered. Is dragging:", isDragging);
     if (isDragging) setIsDragging(false);
   }, [isDragging]);
 
@@ -53,17 +53,33 @@ const Stickers: React.FC = () => {
       y_position: 0,
       rotation: 0,
       scale: 1,
+      isSelected: false,
     };
     setSelectedStickers([...selectedStickers, newSticker]); // 기존 스티커 배열에 새로운 스티커 추가
   };
 
+  const handleImageClick = (id: number) => {
+    if (!isDragging) {
+      // 드래그 중이 아닐 때만 선택 상태를 토글
+      toggleSelection(id);
+    }
+  };
+
+  const toggleSelection = (id: number) => {
+    setSelectedStickers((stickers) =>
+      stickers.map((sticker) =>
+        sticker.id === id
+          ? { ...sticker, isSelected: !sticker.isSelected }
+          : sticker
+      )
+    );
+  };
   const handleDragStart = (e: React.DragEvent) => {
     e.preventDefault();
-    console.log("Drag start event prevented");
+    setIsDragging(true);
   };
   // 드래그 중 위치 업데이트
   const handleDrag = (e: DraggableEvent, data: DraggableData, id: number) => {
-    console.log("Dragging sticker:", id, "Position:", data.x, data.y);
     setIsDragging(true); // 드래그 시작 시 상태 업데이트
 
     // 해당 스티커의 위치 업데이트
@@ -78,15 +94,8 @@ const Stickers: React.FC = () => {
 
   // 드래그 끝났을 때 위치 업데이트
   const handleStop = (e: DraggableEvent, data: DraggableData, id: number) => {
-    console.log(
-      "Stopped dragging sticker:",
-      id,
-      "Final Position:",
-      data.x,
-      data.y
-    );
-    setIsDragging(false); // 드래그 종료 시 상태 변경
     // 해당 스티커의 최종 위치를 업데이트
+    e.preventDefault();
     setSelectedStickers((prevState) =>
       prevState.map((sticker) =>
         sticker.id === id
@@ -94,6 +103,7 @@ const Stickers: React.FC = () => {
           : sticker
       )
     );
+    setIsDragging(false); // 드래그 종료 시 상태 변경
   };
 
   // 마우스 이벤트 등록 및 해제
@@ -113,7 +123,6 @@ const Stickers: React.FC = () => {
             nodeRef={draggableRef as React.RefObject<HTMLElement>}
             key={sticker.id}
             position={{ x: sticker.x_position, y: sticker.y_position }} // 스티커의 위치 설정
-            onStart={() => console.log("Drag started for sticker:", sticker.id)}
             onDrag={(e, data) => handleDrag(e, data, sticker.id)} // 드래그 중 위치 업데이트
             onStop={(e, data) => handleStop(e, data, sticker.id)} // 드래그 끝났을 때 위치 업데이트
             bounds={
@@ -141,8 +150,10 @@ const Stickers: React.FC = () => {
                 style={{
                   position: "absolute",
                   cursor: "pointer",
-                  transform: `rotate(${sticker.rotation}deg)`,
+                  transform: `rotate(${sticker.rotation}deg) scale(${sticker.scale})`,
+                  border: sticker.isSelected ? "2px solid black" : "none", // 선택된 상태에 따라 테두리 색상 변경
                 }}
+                onClick={() => handleImageClick(sticker.id)}
               />
             </div>
           </Draggable>
