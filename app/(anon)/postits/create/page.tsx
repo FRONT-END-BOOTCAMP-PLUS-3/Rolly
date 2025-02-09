@@ -12,6 +12,7 @@ import Modal from "@/components/modal/Modal";
 import useEmailStore from "@/application/state/useEmailStore";
 import { FormData } from "@/components/modal/Modal.type";
 import { useRouter } from "next/navigation";
+import useRollyStore from "@/application/state/useRollyStore";
 
 const Index = () => {
   const router = useRouter();
@@ -32,8 +33,7 @@ const Index = () => {
   const [isEmailModalOpen, toggleEmailModal] = useToggle(false);
   const [isPostitModalOpen, togglePostitModal] = useToggle(false);
   const { setEmail } = useEmailStore();
-  const type = 1;
-  const rollyId = 7;
+  const { id: rollyId, typeId } = useRollyStore();
 
   useEffect(() => {
     const fetchPostits = async () => {
@@ -90,30 +90,26 @@ const Index = () => {
     fetchPostits();
   }, []);
 
-  const handlePostitClick = (postit: { id: number; name: string }) => {
+  const updatePostit = (postit: { id: number; name: string }) => {
     setSelectedPostit(postit);
   };
-  const handleFontClick = (font: {
-    id: number;
-    font: string;
-    name: string;
-  }) => {
+  const updateFont = (font: { id: number; font: string; name: string }) => {
     setSelectedFont(font);
   };
 
-  const handleMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const updateMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
   };
 
   const handleMainButton = () => {
-    if (type === 1) {
+    if (typeId === 1) {
       toggleEmailModal();
-    } else if (type === 2) {
+    } else if (typeId === 2) {
       togglePostitModal();
     }
   };
 
-  const handleEmail = (formData?: FormData) => {
+  const handleEmailModal = (formData?: FormData) => {
     if (formData && formData.modal_text) {
       setEmail(formData.modal_text);
     }
@@ -123,14 +119,9 @@ const Index = () => {
     }, 100);
   };
 
-  const handlePostit = async () => {
+  const handlePostitModal = async () => {
     try {
       const email = useEmailStore.getState().email;
-      console.log(email);
-      console.log(selectedFont, selectedPostit);
-      const postitId = selectedPostit.id;
-      const fontId = selectedFont.id;
-      console.log(postitId, fontId);
       await fetch("/api/postits", {
         method: "POST",
         headers: {
@@ -140,8 +131,8 @@ const Index = () => {
           rollyId: rollyId,
           content: message,
           writerEmail: email,
-          postitThemeId: postitId,
-          fontFamilyId: fontId,
+          postitThemeId: selectedPostit.id,
+          fontFamilyId: selectedFont.id,
         }),
       });
 
@@ -162,16 +153,13 @@ const Index = () => {
           className={styles["postit-theme-bg"]}
         />
         <textarea
-          className={styles["textArea"]}
+          className={`${styles["textArea"]} ${selectedFont.name}`}
           placeholder="메시지를 작성하세요"
           maxLength={100}
           rows={6}
           cols={50}
-          style={{
-            fontFamily: selectedFont.name,
-          }}
           value={message}
-          onChange={handleMessage}
+          onChange={updateMessage}
         />
       </div>
       <BottomSheet>
@@ -179,7 +167,7 @@ const Index = () => {
           {fonts.map((font, index) => (
             <ItemBox key={index} variant="text">
               <div
-                onClick={() => handleFontClick(font)}
+                onClick={() => updateFont(font)}
                 style={{ fontFamily: font.name }}
               >
                 {font.font}
@@ -193,14 +181,14 @@ const Index = () => {
               <img
                 src={`/images/postit-theme/${postit.name}.svg`}
                 alt={`postit-${postit.name}`}
-                onClick={() => handlePostitClick(postit)}
+                onClick={() => updatePostit(postit)}
               />
             </ItemBox>
           ))}
         </ScrollContainer>
         <MainButton
           text={"다음"}
-          onClick={handleMainButton}
+          onClick={() => handleMainButton()}
           disabled={!message.trim()}
         />
       </BottomSheet>
@@ -213,7 +201,7 @@ const Index = () => {
             maxLength: 30,
           },
         ]}
-        onConfirm={handleEmail}
+        onConfirm={handleEmailModal}
         onCancel={toggleEmailModal}
         isOpen={isEmailModalOpen}
       />
@@ -224,7 +212,7 @@ const Index = () => {
             body: "저장 후에는 내용을 수정할 수 없어요!",
           },
         ]}
-        onConfirm={handlePostit}
+        onConfirm={handlePostitModal}
         onCancel={togglePostitModal}
         isOpen={isPostitModalOpen}
       />
