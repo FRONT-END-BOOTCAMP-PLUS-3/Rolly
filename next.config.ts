@@ -5,6 +5,21 @@ const nextPWA = withPWA({
   // disable: process.env.NODE_ENV === "development", // 개발 환경에서 비활성화
 });
 
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+        port: "",
+        pathname: "/storage/v1/object/public/**",
+        search: "",
+      },
+    ],
+  },
+};
 
-export default nextPWA(nextConfig);
+module.exports = {
+  ...nextPWA,
+  ...nextConfig,
+};
