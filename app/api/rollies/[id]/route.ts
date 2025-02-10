@@ -10,7 +10,7 @@ import { DfRollyThemeListUsecase } from "@/application/usecases/rollyTheme/DfRol
 import { RollyThemeDto } from "@/application/usecases/rollyTheme/dto/RollyThemeDto";
 import { SbRollyThemeRepository } from "@/infrastructure/repositories/SbRollyThemeRepository";
 
-export async function POST(
+export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
