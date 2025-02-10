@@ -4,23 +4,27 @@ import { UUID } from "@/types/common";
 
 type State = {
   userId: UUID;
+  userEmail: string;
+  userName: string;
 };
 
 type Action = {
-  setUserId: (type: State["userId"]) => void;
+  setUserData: (data: State) => void;
 };
 
-const useUserIdStore = create(
+const useUserStore = create(
   persist<State & Action>(
     (set) => ({
       userId: "00000000-0000-0000-0000-000000000000",
-      setUserId: (userId) => set({ userId }),
+      userEmail: "",
+      userName: "",
+      setUserData: (data) => set((state) => ({ ...state, ...data })),
     }),
     {
-      name: "userId",
+      name: "userData",
       storage: createJSONStorage<State & Action>(() => sessionStorage),
     }
   )
 );
 
-export default useUserIdStore;
+export default useUserStore;

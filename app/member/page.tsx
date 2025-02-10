@@ -4,9 +4,8 @@ import styles from "./page.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import useToggle from "@/hooks/useToggle";
-import useUserIdStore from "@/application/state/useUserIdStore";
+import useUserStore from "@/application/state/useUserStore";
 import useRollyCreateStore from "@/application/state/useRollyCreateStore";
 import CreateRollyButton from "@/components/createRollyButton/CreateRollyButton";
 import Modal from "@/components/modal/Modal";
@@ -17,17 +16,7 @@ const Index = () => {
   const [isModalOpen, toggleModal] = useToggle(false);
   const [isAsideOpen, toggleAside] = useToggle(false);
   const { setType, setTitle } = useRollyCreateStore();
-  const { userId } = useUserIdStore();
-  const [userName, setUserName] = useState("");
-
-  useEffect(() => {
-    const fetchUserName = async () => {
-      const response = await fetch(`/api/users?userId=${userId}`);
-      const { success, userNameDto } = await response.json();
-      if (success) setUserName(userNameDto.name);
-    };
-    fetchUserName();
-  }, [userId]);
+  const { userName } = useUserStore();
 
   const handleConfirm = (formData?: FormData) => {
     if (formData && formData.modal_radio && formData.modal_text) {
