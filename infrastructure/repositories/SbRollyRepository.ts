@@ -97,4 +97,38 @@ export class SbRollyRepository implements RollyRepository {
       })
     );
   }
+
+  async findRolly(rollyId: number): Promise<Rolly> {
+    try {
+      const { data, error } = await supabase
+        .from("rolly")
+        .select("*")
+        .eq("id", rollyId)
+        .single();
+
+      if (error) throw error;
+      if (!data) throw new Error("Rolly를 가져오지 못했습니다.");
+
+      const {
+        user_id: userId,
+        type_id: typeId,
+        background_theme_id: backgroundThemeId,
+        is_locked: isLocked,
+        created_at: createdAt,
+        ...rest
+      } = data;
+
+      return {
+        userId,
+        typeId,
+        backgroundThemeId,
+        isLocked,
+        createdAt,
+        ...rest,
+      };
+    } catch (error) {
+      console.error("Rolly 가져오기 실패:", (error as Error).message);
+      throw error;
+    }
+  }
 }

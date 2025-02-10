@@ -1,0 +1,145 @@
+.rolly {
+  flex-grow: 1;
+  padding-bottom: 12px;
+  width: 100%;
+  box-shadow: 0 4px 4px 0 rgb(0 0 0 / 25%);
+  user-select: none;
+}
+
+.input-wrapper {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;
+  margin-top: 22vh;
+}
+
+.phrase {
+  font-size: var(--font-size-xl);
+  fill: var(--color-black);
+  cursor: pointer;
+}
+
+.disabled {
+  cursor: default;
+}
+
+.img-wrapper {
+  position: absolute;
+  left: 0;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.preview-img {
+  width: 100%;
+  height: auto;
+}
+
+.input-file-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-tertiary);
+  cursor: pointer;
+}
+
+.input-file {
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.postit-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+  margin-top: -10px;
+}
+
+.postit {
+  position: relative;
+
+  .postit-img {
+    width: 100%;
+  }
+
+  p {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 60%;
+    text-align: center;
+
+    @media (max-width: 1200px) {
+      font-size: var(--font-size-sm);
+    }
+
+    @media (max-width: 480px) {
+      font-size: var(--font-size-micro);
+    }
+  }
+}
+
+// 🎨 테마 데이터 (배경 이미지 + 배경 색 + 폰트 설정)
+$themes: (
+  "hbd": (
+    bg: "/images/rolly-theme/hbd.svg",
+    color: "#e1ebf7",
+    font: "LeeSeoyun",
+  ),
+  "good-luck": (
+    bg: "/images/rolly-theme/good-luck.svg",
+    color: "#e8dff4",
+    font: "bakdahyeon",
+  ),
+  "chain-letter": (
+    bg: "/images/rolly-theme/chain-letter.svg",
+    color: "#f8f7f1",
+    font: "ryuryuche",
+  ),
+  "congratulation": (
+    bg: "/images/rolly-theme/congratulation.svg",
+    color: "#fdeded",
+    font: "ryuttungche",
+  ),
+  "graduation1": (
+    bg: "/images/rolly-theme/graduation1.svg",
+    color: "#2b2527",
+    font: "memoaenokja",
+    font-color: var(--color-white),
+  ),
+  "graduation2": (
+    bg: "/images/rolly-theme/graduation2.svg",
+    color: "#e3b2b5",
+    font: "SejongGeulggot",
+  ),
+);
+
+@each $theme, $values in $themes {
+  .rolly.#{$theme} {
+    background: url(unquote(map-get($values, bg)))
+      unquote(map-get($values, color))
+      no-repeat
+      top/100%;
+  }
+
+  .phrase.#{$theme} {
+    font-family: map-get($values, font), sans-serif;
+    // 🎯 font-color가 있는 경우만 적용
+    @if map-has-key($values, font-color) {
+      fill: map-get($values, font-color);
+    }
+  }
+}
