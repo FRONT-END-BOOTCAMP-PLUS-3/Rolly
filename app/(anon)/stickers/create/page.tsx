@@ -101,6 +101,11 @@ const Stickers: React.FC = () => {
     updateStickerPosition(id, data.x, data.y);
   };
 
+  const handleDeleteSticker = (id: number) => {
+    setSelectedStickers((prev) => prev.filter((sticker) => sticker.id !== id));
+    console.log("deleted sticker:", id);
+  };
+
   useEffect(() => {
     window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("mousedown", handleMouseDown);
@@ -140,11 +145,17 @@ const Stickers: React.FC = () => {
                 width={55}
                 height={55}
                 style={{
-                  position: "absolute",
+                  position: "relative",
                   cursor: "pointer",
                   transform: `rotate(${sticker.rotation}deg)`,
                 }}
               />
+              <button
+                className={styles["delete-button"]}
+                onClick={() => handleDeleteSticker(sticker.id)}
+              >
+                X
+              </button>
             </div>
           </Draggable>
         ))}

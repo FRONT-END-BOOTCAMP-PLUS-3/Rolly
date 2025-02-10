@@ -6,3 +6,16 @@
   height: 150vh;
   width: 100%;
 }
+
+.delete-button {
+  position: "relative";
+  z-index: 1000;
+  top: 0;
+  left: 0px;
+  color: "white";
+  border: "none";
+  border-radius: "50%";
+  width: "20px";
+  height: "20px";
+  font-size: "12px";
+}
