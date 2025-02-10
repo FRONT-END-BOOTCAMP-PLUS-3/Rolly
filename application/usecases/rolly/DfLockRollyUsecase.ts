@@ -1,28 +1,18 @@
-import supabase from "@/utils/supabase/supabaseClient";
+import { RollyRepository } from "@/domain/repositories/RollyRepository";
 
 export class DfLockRollyUsecase {
+  private repository: RollyRepository;
+
+  constructor(repository: RollyRepository) {
+    this.repository = repository;
+  }
+
   async execute(id: number): Promise<void> {
-    const { data, error } = await supabase
-      .from("rolly")
-      .select("is_locked")
-      .eq("id", id)
-      .single();
-
-    if (error) {
-      console.log("잠금 상태 불러오기 실패", error);
-    }
-
-    const isLocked = data?.is_locked;
-    if (!isLocked) {
-      //supabse 업데이트
-      const { error: updateError } = await supabase
-        .from("rolly")
-        .update({ is_locked: true })
-        .eq("id", id);
-
-      if (updateError) {
-        console.error("잠금 상태 업데이트 실패:", updateError);
-      }
+    try {
+      await this.repository.lockRolly(id);
+    } catch (error) {
+      console.error("롤리 잠금에 실패했습니다", error);
+      throw error;
     }
   }
 }

@@ -1,0 +1,97 @@
+.hamburger-btn {
+  position: absolute;
+  top: var(--size-gap);
+  right: var(--size-gap);
+}
+
+.center-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.create-rolly-btn {
+  position: fixed;
+  bottom: 24px;
+  max-width: calc(var(--size-max-width) - 2 * var(--size-gap));
+  width: calc(100% - 2 * var(--size-gap)) !important;
+}
+
+.aside-container {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  right: 50%;
+  translate: 50% 0;
+  max-width: var(--size-max-width);
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.5s ease-in-out,
+    visibility 0.5s ease-in-out;
+}
+
+.aside {
+  position: absolute;
+  z-index: 9999;
+  top: 0;
+  right: -220px; /* 메뉴가 화면 바깥에 위치 */
+  width: 220px;
+  height: 100vh;
+  padding: var(--size-gap);
+  background-color: var(--color-bg);
+  transition: right 0.5s ease-in-out;
+
+  .close {
+    position: absolute;
+    top: var(--size-gap);
+    right: var(--size-gap);
+  }
+
+  .user {
+    font-size: var(--font-size-xl);
+    font-weight: bold;
+    color: var(--color-black);
+  }
+
+  .user-name {
+    color: var(--color-primary);
+  }
+
+  .menu {
+    margin-top: 8px;
+    font-size: var(--font-size-md);
+    color: var(--color-black);
+  }
+
+  .menu-group {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--color-gray-3);
+
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+
+  .logout {
+    position: absolute;
+    bottom: 24px;
+    font-size: var(--font-size-md);
+    color: var(--color-gray-2);
+  }
+}
+
+.aside-container.open {
+  opacity: 1;
+  visibility: visible;
+
+  .aside {
+    right: 0;
+  }
+}
