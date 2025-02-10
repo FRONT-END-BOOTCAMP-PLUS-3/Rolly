@@ -11,6 +11,7 @@ import styles from "./page.module.scss";
 import Header from "@/components/header/Header";
 import BackButton from "@/components/backButton/BackButton";
 import supabase from "@/utils/supabase/supabaseClient";
+import { StickerStyleDto } from "@/application/usecases/stickerStyle/dto/StickerStyleDto";
 
 interface Sticker {
   id: number;
@@ -23,24 +24,77 @@ interface Sticker {
 
 const Stickers: React.FC = () => {
   const [selectedStickers, setSelectedStickers] = useState<Sticker[]>([]);
+  const [stickerStyleList, setStickerStyleList] = useState<StickerStyleDto[]>(
+    []
+  );
+
+  const [selectedStickerStyle, setSelectedStickerStyle] = useState<{
+    id: number;
+    name: string;
+  }>({ id: 0, name: "" });
+
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const draggableRef = useRef<HTMLDivElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
+  const handleMouseUp = useCallback(() => {
+    if (isDragging) setIsDragging(false);
+  }, [isDragging]);
+
+  const handleMouseDown = useCallback(() => {}, []);
+
+  useEffect(() => {
+    const fetchStickerStyles = async () => {
+      try {
+        const response = await fetch("/api/stickerstyles/");
+        if (!response.ok) {
+          throw new Error("Failed to fetch stickers");
+        }
+        const data = await response.json();
+
+        if (!data.success || !data.data) {
+          throw new Error("Invalid response format");
+        }
+        setStickerStyleList(data.data);
+        // const stickers = data.data.map(
+        //   (item: { id: number; name: string }) => ({
+        //     id: item.id,
+        //     name: item.name,
+        //   })
+        // );
+
+        // setStickerStyleList(stickers);
+        // if (stickers.length > 0) {
+        //   setSelectedStickerStyle(stickers[0]);
+        // }
+        console.log(stickerStyleList);
+      } catch (error) {
+        console.error("Error fetching stickers:", error);
+      }
+    };
+    fetchStickerStyles();
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("mousedown", handleMouseDown);
+    return () => {
+      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mousedown", handleMouseDown);
+    };
+  }, [handleMouseUp, handleMouseDown]);
 
   const uploadStickers = async () => {
     // 각 스티커 정보를 데이터베이스에 저장
     for (const sticker of selectedStickers) {
-      const { data, error } = await supabase
-        .from("sticker") // 'stickers'는 데이터베이스의 테이블 이름입니다.
-        .insert([
-          {
-            id: sticker.id,
-            x_position: sticker.x_position,
-            y_position: sticker.y_position,
-            rotation: sticker.rotation,
-            scale: sticker.scale,
-          },
-        ]);
+      const { data, error } = await supabase.from("sticker").insert([
+        {
+          id: sticker.id,
+          x_position: sticker.x_position,
+          y_position: sticker.y_position,
+          rotation: sticker.rotation,
+          scale: sticker.scale,
+        },
+      ]);
 
       if (error) {
         console.error("Error uploading sticker:", error);
@@ -50,37 +104,8 @@ const Stickers: React.FC = () => {
     }
   };
 
-  const handleMouseUp = useCallback(() => {
-    if (isDragging) setIsDragging(false);
-  }, [isDragging]);
-
-  const handleMouseDown = useCallback(() => {}, []);
-
-  const stickerList: string[] = [
-    "1.svg",
-    "2.svg",
-    "3.svg",
-    "4.svg",
-    "5.svg",
-    "6.svg",
-    "7.svg",
-    "8.svg",
-    "9.svg",
-    "10.svg",
-  ];
-
-  const handleSelectSticker = (src: string) => {
-    setSelectedStickers((prev) => [
-      ...prev,
-      {
-        id: prev.length + 1,
-        src,
-        x_position: 0,
-        y_position: 0,
-        rotation: 0,
-        scale: 1,
-      },
-    ]);
+  const updateStickerStyle = (sticker: { id: number; name: string }) => {
+    setSelectedStickerStyle(sticker);
   };
 
   const updateStickerPosition = (id: number, x: number, y: number) => {
@@ -105,15 +130,6 @@ const Stickers: React.FC = () => {
     setSelectedStickers((prev) => prev.filter((sticker) => sticker.id !== id));
     console.log("deleted sticker:", id);
   };
-
-  useEffect(() => {
-    window.addEventListener("mouseup", handleMouseUp);
-    window.addEventListener("mousedown", handleMouseDown);
-    return () => {
-      window.removeEventListener("mouseup", handleMouseUp);
-      window.removeEventListener("mousedown", handleMouseDown);
-    };
-  }, [handleMouseUp, handleMouseDown]);
 
   return (
     <div className={styles["stickersContainer"]}>
@@ -163,12 +179,12 @@ const Stickers: React.FC = () => {
 
       <BottomSheet>
         <VerticalScrollContainer>
-          {stickerList.map((sticker, index) => (
+          {stickerStyleList.map((stickerStyle, index) => (
             <ItemBox key={index} variant="image">
               <Image
-                src={`/images/sticker/${sticker}`}
-                alt={`Sticker ${index}`}
-                onClick={() => handleSelectSticker(sticker)}
+                src={`/images/sticker/${stickerStyle.name}.svg`}
+                alt={`Sticker ${stickerStyle.name}`}
+                onClick={() => updateStickerStyle(stickerStyle)}
                 width={55}
                 height={55}
                 style={{ cursor: "pointer" }}
