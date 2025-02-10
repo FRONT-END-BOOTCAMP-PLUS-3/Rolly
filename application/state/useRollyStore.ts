@@ -26,7 +26,7 @@ const useRollyStore = create(
       setRollyData: (data) => set((state) => ({ ...state, ...data })),
     }),
     {
-      name: "rolly-data",
+      name: "rollyData",
       storage: createJSONStorage<State & Action>(() => sessionStorage),
     }
   )
