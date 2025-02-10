@@ -4,7 +4,7 @@ import { UUID } from "@/types/common";
 import supabase from "@/utils/supabase/supabaseClient";
 
 export class SbUserRepository implements UserRepository {
-  async findUserName(userId: UUID): Promise<User> {
+  async findUserInfo(userId: UUID): Promise<User> {
     try {
       const { data, error } = await supabase
         .from("user")
