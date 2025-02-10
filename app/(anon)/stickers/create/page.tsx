@@ -11,6 +11,7 @@ import styles from "./page.module.scss";
 import Header from "@/components/header/Header";
 import BackButton from "@/components/backButton/BackButton";
 import { StickerStyleDto } from "@/application/usecases/stickerStyle/dto/StickerStyleDto";
+import supabase from "@/utils/supabase/supabaseClient";
 
 interface Sticker {
   id: string;
@@ -73,6 +74,25 @@ const Stickers: React.FC = () => {
 
   const uploadStickers = async () => {
     console.log(selectedStickers);
+
+    // 각 스티커를 데이터베이스에 저장
+    for (const sticker of selectedStickers) {
+      const { data, error } = await supabase.from("sticker").insert([
+        {
+          sticker_style_id: sticker.sticker_style_id,
+          x_position: sticker.x_position,
+          y_position: sticker.y_position,
+        },
+      ]);
+
+      // 에러 처리
+      if (error) {
+        console.error("Error inserting sticker:", error);
+        break; // 에러가 발생하면 반복 중단
+      } else {
+        console.log("Inserted sticker:", data);
+      }
+    }
   };
 
   const addSticker = (stickerStyle: StickerStyle) => {
