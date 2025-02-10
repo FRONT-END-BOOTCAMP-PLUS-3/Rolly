@@ -109,10 +109,17 @@ const Index = () => {
     }
   };
 
-  const handleEmailModal = (formData?: FormData) => {
+  const handleEmailConfirm = (formData?: FormData) => {
     if (formData && formData.modal_text) {
       setEmail(formData.modal_text);
     }
+    toggleEmailModal();
+    setTimeout(() => {
+      togglePostitModal();
+    }, 100);
+  };
+
+  const handleEmailCancel = () => {
     toggleEmailModal();
     setTimeout(() => {
       togglePostitModal();
@@ -137,7 +144,7 @@ const Index = () => {
       });
 
       togglePostitModal();
-      router.push(`/member/rollies/${rollyId}`);
+      router.push(`/(anon)/rollies/${rollyId}`);
     } catch (error) {
       console.log(error);
     }
@@ -187,7 +194,7 @@ const Index = () => {
           ))}
         </ScrollContainer>
         <MainButton
-          text={"다음"}
+          text={"완료"}
           onClick={() => handleMainButton()}
           disabled={!message.trim()}
         />
@@ -197,12 +204,13 @@ const Index = () => {
         contents={[
           {
             title: "답장을 받고 싶다면 이메일 주소를 입력해주세요",
+            body: "답장을 원하지 않으면 취소 버튼을 눌러주세요",
             input: "text",
             maxLength: 30,
           },
         ]}
-        onConfirm={handleEmailModal}
-        onCancel={toggleEmailModal}
+        onConfirm={handleEmailConfirm}
+        onCancel={handleEmailCancel}
         isOpen={isEmailModalOpen}
       />
       <Modal
