@@ -1,11 +1,18 @@
-import supabase from "@/utils/supabase/supabaseClient";
+import { RollyRepository } from "@/domain/repositories/RollyRepository";
 
 export class DfDeleteRollyUsecase {
-  async execute(id: number): Promise<void> {
-    const { error } = await supabase.from("rolly").delete().eq("id", id);
+  private repository: RollyRepository;
 
-    if (error) {
-      console.error("삭제 실패", error);
+  constructor(repository: RollyRepository) {
+    this.repository = repository;
+  }
+
+  async execute(id: number): Promise<void> {
+    try {
+      await this.repository.deleteRolly(id);
+    } catch (error) {
+      console.error("롤리 삭제에 실패했습니다", error);
+      throw error;
     }
   }
 }

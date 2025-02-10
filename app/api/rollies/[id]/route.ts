@@ -10,14 +10,13 @@ import { DfRollyThemeListUsecase } from "@/application/usecases/rollyTheme/DfRol
 import { RollyThemeDto } from "@/application/usecases/rollyTheme/dto/RollyThemeDto";
 import { SbRollyThemeRepository } from "@/infrastructure/repositories/SbRollyThemeRepository";
 
-const lockRollyUsecase = new DfLockRollyUsecase();
-const deleteRollyUsecase = new DfDeleteRollyUsecase();
-
-export async function POST(
+export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const { id } = params;
+  const repository = new SbRollyRepository();
+  const lockRollyUsecase = new DfLockRollyUsecase(repository);
   await lockRollyUsecase.execute(Number(id));
   return NextResponse.json(
     { success: true, message: `롤리 ${id} 잠금 완료` },
@@ -30,6 +29,8 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   const { id } = params; // URL에서 id 추출
+  const repository = new SbRollyRepository();
+  const deleteRollyUsecase = new DfDeleteRollyUsecase(repository);
 
   await deleteRollyUsecase.execute(Number(id));
   return NextResponse.json(

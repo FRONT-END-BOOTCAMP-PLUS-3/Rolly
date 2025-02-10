@@ -4,6 +4,24 @@ import { RollyRepository } from "@/domain/repositories/RollyRepository";
 import { UUID } from "@/types/common";
 
 export class SbRollyRepository implements RollyRepository {
+  async lockRolly(rollyId: number): Promise<void> {
+    //supabse 업데이트
+    const { error: updateError } = await supabase
+      .from("rolly")
+      .update({ is_locked: true })
+      .eq("id", rollyId);
+
+    if (updateError) {
+      console.error("잠금 상태 업데이트 실패:", updateError);
+    }
+  }
+  async deleteRolly(rollyId: number): Promise<void> {
+    const { error } = await supabase.from("rolly").delete().eq("id", rollyId);
+
+    if (error) {
+      console.error("삭제 실패", error);
+    }
+  }
   async createRolly(rolly: Rolly): Promise<number> {
     try {
       const { data, error } = await supabase
