@@ -10,6 +10,7 @@ import VerticalScrollContainer from "@/components/verticalScrollContainer/Vertic
 import styles from "./page.module.scss";
 import Header from "@/components/header/Header";
 import BackButton from "@/components/backButton/BackButton";
+import supabase from "@/utils/supabase/supabaseClient";
 
 interface Sticker {
   id: number;
@@ -24,8 +25,30 @@ const Stickers: React.FC = () => {
   const [selectedStickers, setSelectedStickers] = useState<Sticker[]>([]);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const draggableRef = useRef<HTMLDivElement>(null);
-
   const fieldRef = useRef<HTMLDivElement>(null);
+
+  const uploadStickers = async () => {
+    // 각 스티커 정보를 데이터베이스에 저장
+    for (const sticker of selectedStickers) {
+      const { data, error } = await supabase
+        .from("sticker") // 'stickers'는 데이터베이스의 테이블 이름입니다.
+        .insert([
+          {
+            id: sticker.id,
+            x_position: sticker.x_position,
+            y_position: sticker.y_position,
+            rotation: sticker.rotation,
+            scale: sticker.scale,
+          },
+        ]);
+
+      if (error) {
+        console.error("Error uploading sticker:", error);
+        return;
+      }
+      console.log("Uploaded sticker:", data);
+    }
+  };
 
   const handleMouseUp = useCallback(() => {
     if (isDragging) setIsDragging(false);
@@ -142,7 +165,7 @@ const Stickers: React.FC = () => {
             </ItemBox>
           ))}
         </VerticalScrollContainer>
-        <MainButton text="완료" onClick={() => console.log(selectedStickers)} />
+        <MainButton text="완료" onClick={uploadStickers} />
       </BottomSheet>
     </div>
   );
