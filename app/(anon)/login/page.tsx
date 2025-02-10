@@ -8,7 +8,7 @@ import BackButton from "@/components/backButton/BackButton";
 import Alert from "@/components/alert/Alert";
 import styles from "./page.module.scss";
 import supabase from "@/utils/supabase/supabaseClient";
-import useUserIdStore from "@/application/state/useUserIdStore";
+import useUserStore from "@/application/state/useUserStore";
 
 const Login = () => {
   // const router = useRouter();
@@ -18,7 +18,7 @@ const Login = () => {
   const [alertTitle, setAlertTitle] = useState("");
   const [isAlertOpen, setAlertOpen] = useState(false);
   const [isFormComplete, setIsFormComplete] = useState(false);
-  const { setUserId } = useUserIdStore();
+  const { setUserData } = useUserStore();
 
   useEffect(() => {
     setIsFormComplete(!!(email && password));
@@ -42,14 +42,22 @@ const Login = () => {
         setAlertOpen(true);
         return;
       }
+      const userId = data.user.id;
+      const response = await fetch(`/api/users?userId=${userId}`);
+      const { success, UserInfoDto } = await response.json();
+      if (success)
+        setUserData({
+          userId: UserInfoDto.id,
+          userEmail: UserInfoDto.email,
+          userName: UserInfoDto.name,
+        });
+
       if (data.session) {
         // 세션 정보를 sessionStorage에 저장
         sessionStorage.setItem(
           "supabase.auth.token",
           JSON.stringify(data.session)
         );
-        // Zustand store에 사용자 ID 저장
-        setUserId(data.user.id);
         // localStorage에서 인증 관련 데이터 제거
         await supabase.auth.signOut();
       }
