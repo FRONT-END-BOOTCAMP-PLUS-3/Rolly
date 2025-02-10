@@ -10,16 +10,19 @@ import VerticalScrollContainer from "@/components/verticalScrollContainer/Vertic
 import styles from "./page.module.scss";
 import Header from "@/components/header/Header";
 import BackButton from "@/components/backButton/BackButton";
-import supabase from "@/utils/supabase/supabaseClient";
 import { StickerStyleDto } from "@/application/usecases/stickerStyle/dto/StickerStyleDto";
 
 interface Sticker {
-  id: number;
-  src: string;
+  id: string;
+  sticker_style_id: number;
   x_position: number;
   y_position: number;
-  rotation: number;
-  scale: number;
+}
+
+interface StickerStyle {
+  id: number;
+  name: string;
+  src: string;
 }
 
 const Stickers: React.FC = () => {
@@ -27,11 +30,6 @@ const Stickers: React.FC = () => {
   const [stickerStyleList, setStickerStyleList] = useState<StickerStyleDto[]>(
     []
   );
-
-  const [selectedStickerStyle, setSelectedStickerStyle] = useState<{
-    id: number;
-    name: string;
-  }>({ id: 0, name: "" });
 
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const draggableRef = useRef<HTMLDivElement>(null);
@@ -55,17 +53,7 @@ const Stickers: React.FC = () => {
           throw new Error("Invalid response format");
         }
         setStickerStyleList(data.data);
-        // const stickers = data.data.map(
-        //   (item: { id: number; name: string }) => ({
-        //     id: item.id,
-        //     name: item.name,
-        //   })
-        // );
 
-        // setStickerStyleList(stickers);
-        // if (stickers.length > 0) {
-        //   setSelectedStickerStyle(stickers[0]);
-        // }
         console.log(stickerStyleList);
       } catch (error) {
         console.error("Error fetching stickers:", error);
@@ -84,51 +72,36 @@ const Stickers: React.FC = () => {
   }, [handleMouseUp, handleMouseDown]);
 
   const uploadStickers = async () => {
-    // 각 스티커 정보를 데이터베이스에 저장
-    for (const sticker of selectedStickers) {
-      const { data, error } = await supabase.from("sticker").insert([
-        {
-          id: sticker.id,
-          x_position: sticker.x_position,
-          y_position: sticker.y_position,
-          rotation: sticker.rotation,
-          scale: sticker.scale,
-        },
-      ]);
-
-      if (error) {
-        console.error("Error uploading sticker:", error);
-        return;
-      }
-      console.log("Uploaded sticker:", data);
-    }
+    console.log(selectedStickers);
   };
 
-  const updateStickerStyle = (sticker: { id: number; name: string }) => {
-    setSelectedStickerStyle(sticker);
+  const addSticker = (stickerStyle: StickerStyle) => {
+    const newSticker: Sticker = {
+      id: `sticker-${Date.now()}`,
+      sticker_style_id: stickerStyle.id,
+      x_position: 0, // 초기 위치는 기본값으로 설정
+      y_position: 0,
+    };
+    setSelectedStickers((prev) => [...prev, newSticker]);
+    console.log(selectedStickers);
   };
 
-  const updateStickerPosition = (id: number, x: number, y: number) => {
-    setSelectedStickers((prev) =>
-      prev.map((sticker) =>
-        sticker.id === id
-          ? { ...sticker, x_position: x, y_position: y }
-          : sticker
-      )
-    );
-  };
   const handleDragStart = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
   };
   // 드래그 중 위치 업데이트
-  const handleDrag = (e: DraggableEvent, data: DraggableData, id: number) => {
-    updateStickerPosition(id, data.x, data.y);
+  const handleDrag = (e: DraggableEvent, data: DraggableData, id: string) => {
+    setSelectedStickers((prev) =>
+      prev.map((sticker) =>
+        sticker.id === id
+          ? { ...sticker, x_position: data.x, y_position: data.y }
+          : sticker
+      )
+    );
   };
-
-  const handleDeleteSticker = (id: number) => {
+  const handleDeleteSticker = (id: string) => {
     setSelectedStickers((prev) => prev.filter((sticker) => sticker.id !== id));
-    console.log("deleted sticker:", id);
   };
 
   return (
@@ -154,16 +127,21 @@ const Stickers: React.FC = () => {
                 : undefined
             }
           >
-            <div ref={draggableRef} onDragStart={handleDragStart}>
+            <div
+              ref={draggableRef}
+              onDragStart={handleDragStart}
+              style={{
+                position: "absolute",
+              }}
+            >
               <Image
-                src={`/images/sticker/${sticker.src}`}
+                src={`/images/sticker/${sticker.sticker_style_id}.svg`}
+                // src={`/images/sticker/${sticker.src}`}
                 alt={`Sticker ${sticker.id}`}
                 width={55}
                 height={55}
                 style={{
-                  position: "relative",
                   cursor: "pointer",
-                  transform: `rotate(${sticker.rotation}deg)`,
                 }}
               />
               <button
@@ -181,14 +159,14 @@ const Stickers: React.FC = () => {
         <VerticalScrollContainer>
           {stickerStyleList.map((stickerStyle, index) => (
             <ItemBox key={index} variant="image">
-              <Image
-                src={`/images/sticker/${stickerStyle.name}.svg`}
-                alt={`Sticker ${stickerStyle.name}`}
-                onClick={() => updateStickerStyle(stickerStyle)}
-                width={55}
-                height={55}
-                style={{ cursor: "pointer" }}
-              />
+              <div onClick={() => addSticker(stickerStyle)}>
+                <Image
+                  src={`/images/sticker/${stickerStyle.name}.svg`}
+                  alt={`Sticker ${stickerStyle.name}`}
+                  width={50}
+                  height={50}
+                />
+              </div>
             </ItemBox>
           ))}
         </VerticalScrollContainer>
