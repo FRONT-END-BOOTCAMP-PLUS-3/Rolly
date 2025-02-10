@@ -16,12 +16,10 @@ export class SbPostitRepository implements PostitRepository {
             font_family_id: postit.fontFamilyId,
           },
         ])
-        .select("id")
         .single();
       if (error) throw error;
-      if (!data || !data.id) throw new Error("ID를 가져오지 못했습니다.");
 
-      return data.id;
+      return data;
     } catch (error) {
       console.error("Postit 생성 실패:", (error as Error).message);
       throw error;

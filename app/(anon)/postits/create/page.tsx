@@ -9,30 +9,29 @@ import Header from "@/components/header/Header";
 import BackButton from "@/components/backButton/BackButton";
 import useToggle from "@/hooks/useToggle";
 import Modal from "@/components/modal/Modal";
-import useEmailStore from "@/application/state/useEmailStore";
 import { FormData } from "@/components/modal/Modal.type";
 import { useRouter } from "next/navigation";
 import useRollyStore from "@/application/state/useRollyStore";
+import { PostitThemeDto } from "@/application/usecases/postitTheme/dto/PostitThemeDto";
+import { FontFamilyDto } from "@/application/usecases/fontFamily/dto/FontFamilyDto";
 
 const Index = () => {
   const router = useRouter();
-  const [selectedPostit, setSelectedPostit] = useState<{
+  const [selectedPostitTheme, setSelectedPostitTheme] = useState<{
     id: number;
     name: string;
   }>({ id: 0, name: "" });
-  const [selectedFont, setSelectedFont] = useState<{
+  const [selectedFontFamily, setSelectedFontFamily] = useState<{
     id: number;
     font: string;
     name: string;
   }>({ id: 0, font: "", name: "" });
-  const [postits, setPostits] = useState<{ id: number; name: string }[]>([]);
-  const [fonts, setFonts] = useState<
-    { id: number; font: string; name: string }[]
-  >([]);
+  const [postitThemeList, setPostitThemeList] = useState<PostitThemeDto[]>([]);
+  const [fontFamilyList, setFontFamilyList] = useState<FontFamilyDto[]>([]);
   const [message, setMessage] = useState<string>("");
   const [isEmailModalOpen, toggleEmailModal] = useToggle(false);
   const [isPostitModalOpen, togglePostitModal] = useToggle(false);
-  const { setEmail } = useEmailStore();
+  const [email, setEmail] = useState<string>("");
   const { id: rollyId, typeId } = useRollyStore();
 
   useEffect(() => {
@@ -53,9 +52,9 @@ const Index = () => {
           name: item.name,
         }));
 
-        setPostits(postits);
+        setPostitThemeList(postits);
         if (postits.length > 0) {
-          setSelectedPostit(postits[0]);
+          setSelectedPostitTheme(postits[0]);
         }
       } catch (error) {
         console.error("Error fetching postits:", error);
@@ -78,9 +77,9 @@ const Index = () => {
             name: item.name,
           })
         );
-        setFonts(fonts);
+        setFontFamilyList(fonts);
         if (fonts.length > 0) {
-          setSelectedFont(fonts[0]);
+          setSelectedFontFamily(fonts[0]);
         }
       } catch (error) {
         console.error("Error fetching fonts:", error);
@@ -91,10 +90,10 @@ const Index = () => {
   }, []);
 
   const updatePostit = (postit: { id: number; name: string }) => {
-    setSelectedPostit(postit);
+    setSelectedPostitTheme(postit);
   };
   const updateFont = (font: { id: number; font: string; name: string }) => {
-    setSelectedFont(font);
+    setSelectedFontFamily(font);
   };
 
   const updateMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -109,7 +108,7 @@ const Index = () => {
     }
   };
 
-  const handleEmailConfirm = (formData?: FormData) => {
+  const handleEmailModal = (formData?: FormData) => {
     if (formData && formData.modal_text) {
       setEmail(formData.modal_text);
     }
@@ -119,16 +118,8 @@ const Index = () => {
     }, 100);
   };
 
-  const handleEmailCancel = () => {
-    toggleEmailModal();
-    setTimeout(() => {
-      togglePostitModal();
-    }, 100);
-  };
-
   const handlePostitModal = async () => {
     try {
-      const email = useEmailStore.getState().email;
       await fetch("/api/postits", {
         method: "POST",
         headers: {
@@ -138,8 +129,8 @@ const Index = () => {
           rollyId: rollyId,
           content: message,
           writerEmail: email,
-          postitThemeId: selectedPostit.id,
-          fontFamilyId: selectedFont.id,
+          postitThemeId: selectedPostitTheme.id,
+          fontFamilyId: selectedFontFamily.id,
         }),
       });
 
@@ -156,11 +147,11 @@ const Index = () => {
 
       <div className={styles["textField"]}>
         <img
-          src={`/images/postit-theme/${selectedPostit.name}.svg`}
+          src={`/images/postit-theme/${selectedPostitTheme.name}.svg`}
           className={styles["postit-theme-bg"]}
         />
         <textarea
-          className={`${styles["textArea"]} ${selectedFont.name}`}
+          className={`${styles["textArea"]} ${selectedFontFamily.name}`}
           placeholder="메시지를 작성하세요"
           maxLength={100}
           rows={6}
@@ -171,30 +162,30 @@ const Index = () => {
       </div>
       <BottomSheet>
         <ScrollContainer>
-          {fonts.map((font, index) => (
+          {fontFamilyList.map((fontFamily, index) => (
             <ItemBox key={index} variant="text">
               <div
-                onClick={() => updateFont(font)}
-                style={{ fontFamily: font.name }}
+                onClick={() => updateFont(fontFamily)}
+                style={{ fontFamily: fontFamily.name }}
               >
-                {font.font}
+                {fontFamily.font}
               </div>
             </ItemBox>
           ))}
         </ScrollContainer>
         <ScrollContainer>
-          {postits.map((postit, index) => (
+          {postitThemeList.map((postitTheme, index) => (
             <ItemBox key={index} variant="image">
               <img
-                src={`/images/postit-theme/${postit.name}.svg`}
-                alt={`postit-${postit.name}`}
-                onClick={() => updatePostit(postit)}
+                src={`/images/postit-theme/${postitTheme.name}.svg`}
+                alt={`postit-${postitTheme.name}`}
+                onClick={() => updatePostit(postitTheme)}
               />
             </ItemBox>
           ))}
         </ScrollContainer>
         <MainButton
-          text={"완료"}
+          text={"다음"}
           onClick={() => handleMainButton()}
           disabled={!message.trim()}
         />
@@ -204,13 +195,13 @@ const Index = () => {
         contents={[
           {
             title: "답장을 받고 싶다면 이메일 주소를 입력해주세요",
-            body: "답장을 원하지 않으면 취소 버튼을 눌러주세요",
+            body: "답장을 원하지 않으면 완료 버튼을 눌러주세요",
             input: "text",
             maxLength: 30,
           },
         ]}
-        onConfirm={handleEmailConfirm}
-        onCancel={handleEmailCancel}
+        onConfirm={handleEmailModal}
+        onCancel={toggleEmailModal}
         isOpen={isEmailModalOpen}
       />
       <Modal
