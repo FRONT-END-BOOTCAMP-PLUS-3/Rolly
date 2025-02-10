@@ -6,4 +6,6 @@ export interface RollyRepository {
   findCreatedRollies(userId: UUID): Promise<Rolly[]>;
   findSavedRollies(ids: number[]): Promise<Rolly[]>;
   findRolly(rollyId: number): Promise<Rolly>;
+  lockRolly(rollyId: number): Promise<void>;
+  deleteRolly(rollyId: number): Promise<void>;
 }
