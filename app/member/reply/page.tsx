@@ -5,9 +5,14 @@ import styles from "./page.module.scss";
 import MainButton from "@/components/mainButton/MainButton";
 import useToggle from "@/hooks/useToggle";
 import Modal from "@/components/modal/Modal";
+import { useSearchParams } from "next/navigation";
 
 const Index: React.FC = () => {
   const [isReplyModalOpen, toggleReplyModal] = useToggle(false); // Reply 모달
+  const searchParams = useSearchParams();
+  const rollyId = searchParams.get("rollyId"); // URL 쿼리에서 값 가져오기
+
+  console.log(rollyId); // 원래 배열 또는 객체 형태로 복구됨
   const handleConfirmReply = () => {
     toggleReplyModal();
   };
