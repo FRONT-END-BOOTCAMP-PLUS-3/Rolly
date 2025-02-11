@@ -7,7 +7,7 @@ import Image from "next/image";
 import useToggle from "@/hooks/useToggle";
 import useRollyCreateStore from "@/application/state/useRollyCreateStore";
 import useUserStore from "@/application/state/useUserStore";
-import { FormData } from "@/components/modal/Modal.type";
+import { InputFormData } from "@/components/modal/Modal.type";
 import BottomSheet from "@/components/bottomSheet/BottomSheet";
 import ScrollContainer from "@/components/scrollContainer/ScrollContainer";
 import MainButton from "@/components/mainButton/MainButton";
@@ -16,7 +16,6 @@ import BackButton from "@/components/backButton/BackButton";
 import Modal from "@/components/modal/Modal";
 import Rolly from "@/components/rolly/Rolly";
 
-import { DfUploadImageUsecase } from "@/application/usecases/rolly/DfUploadImageUsecase";
 import { RollyThemeDto } from "@/application/usecases/rollyTheme/dto/RollyThemeDto";
 
 const INITIAL_PHRASE = "문구를 입력해주세요";
@@ -54,9 +53,9 @@ const CreateRollies = () => {
     setSelectedRollyTheme(rollytheme);
   };
 
-  const updatePhrase = (formData?: FormData) => {
-    if (formData && formData.modal_text) {
-      setPhrase(formData["modal_text"]);
+  const updatePhrase = (inputFormData?: InputFormData) => {
+    if (inputFormData && inputFormData.modal_text) {
+      setPhrase(inputFormData["modal_text"]);
       togglePhraseModal();
     }
   };
@@ -80,15 +79,20 @@ const CreateRollies = () => {
 
   const uploadImage = async (file: File) => {
     try {
-      const uploadImageUsecase = new DfUploadImageUsecase();
-      const uploadedImageUrl = await uploadImageUsecase.execute(file);
+      const formData = new FormData();
+      formData.append("file", file);
 
-      if (uploadedImageUrl) {
-        setImageUrl(uploadedImageUrl);
-        toggleCreateModal();
-      }
+      const response = await fetch("/api/images", {
+        method: "POST",
+        body: formData,
+      });
+
+      const { success, imageUrl } = await response.json();
+      if (success) setImageUrl(imageUrl);
+
+      toggleCreateModal();
     } catch (error) {
-      console.error("이미지 업로드 오류:", (error as Error).message);
+      console.error(error);
     }
   };
 
