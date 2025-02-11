@@ -6,7 +6,7 @@
 .login-header {
   display: flex;
   width: 100%;
-  margin-top: 36px;
+  margin-top: -36px;
   margin-bottom: 50px;
 }
 
@@ -29,16 +29,16 @@
 
 .login-footer {
   position: absolute;
-  align-items: center;
-  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  bottom: 100px;
   width: 100%;
 }
 
 .signup-link {
   font-size: var(--font-size-md);
   text-align: center;
-  margin-bottom: 100px;
-  padding-right: 40px;
   color: var(--color-gray-1);
   a {
     color: var(--color-primary);
