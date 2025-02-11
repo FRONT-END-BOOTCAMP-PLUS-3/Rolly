@@ -6,6 +6,7 @@ import useRollyStore from "@/application/state/useRollyStore";
 import Header from "@/components/header/Header";
 import ShareButton from "@/components/shareButton/ShareButton";
 import BackButton from "@/components/backButton/BackButton";
+import CreateStickerButton from "@/components/createStickerButton/CreateStickerButton";
 import Rolly from "@/components/rolly/Rolly";
 import MainButton from "@/components/mainButton/MainButton";
 import { Postit } from "@/components/rolly/Rolly.type";
@@ -50,6 +51,9 @@ const Rollies = () => {
   const navigateToPostIt = () => {
     router.push("/member/postits/create");
   };
+  const navigateToCreateSticker = () => {
+    router.push("/stickers/create");
+  };
 
   return (
     <>
@@ -65,6 +69,7 @@ const Rollies = () => {
         imageUrl={image}
         postits={postits}
       />
+      {!isLocked && <CreateStickerButton onClick={navigateToCreateSticker} />}
       <MainButton text="메시지 작성하기" onClick={navigateToPostIt} />
     </>
   );
