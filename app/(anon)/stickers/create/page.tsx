@@ -16,6 +16,9 @@ import Rolly from "@/components/rolly/Rolly";
 import { Postit } from "@/components/rolly/Rolly.type";
 import useRollyStore from "@/application/state/useRollyStore";
 import supabase from "@/utils/supabase/supabaseClient";
+import Modal from "@/components/modal/Modal";
+import { FormData } from "@/components/modal/Modal.type";
+import useToggle from "@/hooks/useToggle";
 
 interface Sticker {
   id: string;
@@ -45,8 +48,8 @@ const Stickers: React.FC = () => {
   const handleMouseUp = useCallback(() => {
     if (isDragging) setIsDragging(false);
   }, [isDragging]);
-
   const handleMouseDown = useCallback(() => {}, []);
+  const [isConfirmModalOpen, toggleConfirmModal] = useToggle(false);
 
   useEffect(() => {
     const fetchStickerStyles = async () => {
@@ -90,6 +93,7 @@ const Stickers: React.FC = () => {
 
   const uploadStickers = async () => {
     console.log(selectedStickers);
+    toggleConfirmModal();
 
     if (!fieldRef.current) {
       console.error("Container not found");
@@ -131,7 +135,7 @@ const Stickers: React.FC = () => {
       sticker_style_id: stickerStyle.id,
       x_position: 0, // 초기 위치는 기본값으로 설정
       y_position: 0,
-      rolly_Id: 0,
+      rolly_id: 0,
     };
     setSelectedStickers((prev) => [...prev, newSticker]);
     console.log(selectedStickers);
@@ -229,8 +233,19 @@ const Stickers: React.FC = () => {
             </ItemBox>
           ))}
         </VerticalScrollContainer>
-        <MainButton text="완료" onClick={uploadStickers} />
+        <MainButton text="완료" onClick={() => toggleConfirmModal()} />
       </BottomSheet>
+      <Modal
+        contents={[
+          {
+            title: "스티커를 저장하시겠어요?",
+            body: "저장 후에는 스티커, 위치를 수정할 수 없어요!",
+          },
+        ]}
+        isOpen={isConfirmModalOpen}
+        onConfirm={uploadStickers}
+        onCancel={() => toggleConfirmModal()}
+      />
     </div>
   );
 };
