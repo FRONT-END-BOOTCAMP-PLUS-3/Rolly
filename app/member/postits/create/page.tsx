@@ -33,6 +33,7 @@ const Index = () => {
   const [isPostitModalOpen, togglePostitModal] = useToggle(false);
   const [email, setEmail] = useState<string>("");
   const { id: rollyId, typeId } = useRollyStore();
+  const [isBackModalOpen, toggleBackModal] = useToggle(false);
 
   useEffect(() => {
     const fetchPostits = async () => {
@@ -47,14 +48,9 @@ const Index = () => {
           throw new Error("Invalid response format");
         }
 
-        const postits = data.data.map((item: { id: number; name: string }) => ({
-          id: item.id,
-          name: item.name,
-        }));
-
-        setPostitThemeList(postits);
-        if (postits.length > 0) {
-          setSelectedPostitTheme(postits[0]);
+        setPostitThemeList(data.data);
+        if (data.data.length > 0) {
+          setSelectedPostitTheme(data.data[0]);
         }
       } catch (error) {
         console.error("Error fetching postits:", error);
@@ -70,16 +66,9 @@ const Index = () => {
         if (!data.success || !data.data) {
           throw new Error("Invalid response format");
         }
-        const fonts = data.data.map(
-          (item: { id: number; font: string; name: string }) => ({
-            id: item.id,
-            font: item.font,
-            name: item.name,
-          })
-        );
-        setFontFamilyList(fonts);
-        if (fonts.length > 0) {
-          setSelectedFontFamily(fonts[0]);
+        setFontFamilyList(data.data);
+        if (data.data.length > 0) {
+          setSelectedFontFamily(data.data[0]);
         }
       } catch (error) {
         console.error("Error fetching fonts:", error);
@@ -141,9 +130,16 @@ const Index = () => {
     }
   };
 
+  const navigateBack = () => {
+    router.back();
+  };
+
   return (
     <div>
-      <Header leftContent={<BackButton />} title={"메세지 작성"} />
+      <Header
+        leftContent={<BackButton onClick={toggleBackModal} />}
+        title={"메세지 작성"}
+      />
 
       <div className={styles["textField"]}>
         <img
@@ -214,6 +210,18 @@ const Index = () => {
         onConfirm={handlePostitModal}
         onCancel={togglePostitModal}
         isOpen={isPostitModalOpen}
+      />
+      <Modal
+        contents={[
+          {
+            title: "메세지 작성을 중단하시겠어요?",
+            body: "지금까지 작성한 내용이 삭제돼요!",
+          },
+        ]}
+        onConfirm={navigateBack}
+        onCancel={toggleBackModal}
+        isOpen={isBackModalOpen}
+        confirmText="확인"
       />
     </div>
   );
