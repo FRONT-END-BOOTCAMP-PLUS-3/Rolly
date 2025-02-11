@@ -70,7 +70,9 @@ const Rollies = () => {
         postits={postits}
       />
       {!isLocked && <CreateStickerButton onClick={navigateToCreateSticker} />}
-      <MainButton text="메시지 작성하기" onClick={navigateToPostIt} />
+      {!isLocked && (
+        <MainButton text="메시지 작성하기" onClick={navigateToPostIt} />
+      )}
     </>
   );
 };
