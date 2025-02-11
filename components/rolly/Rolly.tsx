@@ -11,6 +11,7 @@ const Rolly = ({
   postits = [],
   onFileChange,
   onPhraseClick,
+  children,
 }: RollyProps) => {
   return (
     <div className={`${styles["rolly"]} ${styles[theme]}`}>
@@ -87,6 +88,7 @@ const Rolly = ({
           </div>
         ))}
       </div>
+      {children}
     </div>
   );
 };

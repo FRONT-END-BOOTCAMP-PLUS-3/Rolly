@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import { useParams } from "next/navigation";
 import Image from "next/image";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import BottomSheet from "@/components/bottomSheet/BottomSheet";
@@ -11,6 +12,9 @@ import styles from "./page.module.scss";
 import Header from "@/components/header/Header";
 import BackButton from "@/components/backButton/BackButton";
 import { StickerStyleDto } from "@/application/usecases/stickerStyle/dto/StickerStyleDto";
+import Rolly from "@/components/rolly/Rolly";
+import { Postit } from "@/components/rolly/Rolly.type";
+import useRollyStore from "@/application/state/useRollyStore";
 import supabase from "@/utils/supabase/supabaseClient";
 
 interface Sticker {
@@ -31,7 +35,8 @@ const Stickers: React.FC = () => {
   const [stickerStyleList, setStickerStyleList] = useState<StickerStyleDto[]>(
     []
   );
-
+  const { id: rollyId, image, phrase, rollyTheme } = useRollyStore();
+  const [postits, setPostits] = useState<Postit[]>([]);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const draggableRef = useRef<HTMLDivElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
@@ -60,8 +65,17 @@ const Stickers: React.FC = () => {
         console.error("Error fetching stickers:", error);
       }
     };
+
+    const fetchPostits = async () => {
+      const response = await fetch(`/api/postits?rollyId=${rollyId}`);
+      const { success, postitsDto } = await response.json();
+      if (success) {
+        setPostits(postitsDto);
+      }
+    };
     fetchStickerStyles();
-  }, []);
+    fetchPostits();
+  }, [rollyId]);
 
   useEffect(() => {
     window.addEventListener("mouseup", handleMouseUp);
@@ -127,53 +141,61 @@ const Stickers: React.FC = () => {
   return (
     <div className={styles["stickersContainer"]}>
       <Header leftContent={<BackButton />} title="스티커" />
-      <div className={styles["rolly-field"]} ref={fieldRef}>
-        {selectedStickers.map((sticker) => (
-          <Draggable
-            nodeRef={draggableRef as React.RefObject<HTMLElement>}
-            key={sticker.id}
-            position={{ x: sticker.x_position, y: sticker.y_position }}
-            onStart={() => setIsDragging(true)}
-            onDrag={(e, data) => handleDrag(e, data, sticker.id)}
-            onStop={() => setIsDragging(false)}
-            bounds={
-              fieldRef.current
-                ? {
-                    top: 0,
-                    left: 0,
-                    right: fieldRef.current.clientWidth - 60,
-                    bottom: fieldRef.current.clientHeight - 430,
-                  }
-                : undefined
-            }
-          >
-            <div
-              ref={draggableRef}
-              onDragStart={handleDragStart}
-              style={{
-                position: "absolute",
-              }}
+      <Rolly
+        theme={rollyTheme}
+        phrase={phrase}
+        isEditable={false}
+        imageUrl={image}
+        postits={postits}
+      >
+        <div className={styles["sticker-field"]} ref={fieldRef}>
+          {selectedStickers.map((sticker) => (
+            <Draggable
+              nodeRef={draggableRef as React.RefObject<HTMLElement>}
+              key={sticker.id}
+              position={{ x: sticker.x_position, y: sticker.y_position }}
+              onStart={() => setIsDragging(true)}
+              onDrag={(e, data) => handleDrag(e, data, sticker.id)}
+              onStop={() => setIsDragging(false)}
+              bounds={
+                fieldRef.current
+                  ? {
+                      top: 0,
+                      left: 0,
+                      right: fieldRef.current.clientWidth - 60,
+                      bottom: fieldRef.current.clientHeight - 430,
+                    }
+                  : undefined
+              }
             >
-              <Image
-                src={`/images/sticker/${sticker.sticker_style_id}.svg`}
-                // src={`/images/sticker/${sticker.src}`}
-                alt={`Sticker ${sticker.id}`}
-                width={55}
-                height={55}
+              <div
+                ref={draggableRef}
+                onDragStart={handleDragStart}
                 style={{
-                  cursor: "pointer",
+                  position: "absolute",
                 }}
-              />
-              <button
-                className={styles["delete-button"]}
-                onClick={() => handleDeleteSticker(sticker.id)}
               >
-                X
-              </button>
-            </div>
-          </Draggable>
-        ))}
-      </div>
+                <Image
+                  src={`/images/sticker/${sticker.sticker_style_id}.svg`}
+                  // src={`/images/sticker/${sticker.src}`}
+                  alt={`Sticker ${sticker.id}`}
+                  width={55}
+                  height={55}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                />
+                <button
+                  className={styles["delete-button"]}
+                  onClick={() => handleDeleteSticker(sticker.id)}
+                >
+                  X
+                </button>
+              </div>
+            </Draggable>
+          ))}
+        </div>
+      </Rolly>
 
       <BottomSheet>
         <VerticalScrollContainer>
