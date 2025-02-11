@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { WriterEmailDto } from "@/application/usecases/postit/dto/WriterEmailDto";
 import { useRouter } from "next/navigation";
 
-const Index = () => {
+const Reply = () => {
   const router = useRouter();
   const [isReplyModalOpen, toggleReplyModal] = useToggle(false);
   const [isBackModalOpen, toggleBackModal] = useToggle(false);
@@ -73,7 +73,7 @@ const Index = () => {
       <input
         className={styles["sender"]}
         type="text"
-        placeholder="보내는 분의 성함을 입력하세요"
+        placeholder="  보내는 분의 성함을 입력해주세요"
         value={sender}
         onChange={(e) => setSender(e.target.value)}
       />
@@ -84,7 +84,7 @@ const Index = () => {
         cols={50}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        placeholder="이곳에 입력해주세요(최대 100자)"
+        placeholder="답장을 작성해주세요(최대 100자)"
       />
       <div className={styles["reply-button"]}>
         <MainButton
@@ -121,4 +121,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Reply;
