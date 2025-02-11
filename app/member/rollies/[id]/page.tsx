@@ -15,6 +15,7 @@ const Rollies = () => {
   const { id: rollyId } = useParams();
   const { title, image, phrase, rollyTheme, setRollyData } = useRollyStore();
   const [postits, setPostits] = useState<Postit[]>([]);
+  const [isLocked, setIsLocekd] = useState(false);
 
   useEffect(() => {
     const fetchRollyDetail = async () => {
@@ -29,6 +30,8 @@ const Rollies = () => {
           phrase: rollyDetailDto.phrase,
           rollyTheme: rollyDetailDto.backgroundTheme,
         });
+        setIsLocekd(rollyDetailDto.isLocked);
+        console.log("isLocked:", rollyDetailDto.isLocked);
       }
     };
 
