@@ -111,8 +111,8 @@ const Stickers: React.FC = () => {
       const { data, error } = await supabase.from("sticker").insert([
         {
           sticker_style_id: sticker.sticker_style_id,
-          x_position: xPercent.toFixed(0), // Convert to string with 2 decimal places
-          y_position: yPercent.toFixed(0),
+          x_position: xPercent.toFixed(6), // Convert to string with 2 decimal places
+          y_position: yPercent.toFixed(6),
           rolly_id: rollyId,
         },
       ]);
