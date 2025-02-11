@@ -99,17 +99,16 @@ const Login = () => {
           onClose={closeAlert}
         />
       </div>
-
       <div className={styles["login-footer"]}>
-        <div className={styles["signup-link"]}>
+        <span className={styles["signup-link"]}>
           처음 오셨다면 <a href="/signup">간편 회원가입</a> 하세요!
-        </div>
-        <MainButton
-          text="로그인"
-          onClick={handleLogin}
-          disabled={!isFormComplete}
-        />
+        </span>
       </div>
+      <MainButton
+        text="로그인"
+        onClick={handleLogin}
+        disabled={!isFormComplete}
+      />
     </div>
   );
 };
