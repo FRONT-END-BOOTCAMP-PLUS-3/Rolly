@@ -1,5 +1,5 @@
 import { RollyRepository } from "@/domain/repositories/RollyRepository";
-import CreatedRollyDto from "./dto/CreatedRollyDto";
+import { CreatedRollyDto } from "./dto/CreatedRollyDto";
 import { UUID } from "@/types/common";
 
 export class DfCreatedRollyUsecase {
