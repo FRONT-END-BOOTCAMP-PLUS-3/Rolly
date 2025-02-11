@@ -11,20 +11,20 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-
+    // nodemailer를 사용하여 이메일 전송을 위한 SMTP 설정
     const transporter = nodemailer.createTransport({
-      host: process.env.SUPABASE_SMTP_HOST,
-      port: Number(process.env.SUPABASE_SMTP_PORT),
-      secure: true,
+      host: process.env.SUPABASE_SMTP_HOST, // SMTP 서버 주소
+      port: Number(process.env.SUPABASE_SMTP_PORT), // SMTP 포트 번호
+      secure: true, // 보안 연결(SSL/TLS) 사용 여부
       auth: {
-        user: process.env.SUPABASE_SMTP_USER,
-        pass: process.env.SUPABASE_SMTP_PASS,
+        user: process.env.SUPABASE_SMTP_USER, // SMTP 로그인 사용자 이름
+        pass: process.env.SUPABASE_SMTP_PASS, // SMTP 로그인 비밀번호
       },
     });
 
-    // 이메일 전송
+    // 이메일 전송 객체 생성
     const info = await transporter.sendMail({
-      from: process.env.SUPABASE_SMTP_HOST,
+      from: process.env.SUPABASE_SMTP_USER,
       to: receiverEmails.join(","), // 배열 -> 문자열 변환
       subject: "Rolly 답장이 도착했습니다!",
       text: `\n${sender}님의 Rolly 답장 :\n\n${message}`,
