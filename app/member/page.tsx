@@ -13,7 +13,8 @@ import { InputFormData } from "@/components/modal/Modal.type";
 
 const Index = () => {
   const router = useRouter();
-  const [isModalOpen, toggleModal] = useToggle(false);
+  const [isCreateRollyModalOpen, toggleCreateRollyModal] = useToggle(false);
+  const [isLogoutModalOpen, toggleLogoutModal] = useToggle(false);
   const [isAsideOpen, toggleAside] = useToggle(false);
   const { setType, setTitle } = useRollyCreateStore();
   const { userName } = useUserStore();
@@ -39,6 +40,20 @@ const Index = () => {
     router.push("/member/rollies/create");
   };
 
+  const handleLogout = () => {
+    // 쿠키 삭제
+    document.cookie.split(";").forEach(function (c) {
+      document.cookie =
+        c.trim().split("=")[0] +
+        "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+    });
+
+    // 세션 삭제
+    sessionStorage.clear();
+
+    router.push("/");
+  };
+
   return (
     <>
       <button
@@ -62,11 +77,16 @@ const Index = () => {
         />
       </div>
       <CreateRollyButton
-        onClick={toggleModal}
+        onClick={toggleCreateRollyModal}
         className={styles["create-rolly-btn"]}
       />
 
-      <Aside userName={userName} onClose={toggleAside} isOpen={isAsideOpen} />
+      <Aside
+        userName={userName}
+        onClose={toggleAside}
+        isOpen={isAsideOpen}
+        toggleLogoutModal={toggleLogoutModal}
+      />
 
       <Modal
         contents={[
@@ -84,8 +104,20 @@ const Index = () => {
           },
         ]}
         onConfirm={handleConfirm}
-        onCancel={toggleModal}
-        isOpen={isModalOpen}
+        onCancel={toggleCreateRollyModal}
+        isOpen={isCreateRollyModalOpen}
+      />
+
+      <Modal
+        contents={[
+          {
+            title: "로그아웃 하시겠어요?",
+          },
+        ]}
+        onConfirm={handleLogout}
+        onCancel={toggleLogoutModal}
+        isOpen={isLogoutModalOpen}
+        confirmText="로그아웃"
       />
     </>
   );
@@ -97,9 +129,15 @@ type AsideProps = {
   userName: string;
   onClose: () => void;
   isOpen: boolean;
+  toggleLogoutModal: () => void;
 };
 
-const Aside = ({ userName, onClose, isOpen }: AsideProps) => {
+const Aside = ({
+  userName,
+  onClose,
+  isOpen,
+  toggleLogoutModal,
+}: AsideProps) => {
   return (
     <div
       className={`${styles["aside-container"]} ${isOpen ? styles["open"] : ""}`}
@@ -139,7 +177,9 @@ const Aside = ({ userName, onClose, isOpen }: AsideProps) => {
             </ul>
           </li>
         </ul>
-        <p className={styles["logout"]}>로그아웃</p>
+        <button className={styles["logout"]} onClick={toggleLogoutModal}>
+          로그아웃
+        </button>
       </aside>
     </div>
   );
