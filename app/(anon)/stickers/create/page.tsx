@@ -17,7 +17,6 @@ import { Postit } from "@/components/rolly/Rolly.type";
 import useRollyStore from "@/application/state/useRollyStore";
 import supabase from "@/utils/supabase/supabaseClient";
 import Modal from "@/components/modal/Modal";
-import { FormData } from "@/components/modal/Modal.type";
 import useToggle from "@/hooks/useToggle";
 
 interface Sticker {
@@ -126,7 +125,7 @@ const Stickers: React.FC = () => {
         console.log("Inserted sticker:", data);
       }
     }
-    router.push(`/(anon)/rollies/${rollyId}`);
+    router.push(`/rollies/${rollyId}`);
   };
 
   const addSticker = (stickerStyle: StickerStyle) => {
