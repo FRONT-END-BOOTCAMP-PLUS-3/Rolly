@@ -6,10 +6,10 @@ import useRollyStore from "@/application/state/useRollyStore";
 import Header from "@/components/header/Header";
 import ShareButton from "@/components/shareButton/ShareButton";
 import HomeButton from "@/components/homeButton/HomeButton";
+import CreateStickerButton from "@/components/createStickerButton/CreateStickerButton";
 import Rolly from "@/components/rolly/Rolly";
 import MainButton from "@/components/mainButton/MainButton";
 import { Postit } from "@/components/rolly/Rolly.type";
-
 const Rollies = () => {
   const router = useRouter();
   const { id: rollyId } = useParams();
@@ -50,6 +50,15 @@ const Rollies = () => {
   const navigateToPostIt = () => {
     router.push("/member/postits/create");
   };
+  const navigateToCreateSticker = () => {
+    router.push("/stickers/create");
+  };
+
+  const saveRolly = async () => {
+    // 롤리를 저장하는 로직을 작성하세요
+    console.log("롤리 저장 중...");
+    // 예시: fetch 요청을 보내거나, 상태를 업데이트하는 등의 작업
+  };
 
   return (
     <>
@@ -65,7 +74,11 @@ const Rollies = () => {
         imageUrl={image}
         postits={postits}
       />
-      <MainButton text="메시지 작성하기" onClick={navigateToPostIt} />
+      {!isLocked && <CreateStickerButton onClick={navigateToCreateSticker} />}
+      <MainButton
+        text={isLocked ? "롤리 저장하기" : "메시지 작성하기"}
+        onClick={isLocked ? saveRolly : navigateToPostIt}
+      />
     </>
   );
 };
