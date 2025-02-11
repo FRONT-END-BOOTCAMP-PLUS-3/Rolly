@@ -73,7 +73,7 @@ const Reply = () => {
       <input
         className={styles["sender"]}
         type="text"
-        placeholder="  보내는 분의 성함을 입력해주세요"
+        placeholder="보내는 분의 성함을 입력해주세요"
         value={sender}
         onChange={(e) => setSender(e.target.value)}
       />
