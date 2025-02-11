@@ -1,5 +1,5 @@
-import { DfUserNameUsecase } from "@/application/usecases/user/DfUserNameUsecase";
-import { UserNameDto } from "@/application/usecases/user/dto/UserNameDto";
+import { DfUserInfoUsecase } from "@/application/usecases/user/DfUserInfoUsecase";
+import { UserInfoDto } from "@/application/usecases/user/dto/UserInfoDto";
 import { UserRepository } from "@/domain/repositories/UserRepository";
 import { SbUserRepository } from "@/infrastructure/repositories/SbUserRepository";
 import { NextRequest, NextResponse } from "next/server";
@@ -17,12 +17,12 @@ export async function GET(req: NextRequest) {
     }
 
     const repository: UserRepository = new SbUserRepository();
-    const userNameUsecase: DfUserNameUsecase = new DfUserNameUsecase(
+    const userNameUsecase: DfUserInfoUsecase = new DfUserInfoUsecase(
       repository
     );
-    const userNameDto: UserNameDto = await userNameUsecase.execute(userId);
+    const UserInfoDto: UserInfoDto = await userNameUsecase.execute(userId);
 
-    return NextResponse.json({ success: true, userNameDto }, { status: 200 });
+    return NextResponse.json({ success: true, UserInfoDto }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { success: false, error: (error as Error).message },

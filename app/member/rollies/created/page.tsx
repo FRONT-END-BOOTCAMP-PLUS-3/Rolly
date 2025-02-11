@@ -9,11 +9,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import CreatedRollyDto from "@/application/usecases/rolly/dto/CreatedRollyDto";
-import useUserIdStore from "@/application/state/useUserIdStore";
+import useUserStore from "@/application/state/useUserStore";
 
 const Index: React.FC = () => {
   const [rollyItems, setRollyItems] = useState<CreatedRollyDto[]>([]);
-  const { userId } = useUserIdStore();
+  const { userId } = useUserStore();
   const router = useRouter();
 
   useEffect(() => {

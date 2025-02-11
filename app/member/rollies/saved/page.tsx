@@ -7,11 +7,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import RollyItem from "@/components/rollyItem/RollyItem";
 import SavedRollyDto from "@/application/usecases/rolly/dto/SavedRollyDto";
-import useUserIdStore from "@/application/state/useUserIdStore";
+import useUserStore from "@/application/state/useUserStore";
 
 const Index: React.FC = () => {
   const [rollyItems, setRollyItems] = useState<SavedRollyDto[]>([]);
-  const { userId } = useUserIdStore();
+  const { userId } = useUserStore();
   const router = useRouter();
 
   useEffect(() => {
