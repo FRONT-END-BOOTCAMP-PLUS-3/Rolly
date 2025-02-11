@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import useToggle from "@/hooks/useToggle";
 import useRollyCreateStore from "@/application/state/useRollyCreateStore";
-import useUserIdStore from "@/application/state/useUserIdStore";
+import useUserIdStore from "@/application/state/useUserStore";
 import { FormData } from "@/components/modal/Modal.type";
 import BottomSheet from "@/components/bottomSheet/BottomSheet";
 import ScrollContainer from "@/components/scrollContainer/ScrollContainer";

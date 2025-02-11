@@ -3,14 +3,9 @@ import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
   try {
-    const { senderEmail, receiverEmails, message } = await req.json();
+    const { sender, receiverEmails, message } = await req.json();
 
-    if (
-      !senderEmail ||
-      !receiverEmails ||
-      receiverEmails.length === 0 ||
-      !message
-    ) {
+    if (!sender || !receiverEmails || receiverEmails.length === 0 || !message) {
       return NextResponse.json(
         { error: "잘못된 요청 데이터입니다." },
         { status: 400 }
@@ -22,17 +17,17 @@ export async function POST(req: Request) {
       port: Number(process.env.SUPABASE_SMTP_PORT),
       secure: true,
       auth: {
-        user: senderEmail,
+        user: process.env.SUPABASE_SMTP_USER,
         pass: process.env.SUPABASE_SMTP_PASS,
       },
     });
 
     // 이메일 전송
     const info = await transporter.sendMail({
-      from: senderEmail,
+      from: process.env.SUPABASE_SMTP_HOST,
       to: receiverEmails.join(","), // 배열 -> 문자열 변환
       subject: "Rolly 답장이 도착했습니다!",
-      text: `\n답장:\n${message}`,
+      text: `\n${sender}님의 Rolly 답장 :\n\n${message}`,
     });
 
     console.log("이메일 전송 성공:", info);

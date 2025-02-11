@@ -8,7 +8,6 @@ import Modal from "@/components/modal/Modal";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { WriterEmailDto } from "@/application/usecases/postit/dto/WriterEmailDto";
-import useUserStore from "@/application/state/useUserStore";
 import { useRouter } from "next/navigation";
 
 const Index = () => {
@@ -17,9 +16,9 @@ const Index = () => {
   const [isBackModalOpen, toggleBackModal] = useToggle(false);
   const [emails, setEmails] = useState<WriterEmailDto[]>([]);
   const [message, setMessage] = useState("");
+  const [sender, setSender] = useState("");
   const searchParams = useSearchParams();
   const rollyId = searchParams.get("rollyId");
-  const { userEmail } = useUserStore();
 
   useEffect(() => {
     const fetchWriterEmails = async () => {
@@ -40,7 +39,7 @@ const Index = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          senderEmail: userEmail, // 여기에 로그인된 사용자 이메일 사용
+          sender: sender, // 여기에 로그인된 사용자 이메일 사용
           receiverEmails: emails.map((email) => email.writerEmail),
           message,
         }),
@@ -49,9 +48,10 @@ const Index = () => {
       const result = await response.json();
 
       if (response.ok) {
+        setSender("");
         setMessage("");
         toggleReplyModal();
-        router.push(`/member/rollies/${rollyId}`);
+        router.push("/member/rollies/saved");
       } else {
         throw new Error(result.error);
       }
@@ -61,9 +61,6 @@ const Index = () => {
     }
   };
 
-  const updateMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
-  };
   const navigateBack = () => {
     router.push("/member/rollies/saved");
   };
@@ -73,13 +70,20 @@ const Index = () => {
         leftContent={<BackButton onClick={toggleBackModal} />}
         title="답장"
       />
+      <input
+        className={styles["sender"]}
+        type="text"
+        placeholder="보내는 분의 성함을 입력하세요"
+        value={sender}
+        onChange={(e) => setSender(e.target.value)}
+      />
       <textarea
         className={styles["textarea"]}
         maxLength={100}
         rows={5}
         cols={50}
         value={message}
-        onChange={updateMessage}
+        onChange={(e) => setMessage(e.target.value)}
         placeholder="이곳에 입력해주세요(최대 100자)"
       />
       <div className={styles["reply-button"]}>
