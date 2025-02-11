@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import styles from "./Modal.module.scss";
-import { FormData, ModalProps } from "./Modal.type";
+import { InputFormData, ModalProps } from "./Modal.type";
 import ModalInput from "./ModalInput";
 
 const Modal = ({
@@ -11,22 +11,22 @@ const Modal = ({
   onCancel,
   isOpen,
 }: ModalProps) => {
-  const [formData, setFormData] = useState<FormData>({});
+  const [inputFormData, setInputFormData] = useState<InputFormData>({});
   const [isValid, setIsValid] = useState(false);
 
   const handleInputChange = (name: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setInputFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleClose = () => {
-    setFormData({});
+    setInputFormData({});
     setIsValid(false);
     onCancel();
   };
 
   // 폼 유효성 검사
   const validateForm = useCallback(
-    (data: FormData) => {
+    (data: InputFormData) => {
       let valid = true;
 
       contents.forEach((content) => {
@@ -49,10 +49,10 @@ const Modal = ({
     [contents]
   );
 
-  // formData 변경 시 유효성 검사 실행
+  // inputFormData 변경 시 유효성 검사 실행
   useEffect(() => {
-    setIsValid(validateForm(formData));
-  }, [formData, validateForm]);
+    setIsValid(validateForm(inputFormData));
+  }, [inputFormData, validateForm]);
 
   if (!isOpen) return null; // isOpen이 false면 모달을 렌더링하지 않음
 
@@ -78,7 +78,7 @@ const Modal = ({
             type="button"
             className={styles["confirm-btn"]}
             onClick={() => {
-              onConfirm(formData);
+              onConfirm(inputFormData);
             }}
             disabled={!isValid} // 유효하지 않은 경우 버튼 비활성화
           >

@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import useToggle from "@/hooks/useToggle";
 import useRollyCreateStore from "@/application/state/useRollyCreateStore";
-import useUserIdStore from "@/application/state/useUserIdStore";
-import { FormData } from "@/components/modal/Modal.type";
+import useUserStore from "@/application/state/useUserStore";
+import { InputFormData } from "@/components/modal/Modal.type";
 import BottomSheet from "@/components/bottomSheet/BottomSheet";
 import ScrollContainer from "@/components/scrollContainer/ScrollContainer";
 import MainButton from "@/components/mainButton/MainButton";
@@ -16,23 +16,19 @@ import BackButton from "@/components/backButton/BackButton";
 import Modal from "@/components/modal/Modal";
 import Rolly from "@/components/rolly/Rolly";
 
-import { DfUploadImageUsecase } from "@/application/usecases/rolly/DfUploadImageUsecase";
+import { RollyThemeDto } from "@/application/usecases/rollyTheme/dto/RollyThemeDto";
 
 const INITIAL_PHRASE = "문구를 입력해주세요";
-const ROLLY_THEMES = [
-  "hbd",
-  "good-luck",
-  "chain-letter",
-  "congratulation",
-  "graduation1",
-  "graduation2",
-];
 
 const CreateRollies = () => {
   const router = useRouter();
   const { type, title } = useRollyCreateStore();
-  const { userId } = useUserIdStore();
-  const [theme, setTheme] = useState("hbd");
+  const { userId } = useUserStore();
+  const [rollyThemeList, setRollyThemeList] = useState<RollyThemeDto[]>([]);
+  const [selectedRollyTheme, setSelectedRollyTheme] = useState<RollyThemeDto>({
+    id: 1,
+    name: "hbd",
+  });
   const [phrase, setPhrase] = useState(INITIAL_PHRASE);
   const [file, setFile] = useState<File>();
   const [previewImgUrl, setPreviewImgUrl] = useState<string | null>(null);
@@ -42,13 +38,24 @@ const CreateRollies = () => {
   const [isCreateModalOpen, toggleCreateModal] = useToggle(false);
   const [isBackModalOpen, toggleBackModal] = useToggle(false);
 
-  const updateTheme = (theme: string) => {
-    setTheme(theme);
+  useEffect(() => {
+    const fetchRollyThemeList = async () => {
+      const response = await fetch("/api/rollythemes");
+      const { success, data } = await response.json();
+      if (success) {
+        setRollyThemeList(data);
+      }
+    };
+    fetchRollyThemeList();
+  }, []);
+
+  const updateRollyTheme = (rollytheme: RollyThemeDto) => {
+    setSelectedRollyTheme(rollytheme);
   };
 
-  const updatePhrase = (formData?: FormData) => {
-    if (formData && formData.modal_text) {
-      setPhrase(formData["modal_text"]);
+  const updatePhrase = (inputFormData?: InputFormData) => {
+    if (inputFormData && inputFormData.modal_text) {
+      setPhrase(inputFormData["modal_text"]);
       togglePhraseModal();
     }
   };
@@ -72,15 +79,20 @@ const CreateRollies = () => {
 
   const uploadImage = async (file: File) => {
     try {
-      const uploadImageUsecase = new DfUploadImageUsecase();
-      const uploadedImageUrl = await uploadImageUsecase.execute(file);
+      const formData = new FormData();
+      formData.append("file", file);
 
-      if (uploadedImageUrl) {
-        setImageUrl(uploadedImageUrl);
-        toggleCreateModal();
-      }
+      const response = await fetch("/api/images", {
+        method: "POST",
+        body: formData,
+      });
+
+      const { success, imageUrl } = await response.json();
+      if (success) setImageUrl(imageUrl);
+
+      toggleCreateModal();
     } catch (error) {
-      console.error("이미지 업로드 오류:", (error as Error).message);
+      console.error(error);
     }
   };
 
@@ -99,13 +111,12 @@ const CreateRollies = () => {
           title: title,
           image: imageUrl,
           phrase: phrase,
-          backgroundThemeId: 1,
+          backgroundThemeId: selectedRollyTheme.id,
         }),
       });
-      const result = await response.json();
-
+      const { rollyId } = await response.json();
       toggleCreateModal();
-      router.push(`/member/rollies/${result.id}`);
+      router.push(`/member/rollies/${rollyId}`);
     } catch (error) {
       console.log(error);
     }
@@ -122,7 +133,7 @@ const CreateRollies = () => {
         leftContent={<BackButton onClick={toggleBackModal} />}
       />
       <Rolly
-        theme={theme}
+        theme={selectedRollyTheme.name}
         phrase={phrase}
         previewImgUrl={previewImgUrl}
         isEditable={true}
@@ -131,19 +142,19 @@ const CreateRollies = () => {
       />
       <BottomSheet>
         <ScrollContainer>
-          {ROLLY_THEMES.map((theme) => (
+          {rollyThemeList.map((rollyTheme) => (
             <button
               type="button"
-              key={theme}
+              key={rollyTheme.id}
               className={styles["theme-btn"]}
-              onClick={() => updateTheme(theme)}
+              onClick={() => updateRollyTheme(rollyTheme)}
             >
               <Image
-                src={`/images/rolly-theme/${theme}.svg`}
+                src={`/images/rolly-theme/${rollyTheme.name}.svg`}
                 width={100}
                 height={100}
                 className={styles["theme-img"]}
-                alt={`롤리 ${theme} 테마`}
+                alt={`롤리 ${rollyTheme.name} 테마`}
               />
             </button>
           ))}

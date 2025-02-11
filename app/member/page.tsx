@@ -9,7 +9,7 @@ import useUserStore from "@/application/state/useUserStore";
 import useRollyCreateStore from "@/application/state/useRollyCreateStore";
 import CreateRollyButton from "@/components/createRollyButton/CreateRollyButton";
 import Modal from "@/components/modal/Modal";
-import { FormData } from "@/components/modal/Modal.type";
+import { InputFormData } from "@/components/modal/Modal.type";
 
 const Index = () => {
   const router = useRouter();
@@ -18,9 +18,13 @@ const Index = () => {
   const { setType, setTitle } = useRollyCreateStore();
   const { userName } = useUserStore();
 
-  const handleConfirm = (formData?: FormData) => {
-    if (formData && formData.modal_radio && formData.modal_text) {
-      switch (formData.modal_radio) {
+  const handleConfirm = (inputFormData?: InputFormData) => {
+    if (
+      inputFormData &&
+      inputFormData.modal_radio &&
+      inputFormData.modal_text
+    ) {
+      switch (inputFormData.modal_radio) {
         case "개인용":
           setType(1);
           break;
@@ -30,7 +34,7 @@ const Index = () => {
         default:
           break;
       }
-      setTitle(formData.modal_text);
+      setTitle(inputFormData.modal_text);
     }
     router.push("/member/rollies/create");
   };
