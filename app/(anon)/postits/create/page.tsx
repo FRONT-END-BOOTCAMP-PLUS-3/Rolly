@@ -97,9 +97,18 @@ const CreatePostits = () => {
     }
   };
 
-  const handleEmailModal = (formData?: FormData) => {
+  const handleEmailConfirmModal = (formData?: FormData) => {
     if (formData && formData.modal_text) {
       setEmail(formData.modal_text);
+    }
+    toggleEmailModal();
+    setTimeout(() => {
+      togglePostitModal();
+    }, 100);
+  };
+  const handleEmailCancelModal = (formData?: FormData) => {
+    if (!formData || !formData.modal_text) {
+      setEmail("");
     }
     toggleEmailModal();
     setTimeout(() => {
@@ -196,8 +205,8 @@ const CreatePostits = () => {
             maxLength: 30,
           },
         ]}
-        onConfirm={handleEmailModal}
-        onCancel={toggleEmailModal}
+        onConfirm={handleEmailConfirmModal}
+        onCancel={handleEmailCancelModal}
         isOpen={isEmailModalOpen}
       />
       <Modal
