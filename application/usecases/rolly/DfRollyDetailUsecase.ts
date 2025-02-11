@@ -17,6 +17,7 @@ export class DfRollyDetailUsecase {
       image: rolly.image,
       phrase: rolly.phrase,
       backgroundTheme: `${rollyThemeList[rolly.backgroundThemeId - 1]?.name || "default"}`,
+      isLocked: rolly.isLocked,
     };
   }
 }

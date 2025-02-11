@@ -5,4 +5,5 @@ export interface RollyDetailDto {
   image: string;
   phrase: string;
   backgroundTheme: string;
+  isLocked: boolean;
 }
