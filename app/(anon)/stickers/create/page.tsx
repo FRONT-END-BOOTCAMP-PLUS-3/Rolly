@@ -10,6 +10,7 @@ import VerticalScrollContainer from "@/components/verticalScrollContainer/Vertic
 import styles from "./page.module.scss";
 import Header from "@/components/header/Header";
 import BackButton from "@/components/backButton/BackButton";
+import { useRouter } from "next/navigation";
 import { StickerStyleDto } from "@/application/usecases/stickerStyle/dto/StickerStyleDto";
 import Rolly from "@/components/rolly/Rolly";
 import { Postit } from "@/components/rolly/Rolly.type";
@@ -21,6 +22,7 @@ interface Sticker {
   sticker_style_id: number;
   x_position: number;
   y_position: number;
+  rolly_id: number;
 }
 
 interface StickerStyle {
@@ -30,6 +32,7 @@ interface StickerStyle {
 }
 
 const Stickers: React.FC = () => {
+  const router = useRouter();
   const [selectedStickers, setSelectedStickers] = useState<Sticker[]>([]);
   const [stickerStyleList, setStickerStyleList] = useState<StickerStyleDto[]>(
     []
@@ -107,6 +110,7 @@ const Stickers: React.FC = () => {
           sticker_style_id: sticker.sticker_style_id,
           x_position: xPercent.toFixed(0), // Convert to string with 2 decimal places
           y_position: yPercent.toFixed(0),
+          rolly_id: rollyId,
         },
       ]);
 
@@ -118,6 +122,7 @@ const Stickers: React.FC = () => {
         console.log("Inserted sticker:", data);
       }
     }
+    router.push(`/(anon)/rollies/${rollyId}`);
   };
 
   const addSticker = (stickerStyle: StickerStyle) => {
@@ -126,6 +131,7 @@ const Stickers: React.FC = () => {
       sticker_style_id: stickerStyle.id,
       x_position: 0, // 초기 위치는 기본값으로 설정
       y_position: 0,
+      rolly_Id: 0,
     };
     setSelectedStickers((prev) => [...prev, newSticker]);
     console.log(selectedStickers);
