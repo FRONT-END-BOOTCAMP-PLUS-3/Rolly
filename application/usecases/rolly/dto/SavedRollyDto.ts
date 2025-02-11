@@ -1,4 +1,4 @@
-export default interface SavedRollyDto {
+export interface SavedRollyDto {
   id: number;
   typeId: number;
   title: string;

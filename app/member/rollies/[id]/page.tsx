@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useRollyStore from "@/application/state/useRollyStore";
 import Header from "@/components/header/Header";
+import ShareButton from "@/components/shareButton/ShareButton";
 import BackButton from "@/components/backButton/BackButton";
 import Rolly from "@/components/rolly/Rolly";
 import MainButton from "@/components/mainButton/MainButton";
@@ -49,7 +50,11 @@ const Rollies = () => {
 
   return (
     <>
-      <Header leftContent={<BackButton />} title={title} />
+      <Header
+        leftContent={<BackButton />}
+        rightContent={<ShareButton />}
+        title={title}
+      />
       <Rolly
         theme={rollyTheme}
         phrase={phrase}

@@ -69,7 +69,7 @@ const RollyItem: React.FC<RollyItemProps> = ({
         <p className={styles["title"]}>{title}</p>
         {/* lock 버튼: isCreated가 true일 때만 표시하고, isLocked 상태가 되면 안 보이도록 */}
         {isCreated && !isLocked && (
-          <button className="lock" onClick={toggleLockModal}>
+          <button className={styles["lock"]} onClick={toggleLockModal}>
             <img src="/icons/lock.svg" alt="Lock" className={styles["lock"]} />
           </button>
         )}
@@ -78,12 +78,12 @@ const RollyItem: React.FC<RollyItemProps> = ({
         <p className={styles["date"]}>{date}</p>
         {/* delete 버튼: isCreated가 true이면 항상 유지 */}
         {isCreated ? (
-          <button className="action" onClick={toggleDeleteModal}>
+          <button className={styles["action"]} onClick={toggleDeleteModal}>
             <img src="/icons/delete.svg" alt="delete" />
           </button>
         ) : (
           onReply && (
-            <button className="action" onClick={onReply}>
+            <button className={styles["action"]} onClick={onReply}>
               <img src="/icons/reply.svg" alt="reply" />
             </button>
           )

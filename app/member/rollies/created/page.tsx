@@ -8,10 +8,10 @@ import styles from "./page.module.scss";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import CreatedRollyDto from "@/application/usecases/rolly/dto/CreatedRollyDto";
+import { CreatedRollyDto } from "@/application/usecases/rolly/dto/CreatedRollyDto";
 import useUserStore from "@/application/state/useUserStore";
 
-const Index: React.FC = () => {
+const CreatedRollies: React.FC = () => {
   const [rollyItems, setRollyItems] = useState<CreatedRollyDto[]>([]);
   const { userId } = useUserStore();
   const router = useRouter();
@@ -77,4 +77,4 @@ const Index: React.FC = () => {
   );
 };
 
-export default Index;
+export default CreatedRollies;

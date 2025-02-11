@@ -1,4 +1,4 @@
-import SavedRollyDto from "./dto/SavedRollyDto";
+import { SavedRollyDto } from "./dto/SavedRollyDto";
 import { UUID } from "@/types/common";
 import { SbRollyRepository } from "@/infrastructure/repositories/SbRollyRepository";
 import { SbSavedRollyRepository } from "@/infrastructure/repositories/SbSavedRollyRepository";

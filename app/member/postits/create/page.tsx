@@ -15,7 +15,7 @@ import useRollyStore from "@/application/state/useRollyStore";
 import { PostitThemeDto } from "@/application/usecases/postitTheme/dto/PostitThemeDto";
 import { FontFamilyDto } from "@/application/usecases/fontFamily/dto/FontFamilyDto";
 
-const Index = () => {
+const CreatePostits = () => {
   const router = useRouter();
   const [selectedPostitTheme, setSelectedPostitTheme] = useState<{
     id: number;
@@ -97,9 +97,18 @@ const Index = () => {
     }
   };
 
-  const handleEmailModal = (formData?: FormData) => {
+  const handleEmailConfirmModal = (formData?: FormData) => {
     if (formData && formData.modal_text) {
       setEmail(formData.modal_text);
+    }
+    toggleEmailModal();
+    setTimeout(() => {
+      togglePostitModal();
+    }, 100);
+  };
+  const handleEmailCancelModal = (formData?: FormData) => {
+    if (!formData || !formData.modal_text) {
+      setEmail("");
     }
     toggleEmailModal();
     setTimeout(() => {
@@ -191,13 +200,13 @@ const Index = () => {
         contents={[
           {
             title: "답장을 받고 싶다면 이메일 주소를 입력해주세요",
-            body: "답장을 원하지 않으면 완료 버튼을 눌러주세요",
+            body: "답장을 원하지 않으면 취소 버튼을 눌러주세요",
             input: "text",
             maxLength: 30,
           },
         ]}
-        onConfirm={handleEmailModal}
-        onCancel={toggleEmailModal}
+        onConfirm={handleEmailConfirmModal}
+        onCancel={handleEmailCancelModal}
         isOpen={isEmailModalOpen}
       />
       <Modal
@@ -227,4 +236,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default CreatePostits;

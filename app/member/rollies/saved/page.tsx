@@ -6,10 +6,10 @@ import styles from "./page.module.scss";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import RollyItem from "@/components/rollyItem/RollyItem";
-import SavedRollyDto from "@/application/usecases/rolly/dto/SavedRollyDto";
+import { SavedRollyDto } from "@/application/usecases/rolly/dto/SavedRollyDto";
 import useUserStore from "@/application/state/useUserStore";
 
-const Index: React.FC = () => {
+const SavedRollies = () => {
   const [rollyItems, setRollyItems] = useState<SavedRollyDto[]>([]);
   const { userId } = useUserStore();
   const router = useRouter();
@@ -54,4 +54,4 @@ const Index: React.FC = () => {
     </div>
   );
 };
-export default Index;
+export default SavedRollies;
