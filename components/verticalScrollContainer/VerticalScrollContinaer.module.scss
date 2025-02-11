@@ -5,6 +5,7 @@
   flex-wrap: wrap;
   gap: 15px;
   margin-bottom: var(--size-gap);
+  height: 140px;
   overflow-x: hidden;
   overflow-y: auto;
   max-height: 250px;
@@ -14,6 +15,7 @@
   .vertical-scroll-container {
     display: grid;
     width: 100%;
+    height: 140px;
     gap: 4px;
     grid-template-columns: repeat(4, 1fr);
     justify-content: center; /* 중앙 정렬 */

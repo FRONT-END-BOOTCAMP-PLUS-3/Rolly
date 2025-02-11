@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { useParams } from "next/navigation";
 import Image from "next/image";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import BottomSheet from "@/components/bottomSheet/BottomSheet";
@@ -163,7 +162,7 @@ const Stickers: React.FC = () => {
                       top: 0,
                       left: 0,
                       right: fieldRef.current.clientWidth - 60,
-                      bottom: fieldRef.current.clientHeight - 430,
+                      bottom: fieldRef.current.clientHeight - 55,
                     }
                   : undefined
               }
