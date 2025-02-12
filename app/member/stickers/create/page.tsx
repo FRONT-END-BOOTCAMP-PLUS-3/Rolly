@@ -126,7 +126,7 @@ const Stickers: React.FC = () => {
         console.log("Inserted sticker:", data);
       }
     }
-    router.push(`/rollies/${rollyId}`);
+    router.push(`/member/rollies/${rollyId}`);
   };
 
   const addSticker = (stickerStyle: StickerStyle) => {
