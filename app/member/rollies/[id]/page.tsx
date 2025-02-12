@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useRollyStore from "@/application/state/useRollyStore";
 import Header from "@/components/header/Header";
@@ -10,6 +10,7 @@ import CreateStickerButton from "@/components/createStickerButton/CreateStickerB
 import Rolly from "@/components/rolly/Rolly";
 import MainButton from "@/components/mainButton/MainButton";
 import { Postit } from "@/components/rolly/Rolly.type";
+import ImageDownloadButton from "@/components/imageDownloadButton/ImageDownloadButton";
 
 const Rollies = () => {
   const router = useRouter();
@@ -17,6 +18,7 @@ const Rollies = () => {
   const { title, image, phrase, rollyTheme, setRollyData } = useRollyStore();
   const [postits, setPostits] = useState<Postit[]>([]);
   const [isLocked, setIsLocekd] = useState(false);
+  const rollyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchRollyDetail = async () => {
@@ -59,16 +61,23 @@ const Rollies = () => {
     <>
       <Header
         leftContent={<BackButton />}
-        rightContent={<ShareButton />}
+        rightContent={
+          <>
+            {isLocked && <ImageDownloadButton targetRef={rollyRef} />}
+            <ShareButton />
+          </>
+        }
         title={title}
       />
-      <Rolly
-        theme={rollyTheme}
-        phrase={phrase}
-        isEditable={false}
-        imageUrl={image}
-        postits={postits}
-      />
+      <div ref={rollyRef}>
+        <Rolly
+          theme={rollyTheme}
+          phrase={phrase}
+          isEditable={false}
+          imageUrl={image}
+          postits={postits}
+        />
+      </div>
       {!isLocked && <CreateStickerButton onClick={navigateToCreateSticker} />}
       {!isLocked && (
         <MainButton text="메시지 작성하기" onClick={navigateToPostIt} />
