@@ -70,7 +70,7 @@ const Rollies = () => {
   }, [rollyId, setRollyData]);
 
   const navigateToPostIt = () => {
-    router.push("/member/postits/create");
+    router.push("/postits/create");
   };
   const navigateToCreateSticker = () => {
     router.push("/stickers/create");
