@@ -68,14 +68,15 @@ const Index = () => {
           alt="햄버거 버튼"
         />
       </button>
-      <div className={styles["center-container"]}>
-        <Image
-          src="/images/mascot.svg"
-          width={500}
-          height={320}
-          alt="롤리 마스코트"
-        />
-      </div>
+
+      <Image
+        src="/images/main.svg"
+        width={390}
+        height={320}
+        className={styles["main-img"]}
+        alt="롤리 메인 이미지"
+      />
+
       <CreateRollyButton
         onClick={toggleCreateRollyModal}
         className={styles["create-rolly-btn"]}
