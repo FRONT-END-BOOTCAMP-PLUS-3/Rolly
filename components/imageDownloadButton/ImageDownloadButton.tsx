@@ -1,5 +1,6 @@
 import React from "react";
 import html2canvas from "html2canvas";
+import Image from "next/image";
 
 interface ImageDownloadButtonProps {
   targetRef: React.RefObject<HTMLDivElement>; // 다운로드할 대상 div의 참조를 받습니다.
@@ -25,7 +26,12 @@ const ImageDownloadButton: React.FC<ImageDownloadButtonProps> = ({
 
   return (
     <button type="button" className={`$ ${className}`} onClick={handleDownload}>
-      <img src="/icons/image-download.svg" alt="사진 다운로드" />
+      <Image
+        src="/icons/image-download.svg"
+        width={24}
+        height={24}
+        alt="사진 다운로드"
+      />
     </button>
   );
 };
