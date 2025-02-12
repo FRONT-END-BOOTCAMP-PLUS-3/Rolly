@@ -1,6 +1,9 @@
 .stickersContainer {
-  padding-bottom: 200px;
+  display: flex;
+  flex-grow: 1;
+  padding-bottom: 190px;
 }
+
 .sticker-field {
   position: absolute;
   top: 0;
