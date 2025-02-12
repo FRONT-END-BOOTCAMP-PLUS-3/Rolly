@@ -3,7 +3,7 @@ import html2canvas from "html2canvas";
 import Image from "next/image";
 
 interface ImageDownloadButtonProps {
-  targetRef: React.RefObject<HTMLDivElement>; // 다운로드할 대상 div의 참조를 받습니다.
+  targetRef: React.RefObject<HTMLDivElement | null>; // 다운로드할 대상 div의 참조를 받습니다.
   className?: string;
 }
 

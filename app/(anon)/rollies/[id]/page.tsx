@@ -100,11 +100,15 @@ const Rollies = () => {
   };
 
   const handleSaveRolly = async () => {
-    const success = await saveRollyToDatabase(rollyId, userId);
-    if (success) {
-      router.push("/member/rollies/saved");
+    if (typeof rollyId === "string") {
+      const success = await saveRollyToDatabase(rollyId, userId);
+      if (success) {
+        router.push("/member/rollies/saved");
+      } else {
+        console.log("롤리 저장에 실패했습니다.");
+      }
     } else {
-      console.log("롤리 저장에 실패했습니다.");
+      console.error("Invalid rollyId:", rollyId);
     }
   };
 

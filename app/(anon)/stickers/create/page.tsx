@@ -33,7 +33,6 @@ interface Sticker {
 interface StickerStyle {
   id: number;
   name: string;
-  src: string;
 }
 
 const Stickers: React.FC = () => {
