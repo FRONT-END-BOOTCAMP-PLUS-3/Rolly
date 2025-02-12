@@ -55,24 +55,17 @@ const Stickers: React.FC = () => {
 
   useEffect(() => {
     const fetchStickerStyles = async () => {
-      try {
-        const response = await fetch("/api/stickerstyles/");
-        if (!response.ok) {
-          throw new Error("Failed to fetch stickers");
-        }
-        const data = await response.json();
-
-        if (!data.success || !data.data) {
-          throw new Error("Invalid response format");
-        }
-        setStickerStyleList(data.data);
-
-        console.log(stickerStyleList);
-      } catch (error) {
-        console.error("Error fetching stickers:", error);
+      const response = await fetch("/api/stickerstyles");
+      const { success, data } = await response.json();
+      if (success) {
+        setStickerStyleList(data);
       }
     };
 
+    fetchStickerStyles();
+  }, []);
+
+  useEffect(() => {
     const fetchPostits = async () => {
       const response = await fetch(`/api/postits?rollyId=${rollyId}`);
       const { success, postitsDto } = await response.json();
@@ -89,10 +82,9 @@ const Stickers: React.FC = () => {
       }
     };
 
-    fetchStickerStyles();
     fetchPostits();
     fetcStickers();
-  }, [rollyId, stickerStyleList]);
+  }, [rollyId]);
 
   useEffect(() => {
     window.addEventListener("mouseup", handleMouseUp);
