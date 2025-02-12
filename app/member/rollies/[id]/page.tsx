@@ -65,7 +65,7 @@ const Rollies = () => {
     router.push("/member/postits/create");
   };
   const navigateToCreateSticker = () => {
-    router.push("/stickers/create");
+    router.push("/member/stickers/create");
   };
 
   return (
