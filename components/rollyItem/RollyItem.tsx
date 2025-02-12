@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import styles from "./RollyItem.module.scss";
 import useToggle from "@/hooks/useToggle";
 import Modal from "../modal/Modal";
@@ -70,7 +71,10 @@ const RollyItem: React.FC<RollyItemProps> = ({
         <p className={styles["title"]}>{title}</p>
         {/* lock 버튼: isCreated가 true일 때만 표시하고, isLocked 상태가 되면 안 보이도록 */}
         {isCreated && !isLocked && (
-          <button className={styles["lock"]} onClick={toggleLockModal}>
+          <button
+            className={classNames("lock", styles.lock)}
+            onClick={toggleLockModal}
+          >
             <Image
               src="/icons/lock.svg"
               width={24}
@@ -83,9 +87,11 @@ const RollyItem: React.FC<RollyItemProps> = ({
       </div>
       <div className={styles["wrapper"]}>
         <p className={styles["date"]}>{date}</p>
-        {/* delete 버튼: isCreated가 true이면 항상 유지 */}
-        {isCreated ? (
-          <button className={styles["action"]} onClick={toggleDeleteModal}>
+        {isCreated && !isLocked ? (
+          <button
+            className={classNames("action", styles.action)}
+            onClick={toggleDeleteModal}
+          >
             <Image
               src="/icons/delete.svg"
               width={24}
@@ -94,8 +100,12 @@ const RollyItem: React.FC<RollyItemProps> = ({
             />
           </button>
         ) : (
+          isLocked &&
           onReply && (
-            <button className={styles["action"]} onClick={onReply}>
+            <button
+              className={classNames("action", styles.action)}
+              onClick={onReply}
+            >
               <Image
                 src="/icons/reply.svg"
                 width={24}
@@ -111,7 +121,7 @@ const RollyItem: React.FC<RollyItemProps> = ({
         contents={[
           {
             title: "롤리를 완성하시겠어요?",
-            body: "완성 후에는 메세지를 작성할 수 없어요!",
+            body: "완성 후에는 메세지 작성 및 롤리 삭제가 불가해요!",
           },
         ]}
         confirmText={"완성"}

@@ -134,7 +134,7 @@ const CreatePostits = () => {
       });
 
       togglePostitModal();
-      router.push(`/rollies/${rollyId}`);
+      router.replace(`/rollies/${rollyId}`);
     } catch (error) {
       console.log(error);
     }
