@@ -100,7 +100,7 @@ const RollyItem: React.FC<RollyItemProps> = ({
             />
           </button>
         ) : (
-          !isLocked &&
+          isLocked &&
           onReply && (
             <button
               className={classNames("action", styles.action)}
