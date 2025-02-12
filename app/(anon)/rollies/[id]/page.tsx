@@ -10,7 +10,8 @@ import HomeButton from "@/components/homeButton/HomeButton";
 import CreateStickerButton from "@/components/createStickerButton/CreateStickerButton";
 import Rolly from "@/components/rolly/Rolly";
 import MainButton from "@/components/mainButton/MainButton";
-import { Postit } from "@/components/rolly/Rolly.type";
+import { PostitDto } from "@/application/usecases/postit/dto/PostitDto";
+import { StickerDto } from "@/application/usecases/sticker/dto/StickerDto";
 import useToggle from "@/hooks/useToggle";
 import Modal from "@/components/modal/Modal";
 import supabase from "@/utils/supabase/supabaseClient";
@@ -21,7 +22,8 @@ const Rollies = () => {
   const router = useRouter();
   const { id: rollyId } = useParams();
   const { title, image, phrase, rollyTheme, setRollyData } = useRollyStore();
-  const [postits, setPostits] = useState<Postit[]>([]);
+  const [postits, setPostits] = useState<PostitDto[]>([]);
+  const [stickers, setStickers] = useState<StickerDto[]>([]);
   const [isLocked, setIsLocekd] = useState(false);
   const { userId } = useUserStore();
   const [isConfirmModalOpen, toggleConfirmModal] = useToggle(false);
@@ -54,8 +56,17 @@ const Rollies = () => {
       }
     };
 
+    const fetcStickers = async () => {
+      const response = await fetch(`/api/stickers?rollyId=${rollyId}`);
+      const { success, stickersDto } = await response.json();
+      if (success) {
+        setStickers(stickersDto);
+      }
+    };
+
     fetchRollyDetail();
     fetchPostits();
+    fetcStickers();
   }, [rollyId, setRollyData]);
 
   const navigateToPostIt = () => {
@@ -127,6 +138,7 @@ const Rollies = () => {
           isEditable={false}
           imageUrl={image}
           postits={postits}
+          stickers={stickers}
         />
       </div>
       {!isLocked && <CreateStickerButton onClick={navigateToCreateSticker} />}
