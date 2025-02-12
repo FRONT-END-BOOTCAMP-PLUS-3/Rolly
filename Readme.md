@@ -18,27 +18,30 @@
   <tbody>
     <tr>
       <td align="center">
-        <a href=""><img src="public/민준.jpg" width="100px;" alt=""/><br />
-        <sub><b>팀장 : 김민준</b></sub></a><br />
+        <img src="public/민준.jpg" width="100px;" alt=""/><br />
+        <sub><b>팀장 김민준</b></sub><br /><br />
         <ul align="left">
           <li>자체 회원가입, 로그인</li>
           <li>스티커 꾸미기 기능</li>
+          <li>완성된 롤리 저장</li>
         </ul>
       </td>
       <td align="center">
-        <a href=""><img src="public/하영.jpg" width="100px;" alt=""/><br />
-        <sub><b>팀원 : 엄하영</b></sub></a><br />
+        <img src="public/하영.jpg" width="100px;" alt=""/><br />
+        <sub><b>팀원 엄하영</b></sub><br /><br />
         <ul align="left">
           <li>포스트잇 작성 기능</li>
+          <li>만든/받은 롤리 잠금 및 삭제</li>
           <li>이메일 일괄 답장 기능</li>
         </ul>
       </td>
       <td align="center">
-        <a href=""><img src="public/지수.jpg" width="100px;" alt=""/><br />
-        <sub><b>팀원 : 윤지수</b></sub></a><br />
+        <img src="public/지수.jpg" width="100px;" alt=""/><br />
+        <sub><b>팀원 윤지수</b></sub><br /><br />
         <ul align="left">
-          <li>카카오 연동 회원가입 및 로그인</li>
+          <li>카카오 소셜 로그인</li>
           <li>롤리 생성 기능</li>
+          <li>롤리 상세 조회 기능</li>
         </ul>
       </td>
     </tr>
@@ -49,12 +52,7 @@
 
 ### ✔️ Frond-end
 
-<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black">
-<img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white">
-<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white">
-<img src="https://img.shields.io/badge/CSS%20Modules-1572B6?style=for-the-badge&logo=css3&logoColor=white">
-<img src="https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=Sass&logoColor=white">
-<img src="https://img.shields.io/badge/Zustand-8B5CF6?style=for-the-badge&logo=Zustand&logoColor=white">
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black"><img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white"><img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white"><img src="https://img.shields.io/badge/CSS%20Modules-1572B6?style=for-the-badge&logo=css3&logoColor=white"><img src="https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=Sass&logoColor=white"><img src="https://img.shields.io/badge/Zustand-8B5CF6?style=for-the-badge&logo=Zustand&logoColor=white">
 
 ### ✔️ Back-end
 
@@ -122,7 +120,7 @@ utils/
      └── server.ts
 ```
 
-## 컨벤션
+## 🤙 컨벤션
 
 ### 커밋 컨벤션
 
