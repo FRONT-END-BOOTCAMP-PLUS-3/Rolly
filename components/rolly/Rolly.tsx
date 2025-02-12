@@ -9,6 +9,7 @@ const Rolly = ({
   previewImgUrl,
   imageUrl,
   postits = [],
+  stickers = [],
   onFileChange,
   onPhraseClick,
 }: RollyProps) => {
@@ -65,6 +66,7 @@ const Rolly = ({
               src={imageUrl || "default.svg"}
               width={100}
               height={100}
+              className={styles["img"]}
               alt="업로드한 이미지"
             />
           )}
@@ -87,6 +89,21 @@ const Rolly = ({
           </div>
         ))}
       </div>
+      {stickers.map((sticker, index) => (
+        <Image
+          src={sticker.stickerStyle}
+          key={index}
+          width={50}
+          height={50}
+          alt={`스티커 ${sticker.stickerStyle}`}
+          style={{
+            position: "absolute",
+            top: `${sticker.yPosition}px`,
+            left: `${sticker.xPosition}%`,
+            zIndex: 999,
+          }}
+        />
+      ))}
     </div>
   );
 };

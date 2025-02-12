@@ -5,7 +5,7 @@ const Loading = () => {
   return (
     <div className={styles["loading"]}>
       <Image
-        src="/images/main.svg"
+        src="/images/main-bg.svg"
         width={390}
         height={320}
         alt="롤리 메인 이미지"
