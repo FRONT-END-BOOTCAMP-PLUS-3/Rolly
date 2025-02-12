@@ -15,6 +15,7 @@ import useToggle from "@/hooks/useToggle";
 import Modal from "@/components/modal/Modal";
 import supabase from "@/utils/supabase/supabaseClient";
 import Alert from "@/components/alert/Alert";
+import ImageDownloadButton from "@/components/imageDownloadButton/ImageDownloadButton";
 
 const Rollies = () => {
   const router = useRouter();
@@ -111,7 +112,12 @@ const Rollies = () => {
     <>
       <Header
         leftContent={<HomeButton />}
-        rightContent={<ShareButton />}
+        rightContent={
+          <>
+            {isLocked && <ImageDownloadButton />}
+            <ShareButton />
+          </>
+        }
         title={title}
       />
       <Rolly
