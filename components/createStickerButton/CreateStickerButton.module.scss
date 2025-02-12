@@ -1,5 +1,13 @@
 .create-sticker-button {
   position: fixed;
-  bottom: 90px;
-  right: 30px;
+  bottom: 95px;
+  right: 50%;
+  transform: translateX(480%);
+}
+
+@media (max-width: 768px) {
+  .create-sticker-button {
+    bottom: 90px;
+    transform: translateX(380%);
+  }
 }
