@@ -131,16 +131,15 @@ const Rollies = () => {
         }
         title={title}
       />
-      <div ref={rollyRef}>
-        <Rolly
-          theme={rollyTheme}
-          phrase={phrase}
-          isEditable={false}
-          imageUrl={image}
-          postits={postits}
-          stickers={stickers}
-        />
-      </div>
+      <Rolly
+        ref={rollyRef}
+        theme={rollyTheme}
+        phrase={phrase}
+        isEditable={false}
+        imageUrl={image}
+        postits={postits}
+        stickers={stickers}
+      />
       {!isLocked && <CreateStickerButton onClick={navigateToCreateSticker} />}
       <MainButton
         text={isLocked ? "롤리 저장하기" : "메시지 작성하기"}
