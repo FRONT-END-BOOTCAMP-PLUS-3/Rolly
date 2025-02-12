@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import styles from "./BackButton.module.scss";
+import Image from "next/image";
 
 interface BackButtonProps {
   onClick?: () => void;
@@ -24,8 +25,10 @@ const BackButton: React.FC<BackButtonProps> = ({ onClick }) => {
       onClick={handleBack}
       aria-label="뒤로가기 버튼"
     >
-      <img
-        src="/icons/back.svg" //
+      <Image
+        src="/icons/back.svg"
+        width={24}
+        height={24}
         alt="뒤로가기"
         className={styles["icon"]}
       />

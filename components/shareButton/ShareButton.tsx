@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import styles from "./ShareButton.module.scss";
 
 interface ShareButtonProps {
@@ -26,7 +27,13 @@ const ShareButton: React.FC<ShareButtonProps> = () => {
       onClick={handleShare}
       aria-label="공유 버튼"
     >
-      <img src="/icons/share.svg" alt="공유하기" className={styles["icon"]} />
+      <Image
+        src="/icons/share.svg"
+        width={24}
+        height={24}
+        alt="공유하기"
+        className={styles["icon"]}
+      />
     </button>
   );
 };
