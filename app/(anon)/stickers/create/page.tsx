@@ -21,6 +21,7 @@ import useToggle from "@/hooks/useToggle";
 
 interface Sticker {
   id: string;
+  name: string;
   sticker_style_id: number;
   x_position: number;
   y_position: number;
@@ -131,6 +132,7 @@ const Stickers: React.FC = () => {
   const addSticker = (stickerStyle: StickerStyle) => {
     const newSticker: Sticker = {
       id: `sticker-${Date.now()}`,
+      name: stickerStyle.name,
       sticker_style_id: stickerStyle.id,
       x_position: 0, // 초기 위치는 기본값으로 설정
       y_position: 0,
@@ -196,7 +198,7 @@ const Stickers: React.FC = () => {
                 }}
               >
                 <Image
-                  src={`/images/sticker/${sticker.sticker_style_id}.svg`}
+                  src={`/images/sticker/${sticker.name}.svg`}
                   // src={`/images/sticker/${sticker.src}`}
                   alt={`Sticker ${sticker.id}`}
                   width={55}
