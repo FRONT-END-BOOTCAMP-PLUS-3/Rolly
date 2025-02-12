@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import styles from "./HomeButton.module.scss";
 import Image from "next/image";
 
 interface HomeButtonProps {
@@ -15,11 +14,11 @@ const HomeButton: React.FC<HomeButtonProps> = ({ onClick }) => {
     if (onClick) {
       onClick();
     }
-    router.push("/pages");
+    router.push("/");
   };
 
   return (
-    <button onClick={handleClick} className={styles["home-button"]}>
+    <button onClick={handleClick}>
       <Image src="/icons/home.svg" width={24} height={24} alt="home button" />
     </button>
   );
