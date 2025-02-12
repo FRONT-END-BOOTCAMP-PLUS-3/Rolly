@@ -11,7 +11,10 @@ import CreateStickerButton from "@/components/createStickerButton/CreateStickerB
 import Rolly from "@/components/rolly/Rolly";
 import MainButton from "@/components/mainButton/MainButton";
 import { Postit } from "@/components/rolly/Rolly.type";
+import useToggle from "@/hooks/useToggle";
+import Modal from "@/components/modal/Modal";
 import supabase from "@/utils/supabase/supabaseClient";
+import Alert from "@/components/alert/Alert";
 
 const Rollies = () => {
   const router = useRouter();
@@ -20,6 +23,9 @@ const Rollies = () => {
   const [postits, setPostits] = useState<Postit[]>([]);
   const [isLocked, setIsLocekd] = useState(false);
   const { userId } = useUserStore();
+  const [isConfirmModalOpen, toggleConfirmModal] = useToggle(false);
+  const [isAlertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     const fetchRollyDetail = async () => {
@@ -63,7 +69,16 @@ const Rollies = () => {
       .insert([{ rolly_id: rollyId, user_id: userId }]);
 
     if (error) {
-      console.error("Error saving rolly:", error.message);
+      toggleConfirmModal();
+      setAlertMessage("잠시 후 다시 시도해주세요!");
+      setAlertOpen(true);
+      if (
+        error.message.includes("duplicate key value violates unique constraint")
+      ) {
+        toggleConfirmModal();
+        setAlertMessage("이미 저장된 롤리입니다.");
+        setAlertOpen(true);
+      }
       return false; // Indicate failure
     }
 
@@ -71,22 +86,27 @@ const Rollies = () => {
     return true; // Indicate success
   };
 
-  const saveRolly = async () => {
+  const handleSaveRolly = async () => {
     console.log(userId);
-    if (!userId || userId === "00000000-0000-0000-0000-000000000000") {
-      router.push("/page");
-      return;
-    }
-    console.log("롤리 저장 중...");
     const success = await saveRollyToDatabase(rollyId, userId);
     if (success) {
-      console.log("롤리가 성공적으로 저장되었습니다.");
+      router.push("/member/rollies/saved");
     } else {
       console.log("롤리 저장에 실패했습니다.");
-      console.log("내가 받은 롤리로 저장 및 이동");
     }
   };
 
+  const handleSaveButtonClick = async () => {
+    console.log("userId:", userId);
+    // Check if the user is logged in
+    if (!userId || userId === "00000000-0000-0000-0000-000000000000") {
+      // User is not logged in, redirect to the login page
+      router.push("/page");
+    } else {
+      // User is logged in, toggle the modal to confirm the save action
+      toggleConfirmModal();
+    }
+  };
   return (
     <>
       <Header
@@ -104,7 +124,23 @@ const Rollies = () => {
       {!isLocked && <CreateStickerButton onClick={navigateToCreateSticker} />}
       <MainButton
         text={isLocked ? "롤리 저장하기" : "메시지 작성하기"}
-        onClick={isLocked ? saveRolly : navigateToPostIt}
+        onClick={isLocked ? handleSaveButtonClick : navigateToPostIt}
+      />
+      <Modal
+        contents={[
+          {
+            title: "롤리를 저장하시겠어요?",
+          },
+        ]}
+        onConfirm={handleSaveRolly}
+        onCancel={toggleConfirmModal}
+        isOpen={isConfirmModalOpen}
+      />
+      <Alert
+        title="저장 중 오류가 발생했습니다. "
+        body={alertMessage}
+        isOpen={isAlertOpen}
+        onClose={() => setAlertOpen(false)}
       />
     </>
   );
