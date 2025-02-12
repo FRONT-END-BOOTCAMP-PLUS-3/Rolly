@@ -9,18 +9,23 @@ import useUserStore from "@/application/state/useUserStore";
 import useRollyCreateStore from "@/application/state/useRollyCreateStore";
 import CreateRollyButton from "@/components/createRollyButton/CreateRollyButton";
 import Modal from "@/components/modal/Modal";
-import { FormData } from "@/components/modal/Modal.type";
+import { InputFormData } from "@/components/modal/Modal.type";
 
 const Index = () => {
   const router = useRouter();
-  const [isModalOpen, toggleModal] = useToggle(false);
+  const [isCreateRollyModalOpen, toggleCreateRollyModal] = useToggle(false);
+  const [isLogoutModalOpen, toggleLogoutModal] = useToggle(false);
   const [isAsideOpen, toggleAside] = useToggle(false);
   const { setType, setTitle } = useRollyCreateStore();
   const { userName } = useUserStore();
 
-  const handleConfirm = (formData?: FormData) => {
-    if (formData && formData.modal_radio && formData.modal_text) {
-      switch (formData.modal_radio) {
+  const handleConfirm = (inputFormData?: InputFormData) => {
+    if (
+      inputFormData &&
+      inputFormData.modal_radio &&
+      inputFormData.modal_text
+    ) {
+      switch (inputFormData.modal_radio) {
         case "개인용":
           setType(1);
           break;
@@ -30,9 +35,23 @@ const Index = () => {
         default:
           break;
       }
-      setTitle(formData.modal_text);
+      setTitle(inputFormData.modal_text);
     }
     router.push("/member/rollies/create");
+  };
+
+  const handleLogout = () => {
+    // 쿠키 삭제
+    document.cookie.split(";").forEach(function (c) {
+      document.cookie =
+        c.trim().split("=")[0] +
+        "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+    });
+
+    // 세션 삭제
+    sessionStorage.clear();
+
+    router.push("/");
   };
 
   return (
@@ -49,20 +68,26 @@ const Index = () => {
           alt="햄버거 버튼"
         />
       </button>
-      <div className={styles["center-container"]}>
-        <Image
-          src="/images/mascot.svg"
-          width={500}
-          height={320}
-          alt="롤리 마스코트"
-        />
-      </div>
+
+      <Image
+        src="/images/main.svg"
+        width={390}
+        height={320}
+        className={styles["main-img"]}
+        alt="롤리 메인 이미지"
+      />
+
       <CreateRollyButton
-        onClick={toggleModal}
+        onClick={toggleCreateRollyModal}
         className={styles["create-rolly-btn"]}
       />
 
-      <Aside userName={userName} onClose={toggleAside} isOpen={isAsideOpen} />
+      <Aside
+        userName={userName}
+        onClose={toggleAside}
+        isOpen={isAsideOpen}
+        toggleLogoutModal={toggleLogoutModal}
+      />
 
       <Modal
         contents={[
@@ -80,8 +105,20 @@ const Index = () => {
           },
         ]}
         onConfirm={handleConfirm}
-        onCancel={toggleModal}
-        isOpen={isModalOpen}
+        onCancel={toggleCreateRollyModal}
+        isOpen={isCreateRollyModalOpen}
+      />
+
+      <Modal
+        contents={[
+          {
+            title: "로그아웃 하시겠어요?",
+          },
+        ]}
+        onConfirm={handleLogout}
+        onCancel={toggleLogoutModal}
+        isOpen={isLogoutModalOpen}
+        confirmText="로그아웃"
       />
     </>
   );
@@ -93,9 +130,15 @@ type AsideProps = {
   userName: string;
   onClose: () => void;
   isOpen: boolean;
+  toggleLogoutModal: () => void;
 };
 
-const Aside = ({ userName, onClose, isOpen }: AsideProps) => {
+const Aside = ({
+  userName,
+  onClose,
+  isOpen,
+  toggleLogoutModal,
+}: AsideProps) => {
   return (
     <div
       className={`${styles["aside-container"]} ${isOpen ? styles["open"] : ""}`}
@@ -135,7 +178,9 @@ const Aside = ({ userName, onClose, isOpen }: AsideProps) => {
             </ul>
           </li>
         </ul>
-        <p className={styles["logout"]}>로그아웃</p>
+        <button className={styles["logout"]} onClick={toggleLogoutModal}>
+          로그아웃
+        </button>
       </aside>
     </div>
   );

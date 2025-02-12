@@ -3,7 +3,7 @@ import { SbRollyRepository } from "@/infrastructure/repositories/SbRollyReposito
 import { DfCreateRollyUsecase } from "@/application/usecases/rolly/DfCreateRollyUsecase";
 import { CreateRollyDto } from "@/application/usecases/rolly/dto/CreateRollyDto";
 import { DfCreatedRollyUsecase } from "@/application/usecases/rolly/DfCreatedRollyUsecase";
-import CreatedRollyDto from "@/application/usecases/rolly/dto/CreatedRollyDto";
+import { CreatedRollyDto } from "@/application/usecases/rolly/dto/CreatedRollyDto";
 import { UUID } from "@/types/common";
 
 export async function POST(req: NextRequest) {
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Rolly 생성 실패" }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, id: rollyId }, { status: 201 });
+    return NextResponse.json({ success: true, rollyId }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { error: (error as Error).message },

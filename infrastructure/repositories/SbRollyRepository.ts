@@ -68,12 +68,14 @@ export class SbRollyRepository implements RollyRepository {
             user_id: userId,
             type_id: typeId,
             is_locked: isLocked,
+            background_theme_id: backgroundThemeId,
             created_at: createdAt,
             ...rest
           }) => ({
             userId,
             typeId,
             isLocked,
+            backgroundThemeId,
             createdAt,
             ...rest,
           })
@@ -104,12 +106,14 @@ export class SbRollyRepository implements RollyRepository {
         user_id: userId,
         type_id: typeId,
         is_locked: isLocked,
+        background_theme_id: backgroundThemeId,
         created_at: createdAt,
         ...rest
       }) => ({
         userId,
         typeId,
         isLocked,
+        backgroundThemeId,
         createdAt,
         ...rest,
       })
