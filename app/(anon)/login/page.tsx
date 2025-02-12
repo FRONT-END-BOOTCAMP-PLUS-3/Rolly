@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import AuthInput from "@/components/authInput/AuthInput";
 import MainButton from "@/components/mainButton/MainButton";
 import BackButton from "@/components/backButton/BackButton";
@@ -11,7 +11,7 @@ import supabase from "@/utils/supabase/supabaseClient";
 import useUserStore from "@/application/state/useUserStore";
 
 const Login = () => {
-  // const router = useRouter();
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -60,6 +60,7 @@ const Login = () => {
         );
         // localStorage에서 인증 관련 데이터 제거
         await supabase.auth.signOut();
+        router.push("/member");
       }
     } catch (error) {
       console.error("로그인 중 예외 발생:", error);
