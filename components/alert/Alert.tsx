@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styles from "./Alert.module.scss";
 
 type AlertProps = {
@@ -16,7 +17,7 @@ const Alert = ({ title, body, isOpen, onClose }: AlertProps) => {
         <h2>{title}</h2>
         <p>{body}</p>
         <button className={styles["close-btn"]} onClick={onClose}>
-          <img src="/icons/close.svg" alt="닫기" />
+          <Image src="/icons/close.svg" width={24} height={24} alt="닫기" />
         </button>
       </div>
     </div>

@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import useRollyStore from "@/application/state/useRollyStore";
 import { PostitThemeDto } from "@/application/usecases/postitTheme/dto/PostitThemeDto";
 import { FontFamilyDto } from "@/application/usecases/fontFamily/dto/FontFamilyDto";
+import Image from "next/image";
 
 const CreatePostits = () => {
   const router = useRouter();
@@ -151,8 +152,11 @@ const CreatePostits = () => {
       />
 
       <div className={styles["textField"]}>
-        <img
+        <Image
           src={`/images/postit-theme/${selectedPostitTheme.name}.svg`}
+          width={350}
+          height={350}
+          alt={`포스트잇 ${selectedPostitTheme.name} 테마`}
           className={styles["postit-theme-bg"]}
         />
         <textarea
@@ -181,8 +185,10 @@ const CreatePostits = () => {
         <ScrollContainer>
           {postitThemeList.map((postitTheme, index) => (
             <ItemBox key={index} variant="image">
-              <img
+              <Image
                 src={`/images/postit-theme/${postitTheme.name}.svg`}
+                width={92}
+                height={92}
                 alt={`postit-${postitTheme.name}`}
                 onClick={() => updatePostit(postitTheme)}
               />
