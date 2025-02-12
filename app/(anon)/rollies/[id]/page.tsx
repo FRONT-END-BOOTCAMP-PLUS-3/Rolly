@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useRollyStore from "@/application/state/useRollyStore";
 import useUserStore from "@/application/state/useUserStore";
@@ -27,6 +27,7 @@ const Rollies = () => {
   const [isConfirmModalOpen, toggleConfirmModal] = useToggle(false);
   const [isAlertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const rollyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchRollyDetail = async () => {
@@ -114,19 +115,21 @@ const Rollies = () => {
         leftContent={<HomeButton />}
         rightContent={
           <>
-            {isLocked && <ImageDownloadButton />}
+            {isLocked && <ImageDownloadButton targetRef={rollyRef} />}
             <ShareButton />
           </>
         }
         title={title}
       />
-      <Rolly
-        theme={rollyTheme}
-        phrase={phrase}
-        isEditable={false}
-        imageUrl={image}
-        postits={postits}
-      />
+      <div ref={rollyRef}>
+        <Rolly
+          theme={rollyTheme}
+          phrase={phrase}
+          isEditable={false}
+          imageUrl={image}
+          postits={postits}
+        />
+      </div>
       {!isLocked && <CreateStickerButton onClick={navigateToCreateSticker} />}
       <MainButton
         text={isLocked ? "롤리 저장하기" : "메시지 작성하기"}
