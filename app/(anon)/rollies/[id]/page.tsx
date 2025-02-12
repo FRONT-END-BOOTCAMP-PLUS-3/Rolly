@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useRollyStore from "@/application/state/useRollyStore";
+import useUserStore from "@/application/state/useUserStore";
 import Header from "@/components/header/Header";
 import ShareButton from "@/components/shareButton/ShareButton";
 import HomeButton from "@/components/homeButton/HomeButton";
@@ -10,12 +11,15 @@ import CreateStickerButton from "@/components/createStickerButton/CreateStickerB
 import Rolly from "@/components/rolly/Rolly";
 import MainButton from "@/components/mainButton/MainButton";
 import { Postit } from "@/components/rolly/Rolly.type";
+import supabase from "@/utils/supabase/supabaseClient";
+
 const Rollies = () => {
   const router = useRouter();
   const { id: rollyId } = useParams();
   const { title, image, phrase, rollyTheme, setRollyData } = useRollyStore();
   const [postits, setPostits] = useState<Postit[]>([]);
   const [isLocked, setIsLocekd] = useState(false);
+  const { userId } = useUserStore();
 
   useEffect(() => {
     const fetchRollyDetail = async () => {
@@ -31,7 +35,6 @@ const Rollies = () => {
           rollyTheme: rollyDetailDto.backgroundTheme,
         });
         setIsLocekd(rollyDetailDto.isLocked);
-        console.log("isLocked:", rollyDetailDto.isLocked);
       }
     };
 
@@ -54,10 +57,34 @@ const Rollies = () => {
     router.push("/stickers/create");
   };
 
+  const saveRollyToDatabase = async (rollyId: string, userId: string) => {
+    const { data, error } = await supabase
+      .from("saves")
+      .insert([{ rolly_id: rollyId, user_id: userId }]);
+
+    if (error) {
+      console.error("Error saving rolly:", error.message);
+      return false; // Indicate failure
+    }
+
+    console.log("Rolly saved successfully:", data);
+    return true; // Indicate success
+  };
+
   const saveRolly = async () => {
-    // 롤리를 저장하는 로직을 작성하세요
+    console.log(userId);
+    if (!userId || userId === "00000000-0000-0000-0000-000000000000") {
+      router.push("/page");
+      return;
+    }
     console.log("롤리 저장 중...");
-    // 예시: fetch 요청을 보내거나, 상태를 업데이트하는 등의 작업
+    const success = await saveRollyToDatabase(rollyId, userId);
+    if (success) {
+      console.log("롤리가 성공적으로 저장되었습니다.");
+    } else {
+      console.log("롤리 저장에 실패했습니다.");
+      console.log("내가 받은 롤리로 저장 및 이동");
+    }
   };
 
   return (
