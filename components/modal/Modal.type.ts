@@ -25,11 +25,11 @@ type TextInputModalContent = {
 
 export type ModalProps = {
   contents: ModalContent[];
-  onConfirm: (formdata?: FormData) => void;
+  onConfirm: (inputFormData?: InputFormData) => void;
   onCancel: () => void;
   isOpen: boolean;
   confirmText?: string;
   cancelText?: string;
 };
 
-export type FormData = Record<string, undefined | string>;
+export type InputFormData = Record<string, undefined | string>;

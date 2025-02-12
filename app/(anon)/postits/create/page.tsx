@@ -9,7 +9,7 @@ import Header from "@/components/header/Header";
 import BackButton from "@/components/backButton/BackButton";
 import useToggle from "@/hooks/useToggle";
 import Modal from "@/components/modal/Modal";
-import { FormData } from "@/components/modal/Modal.type";
+import { InputFormData } from "@/components/modal/Modal.type";
 import { useRouter } from "next/navigation";
 import useRollyStore from "@/application/state/useRollyStore";
 import { PostitThemeDto } from "@/application/usecases/postitTheme/dto/PostitThemeDto";
@@ -97,9 +97,18 @@ const CreatePostits = () => {
     }
   };
 
-  const handleEmailModal = (formData?: FormData) => {
-    if (formData && formData.modal_text) {
-      setEmail(formData.modal_text);
+  const handleEmailConfirmModal = (inputFormData?: InputFormData) => {
+    if (inputFormData && inputFormData.modal_text) {
+      setEmail(inputFormData.modal_text);
+    }
+    toggleEmailModal();
+    setTimeout(() => {
+      togglePostitModal();
+    }, 100);
+  };
+  const handleEmailCancelModal = (inputFormData?: InputFormData) => {
+    if (!inputFormData || !inputFormData.modal_text) {
+      setEmail("");
     }
     toggleEmailModal();
     setTimeout(() => {
@@ -196,8 +205,8 @@ const CreatePostits = () => {
             maxLength: 30,
           },
         ]}
-        onConfirm={handleEmailModal}
-        onCancel={toggleEmailModal}
+        onConfirm={handleEmailConfirmModal}
+        onCancel={handleEmailCancelModal}
         isOpen={isEmailModalOpen}
       />
       <Modal

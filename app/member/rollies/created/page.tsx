@@ -32,7 +32,7 @@ const CreatedRollies: React.FC = () => {
 
   const handleLock = async (id: number) => {
     await fetch(`/api/rollies/${id}`, {
-      method: "POST",
+      method: "PUT",
     });
     setRollyItems((prev) =>
       prev.map((item) => (item.id === id ? { ...item, isLocked: true } : item))

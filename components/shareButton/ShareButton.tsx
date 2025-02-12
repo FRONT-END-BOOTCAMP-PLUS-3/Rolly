@@ -7,9 +7,11 @@ interface ShareButtonProps {
 
 const ShareButton: React.FC<ShareButtonProps> = () => {
   const currentUrl = window.location.href; // 현재 페이지의 URL을 가져옴
+  const modifiedUrl = currentUrl.replace("/member", ""); // '/member' 제거
+
   const handleShare = () => {
     navigator.clipboard
-      .writeText(currentUrl) // 클립보드에 URL 복사
+      .writeText(modifiedUrl) // 클립보드에 URL 복사
       .then(() => {
         alert("클립보드에 복사되었습니다.");
       })

@@ -4,11 +4,9 @@
   right: var(--size-gap);
 }
 
-.center-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex-grow: 1;
+.main-img {
+  margin: auto;
+  padding-bottom: 90px;
 }
 
 .create-rolly-btn {

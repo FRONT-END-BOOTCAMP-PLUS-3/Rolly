@@ -28,8 +28,8 @@ const SavedRollies = () => {
     router.push(`/member/rollies/${id}`);
   };
 
-  const navigateToReply = () => {
-    router.push(`/member/reply/`);
+  const navigateToReply = (id: number) => {
+    router.push(`/member/reply?rollyId=${id}`);
   };
   return (
     <div>
@@ -46,7 +46,11 @@ const SavedRollies = () => {
             date={rollyItem.createdAt.slice(0, 10)}
             onClick={() => navigateToRolly(rollyItem.id)}
             variant={"saved"}
-            onReply={rollyItem.typeId === 1 ? navigateToReply : undefined}
+            onReply={
+              rollyItem.typeId === 1
+                ? () => navigateToReply(rollyItem.id)
+                : undefined
+            }
             isLocked={true}
           />
         ))}
