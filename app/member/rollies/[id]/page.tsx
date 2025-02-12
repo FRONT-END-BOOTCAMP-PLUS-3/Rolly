@@ -34,7 +34,6 @@ const Rollies = () => {
           rollyTheme: rollyDetailDto.backgroundTheme,
         });
         setIsLocekd(rollyDetailDto.isLocked);
-        console.log("isLocked:", rollyDetailDto.isLocked);
       }
     };
 

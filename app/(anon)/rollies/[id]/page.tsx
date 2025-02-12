@@ -89,7 +89,6 @@ const Rollies = () => {
   };
 
   const handleSaveRolly = async () => {
-    console.log(userId);
     const success = await saveRollyToDatabase(rollyId, userId);
     if (success) {
       router.push("/member/rollies/saved");
