@@ -87,8 +87,7 @@ const RollyItem: React.FC<RollyItemProps> = ({
       </div>
       <div className={styles["wrapper"]}>
         <p className={styles["date"]}>{date}</p>
-        {/* delete 버튼: isCreated가 true이면 항상 유지 */}
-        {isCreated ? (
+        {isCreated && !isLocked ? (
           <button
             className={classNames("action", styles.action)}
             onClick={toggleDeleteModal}
@@ -101,6 +100,7 @@ const RollyItem: React.FC<RollyItemProps> = ({
             />
           </button>
         ) : (
+          !isLocked &&
           onReply && (
             <button
               className={classNames("action", styles.action)}
@@ -121,7 +121,7 @@ const RollyItem: React.FC<RollyItemProps> = ({
         contents={[
           {
             title: "롤리를 완성하시겠어요?",
-            body: "완성 후에는 메세지를 작성할 수 없어요!",
+            body: "완성 후에는 메세지 작성 및 롤리 삭제가 불가해요!",
           },
         ]}
         confirmText={"완성"}
