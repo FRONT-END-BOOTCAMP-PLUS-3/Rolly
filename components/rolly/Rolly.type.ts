@@ -11,6 +11,7 @@ export type RollyProps = {
   previewImgUrl?: string | null;
   imageUrl?: string;
   postits?: Postit[];
+  children?: React.ReactNode;
   onPhraseClick?: () => void;
   onFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
