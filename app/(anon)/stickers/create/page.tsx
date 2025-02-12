@@ -80,7 +80,7 @@ const Stickers: React.FC = () => {
     };
     fetchStickerStyles();
     fetchPostits();
-  }, [rollyId]);
+  }, [rollyId, stickerStyleList]);
 
   useEffect(() => {
     window.addEventListener("mouseup", handleMouseUp);
