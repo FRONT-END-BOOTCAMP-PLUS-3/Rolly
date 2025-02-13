@@ -33,6 +33,13 @@ const AuthCallbackClient = () => {
 
       // 원래 가려던 페이지로 이동
       router.push("/member");
+
+      // 쿠키 삭제
+      document.cookie.split(";").forEach(function (c) {
+        document.cookie =
+          c.trim().split("=")[0] +
+          "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+      });
     };
 
     fetchUser();
