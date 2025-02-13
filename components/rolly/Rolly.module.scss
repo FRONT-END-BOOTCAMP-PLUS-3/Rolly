@@ -99,54 +99,48 @@
   }
 }
 
-// 🎨 테마 데이터 (배경 이미지 + 배경 색 + 폰트 설정)
-$themes: (
-  "hbd": (
-    bg: "/images/rolly-theme/hbd.svg",
-    color: "#e1ebf7",
-    font: "LeeSeoyun",
-  ),
-  "good-luck": (
-    bg: "/images/rolly-theme/good-luck.svg",
-    color: "#e8dff4",
-    font: "bakdahyeon",
-  ),
-  "chain-letter": (
-    bg: "/images/rolly-theme/chain-letter.svg",
-    color: "#f8f7f1",
-    font: "ryuryuche",
-  ),
-  "congratulation": (
-    bg: "/images/rolly-theme/congratulation.svg",
-    color: "#fdeded",
-    font: "ryuttungche",
-  ),
-  "graduation1": (
-    bg: "/images/rolly-theme/graduation1.svg",
-    color: "#2b2527",
-    font: "memoaenokja",
-    font-color: var(--color-white),
-  ),
-  "graduation2": (
-    bg: "/images/rolly-theme/graduation2.svg",
-    color: "#e3b2b5",
-    font: "SejongGeulggot",
-  ),
-);
+// 🎨 테마 데이터 (배경 이미지 + 배경 색)
+.rolly.hbd {
+  background: url("/images/rolly-theme/hbd.svg") #e1ebf7 no-repeat top/100%;
+}
+.rolly.good-luck {
+  background: url("/images/rolly-theme/good-luck.svg") #e8dff4 no-repeat
+    top/100%;
+}
+.rolly.chain-letter {
+  background: url("/images/rolly-theme/chain-letter.svg") #f8f7f1 no-repeat
+    top/100%;
+}
+.rolly.congratulation {
+  background: url("/images/rolly-theme/congratulation.svg") #fdeded no-repeat
+    top/100%;
+}
+.rolly.graduation1 {
+  background: url("/images/rolly-theme/graduation1.svg") #2b2527 no-repeat
+    top/100%;
+}
+.rolly.graduation2 {
+  background: url("/images/rolly-theme/graduation2.svg") #e3b2b5 no-repeat
+    top/100%;
+}
 
-@each $theme, $values in $themes {
-  .rolly.#{$theme} {
-    background: url(unquote(map-get($values, bg)))
-      unquote(map-get($values, color))
-      no-repeat
-      top/100%;
-  }
-
-  .phrase.#{$theme} {
-    font-family: map-get($values, font), sans-serif;
-    // 🎯 font-color가 있는 경우만 적용
-    @if map-has-key($values, font-color) {
-      fill: map-get($values, font-color);
-    }
-  }
+// 🎨 테마 데이터 (폰트 설정)
+.phrase.hbd {
+  font-family: LeeSeoyun, sans-serif;
+}
+.phrase.good-luck {
+  font-family: bakdahyeon, sans-serif;
+}
+.phrase.chain-letter {
+  font-family: ryuryuche, sans-serif;
+}
+.phrase.congratulation {
+  font-family: ryuttungche, sans-serif;
+}
+.phrase.graduation1 {
+  font-family: memoaenokja, sans-serif;
+  fill: var(--color-white);
+}
+.phrase.graduation2 {
+  font-family: SejongGeulggot, sans-serif;
 }
