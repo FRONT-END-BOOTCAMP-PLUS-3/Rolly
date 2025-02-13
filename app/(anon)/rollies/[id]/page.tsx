@@ -117,7 +117,7 @@ const Rollies = () => {
     // Check if the user is logged in
     if (!userId || userId === "00000000-0000-0000-0000-000000000000") {
       // User is not logged in, redirect to the login page
-      router.push("/page");
+      router.push("/");
     } else {
       // User is logged in, toggle the modal to confirm the save action
       toggleConfirmModal();
