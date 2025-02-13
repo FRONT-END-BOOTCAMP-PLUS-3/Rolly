@@ -31,10 +31,16 @@ const SavedRollies = () => {
   const navigateToReply = (id: number) => {
     router.push(`/member/reply?rollyId=${id}`);
   };
+  const navigateToHome = () => {
+    router.push(`/member`);
+  };
   return (
     <div>
       <div className={styles["header"]}>
-        <Header leftContent={<BackButton />} title="내가 받은 롤리" />
+        <Header
+          leftContent={<BackButton onClick={navigateToHome} />}
+          title="내가 받은 롤리"
+        />
       </div>
       <p className={styles["list-title"]}>롤리 리스트</p>
       <div className={styles["list"]}>

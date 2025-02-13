@@ -58,7 +58,7 @@ const SignUp = () => {
       if (error) throw error;
 
       console.log("회원가입 성공:", data.user);
-      router.push("/intro");
+      router.push("/login");
     } catch (error) {
       console.error("회원가입 중 오류 발생:", error);
       setErrorMessage((error as Error).message);
