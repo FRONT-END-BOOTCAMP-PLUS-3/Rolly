@@ -100,11 +100,15 @@ const Rollies = () => {
   };
 
   const handleSaveRolly = async () => {
-    const success = await saveRollyToDatabase(rollyId, userId);
-    if (success) {
-      router.push("/member/rollies/saved");
+    if (typeof rollyId === "string") {
+      const success = await saveRollyToDatabase(rollyId, userId);
+      if (success) {
+        router.push("/member/rollies/saved");
+      } else {
+        console.log("롤리 저장에 실패했습니다.");
+      }
     } else {
-      console.log("롤리 저장에 실패했습니다.");
+      console.error("Invalid rollyId:", rollyId);
     }
   };
 
@@ -131,16 +135,15 @@ const Rollies = () => {
         }
         title={title}
       />
-      <div ref={rollyRef}>
-        <Rolly
-          theme={rollyTheme}
-          phrase={phrase}
-          isEditable={false}
-          imageUrl={image}
-          postits={postits}
-          stickers={stickers}
-        />
-      </div>
+      <Rolly
+        ref={rollyRef}
+        theme={rollyTheme}
+        phrase={phrase}
+        isEditable={false}
+        imageUrl={image}
+        postits={postits}
+        stickers={stickers}
+      />
       {!isLocked && <CreateStickerButton onClick={navigateToCreateSticker} />}
       <MainButton
         text={isLocked ? "롤리 저장하기" : "메시지 작성하기"}

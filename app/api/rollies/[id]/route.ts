@@ -12,9 +12,9 @@ import { SbRollyThemeRepository } from "@/infrastructure/repositories/SbRollyThe
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await params;
   const repository = new SbRollyRepository();
   const lockRollyUsecase = new DfLockRollyUsecase(repository);
   await lockRollyUsecase.execute(Number(id));
@@ -26,9 +26,9 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params; // URL에서 id 추출
+  const { id } = await params; // URL에서 id 추출
   const repository = new SbRollyRepository();
   const deleteRollyUsecase = new DfDeleteRollyUsecase(repository);
 
@@ -41,10 +41,12 @@ export async function DELETE(
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const rollyId = Number(params.id);
+    const { id } = await params;
+    const rollyId = Number(id);
+
     if (isNaN(rollyId)) {
       return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
     }

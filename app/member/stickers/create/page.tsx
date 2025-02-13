@@ -13,11 +13,13 @@ import BackButton from "@/components/backButton/BackButton";
 import { useRouter } from "next/navigation";
 import { StickerStyleDto } from "@/application/usecases/stickerStyle/dto/StickerStyleDto";
 import Rolly from "@/components/rolly/Rolly";
-import { Postit } from "@/components/rolly/Rolly.type";
 import useRollyStore from "@/application/state/useRollyStore";
 import supabase from "@/utils/supabase/supabaseClient";
 import Modal from "@/components/modal/Modal";
 import useToggle from "@/hooks/useToggle";
+
+import { PostitDto } from "@/application/usecases/postit/dto/PostitDto";
+import { StickerDto } from "@/application/usecases/sticker/dto/StickerDto";
 
 interface Sticker {
   id: string;
@@ -31,7 +33,6 @@ interface Sticker {
 interface StickerStyle {
   id: number;
   name: string;
-  src: string;
 }
 
 const Stickers: React.FC = () => {
@@ -41,7 +42,8 @@ const Stickers: React.FC = () => {
     []
   );
   const { id: rollyId, image, phrase, rollyTheme } = useRollyStore();
-  const [postits, setPostits] = useState<Postit[]>([]);
+  const [postits, setPostits] = useState<PostitDto[]>([]);
+  const [stickers, setStickers] = useState<StickerDto[]>([]);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const draggableRef = useRef<HTMLDivElement>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
@@ -53,24 +55,17 @@ const Stickers: React.FC = () => {
 
   useEffect(() => {
     const fetchStickerStyles = async () => {
-      try {
-        const response = await fetch("/api/stickerstyles/");
-        if (!response.ok) {
-          throw new Error("Failed to fetch stickers");
-        }
-        const data = await response.json();
-
-        if (!data.success || !data.data) {
-          throw new Error("Invalid response format");
-        }
-        setStickerStyleList(data.data);
-
-        console.log(stickerStyleList);
-      } catch (error) {
-        console.error("Error fetching stickers:", error);
+      const response = await fetch("/api/stickerstyles");
+      const { success, data } = await response.json();
+      if (success) {
+        setStickerStyleList(data);
       }
     };
 
+    fetchStickerStyles();
+  }, []);
+
+  useEffect(() => {
     const fetchPostits = async () => {
       const response = await fetch(`/api/postits?rollyId=${rollyId}`);
       const { success, postitsDto } = await response.json();
@@ -78,8 +73,17 @@ const Stickers: React.FC = () => {
         setPostits(postitsDto);
       }
     };
-    fetchStickerStyles();
+
+    const fetcStickers = async () => {
+      const response = await fetch(`/api/stickers?rollyId=${rollyId}`);
+      const { success, stickersDto } = await response.json();
+      if (success) {
+        setStickers(stickersDto);
+      }
+    };
+
     fetchPostits();
+    fetcStickers();
   }, [rollyId]);
 
   useEffect(() => {
@@ -169,6 +173,7 @@ const Stickers: React.FC = () => {
         isEditable={false}
         imageUrl={image}
         postits={postits}
+        stickers={stickers}
       >
         <div className={styles["sticker-field"]} ref={fieldRef}>
           {selectedStickers.map((sticker) => (
