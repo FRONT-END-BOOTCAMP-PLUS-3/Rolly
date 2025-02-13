@@ -64,7 +64,8 @@ export class SbPostitRepository implements PostitRepository {
       const { data, error } = await supabase
         .from("postit")
         .select("*")
-        .eq("rolly_id", rollyId);
+        .eq("rolly_id", rollyId)
+        .order("created_at");
 
       if (error) throw error;
       if (!data) throw new Error("Postit들을 가져오지 못했습니다.");

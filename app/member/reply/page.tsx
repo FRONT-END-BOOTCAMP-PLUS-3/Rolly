@@ -6,7 +6,7 @@ import MainButton from "@/components/mainButton/MainButton";
 import useToggle from "@/hooks/useToggle";
 import Modal from "@/components/modal/Modal";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { WriterEmailDto } from "@/application/usecases/postit/dto/WriterEmailDto";
 import { useRouter } from "next/navigation";
 
@@ -65,7 +65,7 @@ const Reply = () => {
     router.push("/member/rollies/saved");
   };
   return (
-    <div>
+    <Suspense>
       <Header
         leftContent={<BackButton onClick={toggleBackModal} />}
         title="답장"
@@ -117,7 +117,7 @@ const Reply = () => {
         isOpen={isBackModalOpen}
         confirmText="확인"
       />
-    </div>
+    </Suspense>
   );
 };
 
