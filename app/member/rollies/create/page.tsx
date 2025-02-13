@@ -129,7 +129,7 @@ const CreateRollies = () => {
   return (
     <>
       <Header
-        title="롤리 만들기"
+        title={title}
         leftContent={<BackButton onClick={toggleBackModal} />}
       />
       <Rolly
