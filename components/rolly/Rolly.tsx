@@ -13,6 +13,7 @@ const Rolly = forwardRef<HTMLDivElement, RollyProps>(
       imageUrl,
       postits = [],
       stickers = [],
+      children,
       onFileChange,
       onPhraseClick,
     }: RollyProps,
@@ -109,6 +110,7 @@ const Rolly = forwardRef<HTMLDivElement, RollyProps>(
             }}
           />
         ))}
+        {children}
       </div>
     );
   }
