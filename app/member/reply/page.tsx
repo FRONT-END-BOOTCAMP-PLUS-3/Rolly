@@ -1,12 +1,12 @@
 "use client";
+
 import BackButton from "@/components/backButton/BackButton";
 import Header from "@/components/header/Header";
 import styles from "./page.module.scss";
 import MainButton from "@/components/mainButton/MainButton";
 import useToggle from "@/hooks/useToggle";
 import Modal from "@/components/modal/Modal";
-import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { WriterEmailDto } from "@/application/usecases/postit/dto/WriterEmailDto";
 import { useRouter } from "next/navigation";
 
@@ -17,8 +17,14 @@ const Reply = () => {
   const [emails, setEmails] = useState<WriterEmailDto[]>([]);
   const [message, setMessage] = useState("");
   const [sender, setSender] = useState("");
-  const searchParams = useSearchParams();
-  const rollyId = searchParams.get("rollyId");
+  const [rollyId, setRollyId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setRollyId(params.get("rollyId"));
+    }
+  }, []);
 
   useEffect(() => {
     const fetchWriterEmails = async () => {
@@ -65,7 +71,7 @@ const Reply = () => {
     router.push("/member/rollies/saved");
   };
   return (
-    <Suspense>
+    <>
       <Header
         leftContent={<BackButton onClick={toggleBackModal} />}
         title="답장"
@@ -117,7 +123,7 @@ const Reply = () => {
         isOpen={isBackModalOpen}
         confirmText="확인"
       />
-    </Suspense>
+    </>
   );
 };
 

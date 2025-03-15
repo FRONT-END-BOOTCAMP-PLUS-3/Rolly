@@ -6,7 +6,7 @@ import useRollyStore from "@/application/state/useRollyStore";
 import Header from "@/components/header/Header";
 import ShareButton from "@/components/shareButton/ShareButton";
 import BackButton from "@/components/backButton/BackButton";
-import CreateStickerButton from "@/components/createStickerButton/CreateStickerButton";
+// import CreateStickerButton from "@/components/createStickerButton/CreateStickerButton";
 import Rolly from "@/components/rolly/Rolly";
 import MainButton from "@/components/mainButton/MainButton";
 import ImageDownloadButton from "@/components/imageDownloadButton/ImageDownloadButton";
@@ -64,9 +64,9 @@ const Rollies = () => {
   const navigateToPostIt = () => {
     router.push("/member/postits/create");
   };
-  const navigateToCreateSticker = () => {
-    router.push("/member/stickers/create");
-  };
+  // const navigateToCreateSticker = () => {
+  //   router.push("/member/stickers/create");
+  // };
 
   return (
     <>
@@ -89,7 +89,7 @@ const Rollies = () => {
         postits={postits}
         stickers={stickers}
       />
-      {!isLocked && <CreateStickerButton onClick={navigateToCreateSticker} />}
+      {/* {!isLocked && <CreateStickerButton onClick={navigateToCreateSticker} />} */}
       {!isLocked && (
         <MainButton text="메시지 작성하기" onClick={navigateToPostIt} />
       )}
