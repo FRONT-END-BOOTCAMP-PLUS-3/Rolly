@@ -1,0 +1,26 @@
+.stickersContainer {
+  display: flex;
+  flex-grow: 1;
+  padding-bottom: 190px;
+}
+
+.sticker-field {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.delete-button {
+  position: "relative";
+  z-index: 1000;
+  top: 0;
+  left: 0px;
+  color: "white";
+  border: "none";
+  border-radius: "50%";
+  width: "20px";
+  height: "20px";
+  font-size: "12px";
+}

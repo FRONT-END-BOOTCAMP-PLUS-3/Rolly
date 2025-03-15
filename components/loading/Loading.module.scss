@@ -1,0 +1,21 @@
+.loading {
+  position: relative;
+  margin: auto;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.mascot {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  animation: bounce 0.6s infinite ease-in-out;
+}

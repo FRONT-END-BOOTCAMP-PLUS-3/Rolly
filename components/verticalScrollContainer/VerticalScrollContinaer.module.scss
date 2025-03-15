@@ -1,0 +1,33 @@
+.vertical-scroll-container {
+  display: flex;
+  flex-direction: row;
+  margin-left: 6px;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: var(--size-gap);
+  height: 140px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 250px;
+}
+
+@media (max-width: 768px) {
+  .vertical-scroll-container {
+    display: grid;
+    width: 100%;
+    height: 140px;
+    gap: 4px;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: center; /* 중앙 정렬 */
+    justify-items: center; /* 아이템들을 각 셀에서 중앙으로 정렬 */
+  }
+}
+
+.vertical-scroll-container .item:last-child:nth-last-child(2),
+.vertical-scroll-container .item:last-child {
+  justify-self: start; /* 마지막 두 요소 왼쪽 정렬 */
+}
+
+.vertical-scroll-container::-webkit-scrollbar {
+  display: none;
+}

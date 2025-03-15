@@ -1,0 +1,29 @@
+.item-box {
+  flex-shrink: 0;
+  background-color: var(--color-tertiary);
+  border-radius: 4px;
+}
+
+.text {
+  @extend .item-box;
+  padding: 5px 20px;
+  text-align: center;
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-1);
+}
+
+.image {
+  @extend .item-box;
+  width: 100px;
+  height: 100px;
+  padding: 4px;
+}
+
+@media (max-width: 768px) {
+  .image {
+    @extend .item-box;
+    width: 83px;
+    height: 83px;
+    padding: 4px;
+  }
+}

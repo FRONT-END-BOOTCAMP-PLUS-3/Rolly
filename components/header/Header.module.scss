@@ -1,0 +1,28 @@
+.header {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  max-width: var(--size-max-width);
+  width: 100%;
+  padding: 12px var(--size-gap);
+  margin-left: calc(-1 * var(--size-gap));
+  background-color: var(--color-bg);
+
+  h2 {
+    font-size: var(--font-size-xl);
+    color: var(--color-black);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: normal;
+  }
+
+  div:last-child {
+    display: flex;
+    gap: 8px;
+  }
+}

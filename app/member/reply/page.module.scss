@@ -1,0 +1,31 @@
+.sender {
+  width: 100%;
+  border: 1px solid var(--color-primary);
+  border-radius: 10px;
+  color: var(--color-gray-1);
+  padding: 5px;
+  font-size: var(--font-size-sm);
+  font-family: "Ownglyph_ParkDaHyun", sans-serif;
+  margin-top: 10px;
+  background-color: var(--color-tertiary);
+  padding-left: 10px;
+}
+.textarea {
+  width: 100%;
+  margin-top: 10px;
+  border: 1px solid var(--color-primary);
+  border-radius: 10px;
+  color: var(--color-gray-1);
+  padding: 10px;
+  font-size: var(--font-size-lg);
+  background-color: var(--color-tertiary);
+}
+
+.reply-button {
+  position: fixed;
+  bottom: 0;
+  max-width: var(--size-max-width);
+  width: 100%;
+  margin-left: calc(-1 * var(--size-gap));
+  padding: 36px var(--size-gap) 52px;
+}
