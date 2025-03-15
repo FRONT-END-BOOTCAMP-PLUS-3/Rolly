@@ -7,7 +7,7 @@ import useUserStore from "@/application/state/useUserStore";
 import Header from "@/components/header/Header";
 import ShareButton from "@/components/shareButton/ShareButton";
 import HomeButton from "@/components/homeButton/HomeButton";
-// import CreateStickerButton from "@/components/createStickerButton/CreateStickerButton";
+import CreateStickerButton from "@/components/createStickerButton/CreateStickerButton";
 import Rolly from "@/components/rolly/Rolly";
 import MainButton from "@/components/mainButton/MainButton";
 import { PostitDto } from "@/application/usecases/postit/dto/PostitDto";
@@ -72,9 +72,9 @@ const Rollies = () => {
   const navigateToPostIt = () => {
     router.push("/postits/create");
   };
-  // const navigateToCreateSticker = () => {
-  //   router.push("/stickers/create");
-  // };
+  const navigateToCreateSticker = () => {
+    router.push("/stickers/create");
+  };
 
   const saveRollyToDatabase = async (rollyId: string, userId: string) => {
     const { data, error } = await supabase
@@ -144,7 +144,7 @@ const Rollies = () => {
         postits={postits}
         stickers={stickers}
       />
-      {/* {!isLocked && <CreateStickerButton onClick={navigateToCreateSticker} />} */}
+      {!isLocked && <CreateStickerButton onClick={navigateToCreateSticker} />}
       <MainButton
         text={isLocked ? "롤리 저장하기" : "메시지 작성하기"}
         onClick={isLocked ? handleSaveButtonClick : navigateToPostIt}

@@ -104,7 +104,7 @@ const Rolly = forwardRef<HTMLDivElement, RollyProps>(
             alt={`스티커 ${sticker.stickerStyle}`}
             style={{
               position: "absolute",
-              top: `${sticker.yPosition}px`,
+              top: `${sticker.yPosition}%`,
               left: `${sticker.xPosition}%`,
               zIndex: 999,
             }}
