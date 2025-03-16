@@ -22,7 +22,7 @@ export async function GET(request: Request) {
         const response = NextResponse.redirect(`${origin}${next}`);
         response.headers.append(
           "Set-Cookie",
-          `supabase_auth_token=${accessToken}; Path=/; HttpOnly; Secure; SameSite=Lax;`
+          `supabase_auth_token=${accessToken}; Path=/; HttpOnly; Secure; SameSite=None;`
         );
 
         return response;
