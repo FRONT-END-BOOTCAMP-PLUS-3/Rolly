@@ -104,20 +104,13 @@ const Stickers: React.FC = () => {
       return;
     }
 
-    const containerWidth = fieldRef.current.clientWidth;
-    const containerHeight = fieldRef.current.clientHeight;
-
     // 각 스티커를 데이터베이스에 저장
     for (const sticker of selectedStickers) {
-      // Convert pixel positions to percentages
-      const xPercent = (sticker.x_position / containerWidth) * 100;
-      const yPercent = (sticker.y_position / containerHeight) * 100;
-
       const { data, error } = await supabase.from("sticker").insert([
         {
           sticker_style_id: sticker.sticker_style_id,
-          x_position: xPercent.toFixed(6), // Convert to string with 2 decimal places
-          y_position: yPercent.toFixed(6),
+          x_position: sticker.x_position,
+          y_position: sticker.y_position,
           rolly_id: rollyId,
         },
       ]);
