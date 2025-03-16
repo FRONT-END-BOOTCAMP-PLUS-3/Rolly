@@ -161,8 +161,8 @@ const CreatePostits = () => {
         />
         <textarea
           className={`${styles["textArea"]} ${selectedFontFamily.name}`}
-          placeholder="메시지를 작성하세요"
-          maxLength={100}
+          placeholder="최대 80자까지 작성 가능합니다"
+          maxLength={80}
           rows={6}
           cols={50}
           value={message}
@@ -186,7 +186,7 @@ const CreatePostits = () => {
           {postitThemeList.map((postitTheme, index) => (
             <ItemBox key={index} variant="image">
               <Image
-                src={`/images/postit-theme/${postitTheme.name}.svg`}
+                src={`/images/postit-theme/${postitTheme.name}.png`}
                 width={92}
                 height={92}
                 alt={`postit-${postitTheme.name}`}

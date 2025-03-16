@@ -90,7 +90,7 @@
     text-align: center;
 
     @media (max-width: 1200px) {
-      font-size: var(--font-size-sm);
+      font-size: var(--font-size-xs);
     }
 
     @media (max-width: 480px) {
@@ -101,10 +101,10 @@
 
 // 🎨 테마 데이터 (배경 이미지 + 배경 색)
 .rolly.hbd {
-  background: url("/images/rolly-theme/hbd.svg") #e1ebf7 no-repeat top/100%;
+  background: url("/images/rolly-theme/hbd.png") #e1ebf7 no-repeat top/100%;
 }
 .rolly.good-luck {
-  background: url("/images/rolly-theme/good-luck.svg") #e8dff4 no-repeat
+  background: url("/images/rolly-theme/good-luck.png") #e8dff4 no-repeat
     top/100%;
 }
 .rolly.chain-letter {
@@ -112,15 +112,15 @@
     top/100%;
 }
 .rolly.congratulation {
-  background: url("/images/rolly-theme/congratulation.svg") #fdeded no-repeat
+  background: url("/images/rolly-theme/congratulation.png") #fdeded no-repeat
     top/100%;
 }
 .rolly.graduation1 {
-  background: url("/images/rolly-theme/graduation1.svg") #2b2527 no-repeat
+  background: url("/images/rolly-theme/graduation1.png") #2b2527 no-repeat
     top/100%;
 }
 .rolly.graduation2 {
-  background: url("/images/rolly-theme/graduation2.svg") #e3b2b5 no-repeat
+  background: url("/images/rolly-theme/graduation2.png") #e3b2b5 no-repeat
     top/100%;
 }
 

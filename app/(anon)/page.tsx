@@ -23,7 +23,7 @@ const Index = () => {
   return (
     <>
       <Image
-        src="/images/main.svg"
+        src="/images/main.png"
         width={390}
         height={320}
         className={styles["main-img"]}

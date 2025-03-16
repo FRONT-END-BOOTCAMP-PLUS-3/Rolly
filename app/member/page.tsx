@@ -40,7 +40,9 @@ const Index = () => {
     router.push("/member/rollies/create");
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+
     // 쿠키 삭제
     document.cookie.split(";").forEach(function (c) {
       document.cookie =
@@ -48,7 +50,8 @@ const Index = () => {
         "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
     });
 
-    // 세션 삭제
+    // 로컬스토리지, 세션스토리지 삭제
+    localStorage.clear();
     sessionStorage.clear();
 
     router.push("/");
@@ -70,7 +73,7 @@ const Index = () => {
       </button>
 
       <Image
-        src="/images/main.svg"
+        src="/images/main.png"
         width={390}
         height={320}
         className={styles["main-img"]}
