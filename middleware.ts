@@ -28,9 +28,9 @@ export async function middleware(req: NextRequest) {
   }
 
   // 로그인하지 않은 사용자가 보호된 페이지 접근 시 차단
-  if (!isLoggedIn && pathname.startsWith("/member")) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
+  // if (!isLoggedIn && pathname.startsWith("/member")) {
+  //   return NextResponse.redirect(new URL("/", req.url));
+  // }
 
   // 로그인된 사용자가 / 경로에 접근하면 /member로 리디렉션
   if (isLoggedIn && pathname === "/") {
