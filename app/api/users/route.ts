@@ -20,9 +20,9 @@ export async function GET(req: NextRequest) {
     const userNameUsecase: DfUserInfoUsecase = new DfUserInfoUsecase(
       repository
     );
-    const UserInfoDto: UserInfoDto = await userNameUsecase.execute(userId);
+    const UserInfo: UserInfoDto = await userNameUsecase.execute(userId);
 
-    return NextResponse.json({ success: true, UserInfoDto }, { status: 200 });
+    return NextResponse.json({ success: true, UserInfo }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { success: false, error: (error as Error).message },
