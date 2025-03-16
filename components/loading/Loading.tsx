@@ -5,13 +5,13 @@ const Loading = () => {
   return (
     <div className={styles["loading"]}>
       <Image
-        src="/images/main-bg.svg"
+        src="/images/main-bg.png"
         width={390}
         height={320}
         alt="롤리 메인 이미지"
       />
       <Image
-        src="/images/mascot.svg"
+        src="/images/mascot.png"
         width={390}
         height={230}
         className={styles["mascot"]}
