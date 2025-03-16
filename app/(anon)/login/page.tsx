@@ -57,7 +57,8 @@ const Login = () => {
         });
       }
 
-      router.push("/member");
+      const redirectPath = `/member${sessionStorage.getItem("redirectPath") || ""}`;
+      router.push(redirectPath);
     } catch (error) {
       console.error("로그인 중 예외 발생:", error);
       setAlertTitle("로그인 도중 오류가 발생했습니다.");

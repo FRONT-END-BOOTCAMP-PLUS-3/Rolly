@@ -32,7 +32,9 @@ const AuthCallbackClient = () => {
       }
 
       // 원래 가려던 페이지로 이동
-      router.push("/member");
+      const redirectPath =
+        `/member${sessionStorage.getItem("redirectPath")}` || "/member";
+      router.push(redirectPath);
 
       // 쿠키 삭제
       document.cookie.split(";").forEach(function (c) {

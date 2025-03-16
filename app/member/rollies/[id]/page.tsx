@@ -102,6 +102,15 @@ const Rollies = () => {
     }
   };
 
+  const handleRedirect = () => {
+    if (sessionStorage.getItem("redirectPath")) {
+      sessionStorage.removeItem("redirectPath");
+      router.push("/member");
+    } else {
+      router.back();
+    }
+  };
+
   const navigateToPostIt = () => {
     router.push("/member/postits/create");
   };
@@ -112,7 +121,7 @@ const Rollies = () => {
   return (
     <>
       <Header
-        leftContent={<BackButton />}
+        leftContent={<BackButton onClick={handleRedirect} />}
         rightContent={
           <>
             {isLocked && <ImageDownloadButton targetRef={rollyRef} />}
