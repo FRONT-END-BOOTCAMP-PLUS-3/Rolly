@@ -150,7 +150,7 @@ const CreateRollies = () => {
               onClick={() => updateRollyTheme(rollyTheme)}
             >
               <Image
-                src={`/images/rolly-theme/${rollyTheme.name}.svg`}
+                src={`/images/rolly-theme/${rollyTheme.name}.png`}
                 width={100}
                 height={100}
                 className={styles["theme-img"]}

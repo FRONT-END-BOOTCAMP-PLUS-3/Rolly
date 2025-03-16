@@ -31,6 +31,12 @@ const Rollies = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const rollyRef = useRef<HTMLDivElement>(null);
 
+  // 페이지에 접근할 때 현재 경로 저장
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    sessionStorage.setItem("redirectPath", currentPath);
+  }, []);
+
   useEffect(() => {
     const fetchRollyDetail = async () => {
       const response = await fetch(`/api/rollies/${rollyId}`);

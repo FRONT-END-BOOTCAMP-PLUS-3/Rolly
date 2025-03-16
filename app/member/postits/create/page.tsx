@@ -186,7 +186,7 @@ const CreatePostits = () => {
           {postitThemeList.map((postitTheme, index) => (
             <ItemBox key={index} variant="image">
               <Image
-                src={`/images/postit-theme/${postitTheme.name}.svg`}
+                src={`/images/postit-theme/${postitTheme.name}.png`}
                 width={92}
                 height={92}
                 alt={`postit-${postitTheme.name}`}
