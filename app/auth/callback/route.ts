@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 // The client you created from the Server-Side Auth instructions
 import { createClient } from "@/utils/supabase/server";
@@ -18,14 +19,17 @@ export async function GET(request: Request) {
       const isLocalEnv = process.env.NODE_ENV === "development";
       if (isLocalEnv) {
         // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-        // ✅ httpOnly 쿠키에 access_token 저장
-        const response = NextResponse.redirect(`${origin}${next}`);
-        response.headers.append(
-          "Set-Cookie",
-          `supabase_auth_token=${accessToken}; Path=/; HttpOnly; Secure; SameSite=None;`
-        );
+        (await cookies()).set({
+          name: "supabase_auth_token",
+          value: accessToken,
+          path: "/",
+          domain: ".rolling-memory.vercel.app",
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+        });
 
-        return response;
+        return NextResponse.redirect(`${origin}${next}`);
       } else if (forwardedHost) {
         return NextResponse.redirect(`https://${forwardedHost}${next}`);
       } else {
