@@ -20,28 +20,20 @@ const AuthCallbackClient = () => {
       if (data.user) {
         const userId = data.user.id;
         const response = await fetch(`/api/users?userId=${userId}`);
-        const { success, UserInfoDto } = await response.json();
+        const { success, UserInfo } = await response.json();
 
         if (success) {
           setUserData({
-            userId: UserInfoDto.id,
-            userEmail: UserInfoDto.email,
-            userName: UserInfoDto.name,
+            userId: UserInfo.id,
+            userEmail: UserInfo.email,
+            userName: UserInfo.name,
           });
         }
       }
 
       // 원래 가려던 페이지로 이동
-      const redirectPath =
-        `/member${sessionStorage.getItem("redirectPath")}` || "/member";
+      const redirectPath = `/member${sessionStorage.getItem("redirectPath") || ""}`;
       router.push(redirectPath);
-
-      // 쿠키 삭제
-      document.cookie.split(";").forEach(function (c) {
-        document.cookie =
-          c.trim().split("=")[0] +
-          "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-      });
     };
 
     fetchUser();
