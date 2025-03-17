@@ -176,7 +176,7 @@ const Aside = ({
           <li className={styles["menu-group"]}>
             <ul>
               <li>
-                <Link href="/member/rollies/saved">💬 문의하기</Link>
+                <Link href="">💬 문의하기</Link>
               </li>
             </ul>
           </li>
