@@ -96,7 +96,6 @@ const Stickers: React.FC = () => {
   }, [handleMouseUp, handleMouseDown]);
 
   const uploadStickers = async () => {
-    console.log(selectedStickers);
     toggleConfirmModal();
 
     if (!fieldRef.current) {
@@ -104,12 +103,16 @@ const Stickers: React.FC = () => {
       return;
     }
 
+    const containerWidth = fieldRef.current.clientWidth;
+
     // 각 스티커를 데이터베이스에 저장
     for (const sticker of selectedStickers) {
+      const percentageX = (sticker.x_position / containerWidth) * 100;
+
       const { data, error } = await supabase.from("sticker").insert([
         {
           sticker_style_id: sticker.sticker_style_id,
-          x_position: sticker.x_position,
+          x_position: percentageX,
           y_position: sticker.y_position,
           rolly_id: rollyId,
         },
