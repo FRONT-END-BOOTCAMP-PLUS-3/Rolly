@@ -203,8 +203,8 @@ const Stickers: React.FC = () => {
                   src={`/images/sticker/${sticker.name}.svg`}
                   // src={`/images/sticker/${sticker.src}`}
                   alt={`Sticker ${sticker.id}`}
-                  width={55}
-                  height={55}
+                  width={40}
+                  height={40}
                   style={{
                     cursor: "pointer",
                   }}
@@ -229,8 +229,8 @@ const Stickers: React.FC = () => {
                 <Image
                   src={`/images/sticker/${stickerStyle.name}.svg`}
                   alt={`Sticker ${stickerStyle.name}`}
-                  width={50}
-                  height={50}
+                  width={45}
+                  height={45}
                 />
               </div>
             </ItemBox>
