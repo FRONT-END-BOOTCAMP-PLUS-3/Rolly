@@ -108,12 +108,13 @@ const Stickers: React.FC = () => {
     // 각 스티커를 데이터베이스에 저장
     for (const sticker of selectedStickers) {
       const percentageX = (sticker.x_position / containerWidth) * 100;
+      const percentageY = (sticker.y_position / containerWidth) * 100;
 
       const { data, error } = await supabase.from("sticker").insert([
         {
           sticker_style_id: sticker.sticker_style_id,
           x_position: percentageX,
-          y_position: sticker.y_position,
+          y_position: percentageY,
           rolly_id: rollyId,
         },
       ]);
