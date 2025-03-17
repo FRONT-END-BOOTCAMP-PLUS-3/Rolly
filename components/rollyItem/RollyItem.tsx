@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import styles from "./RollyItem.module.scss";
 import useToggle from "@/hooks/useToggle";
 import Modal from "../modal/Modal";
@@ -70,7 +71,10 @@ const RollyItem: React.FC<RollyItemProps> = ({
         <p className={styles["title"]}>{title}</p>
         {/* lock 버튼: isCreated가 true일 때만 표시하고, isLocked 상태가 되면 안 보이도록 */}
         {isCreated && !isLocked && (
-          <button className={styles.lock} onClick={toggleLockModal}>
+          <button
+            className={classNames("lock", styles.lock)}
+            onClick={toggleLockModal}
+          >
             <Image
               src="/icons/lock.svg"
               width={24}
@@ -84,7 +88,10 @@ const RollyItem: React.FC<RollyItemProps> = ({
       <div className={styles["wrapper"]}>
         <p className={styles["date"]}>{date}</p>
         {isCreated && !isLocked ? (
-          <button className={styles.action} onClick={toggleDeleteModal}>
+          <button
+            className={classNames("action", styles.action)}
+            onClick={toggleDeleteModal}
+          >
             <Image
               src="/icons/delete.svg"
               width={24}
@@ -95,7 +102,10 @@ const RollyItem: React.FC<RollyItemProps> = ({
         ) : (
           isLocked &&
           onReply && (
-            <button className={styles.action} onClick={onReply}>
+            <button
+              className={classNames("action", styles.action)}
+              onClick={onReply}
+            >
               <Image
                 src="/icons/reply.svg"
                 width={24}
