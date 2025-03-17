@@ -96,7 +96,6 @@ const Stickers: React.FC = () => {
   }, [handleMouseUp, handleMouseDown]);
 
   const uploadStickers = async () => {
-    console.log(selectedStickers);
     toggleConfirmModal();
 
     if (!fieldRef.current) {
@@ -104,13 +103,18 @@ const Stickers: React.FC = () => {
       return;
     }
 
+    const containerWidth = fieldRef.current.clientWidth;
+
     // 각 스티커를 데이터베이스에 저장
     for (const sticker of selectedStickers) {
+      const percentageX = (sticker.x_position / containerWidth) * 100;
+      const percentageY = (sticker.y_position / containerWidth) * 100;
+
       const { data, error } = await supabase.from("sticker").insert([
         {
           sticker_style_id: sticker.sticker_style_id,
-          x_position: sticker.x_position,
-          y_position: sticker.y_position,
+          x_position: percentageX,
+          y_position: percentageY,
           rolly_id: rollyId,
         },
       ]);
@@ -199,8 +203,8 @@ const Stickers: React.FC = () => {
                   src={`/images/sticker/${sticker.name}.svg`}
                   // src={`/images/sticker/${sticker.src}`}
                   alt={`Sticker ${sticker.id}`}
-                  width={55}
-                  height={55}
+                  width={40}
+                  height={40}
                   style={{
                     cursor: "pointer",
                   }}
@@ -225,8 +229,8 @@ const Stickers: React.FC = () => {
                 <Image
                   src={`/images/sticker/${stickerStyle.name}.svg`}
                   alt={`Sticker ${stickerStyle.name}`}
-                  width={50}
-                  height={50}
+                  width={45}
+                  height={45}
                 />
               </div>
             </ItemBox>

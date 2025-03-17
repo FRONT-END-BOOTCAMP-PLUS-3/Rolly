@@ -99,13 +99,15 @@ const Rolly = forwardRef<HTMLDivElement, RollyProps>(
           <Image
             src={sticker.stickerStyle}
             key={index}
-            width={50}
-            height={50}
+            width={40}
+            height={40}
             alt={`스티커 ${sticker.stickerStyle}`}
             style={{
               position: "absolute",
-              top: `${sticker.yPosition}px`,
-              left: `${sticker.xPosition}px`,
+              top: 0,
+              left: 0,
+              marginTop: `${sticker.yPosition}%`,
+              marginLeft: `${sticker.xPosition}%`,
               zIndex: 998,
             }}
           />
