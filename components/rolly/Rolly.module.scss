@@ -123,6 +123,14 @@
   background: url("/images/rolly-theme/graduation2.png") #e3b2b5 no-repeat
     top/100%;
 }
+.rolly.fesp-manager {
+  background: url("/images/rolly-theme/fesp-manager.png") #dbe6f1 no-repeat
+    top/100%;
+}
+.rolly.fesp-teacher {
+  background: url("/images/rolly-theme/fesp-teacher.png") #fefce3 no-repeat
+    top/100%;
+}
 
 // 🎨 테마 데이터 (폰트 설정)
 .phrase.hbd {
@@ -143,4 +151,10 @@
 }
 .phrase.graduation2 {
   font-family: SejongGeulggot, sans-serif;
+}
+.phrase.fesp-manager {
+  font-family: LeeSeoyun, sans-serif;
+}
+.phrase.fesp-teacher {
+  font-family: ryuttungche, sans-serif;
 }
