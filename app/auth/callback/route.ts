@@ -13,22 +13,23 @@ export async function GET(request: Request) {
     const supabase = await createClient();
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
+    console.log(data, error);
+
     if (!error) {
       const accessToken = data.session.access_token;
       const forwardedHost = request.headers.get("x-forwarded-host"); // original origin before load balancer
       const isLocalEnv = process.env.NODE_ENV === "development";
+
+      const cookieStore = await cookies();
+      cookieStore.set("supabase_auth_token", accessToken, {
+        path: "/",
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      });
+
       if (isLocalEnv) {
         // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-        (await cookies()).set({
-          name: "supabase_auth_token",
-          value: accessToken,
-          path: "/",
-          domain: ".rolling-memory.vercel.app",
-          httpOnly: true,
-          secure: true,
-          sameSite: "none",
-        });
-
         return NextResponse.redirect(`${origin}${next}`);
       } else if (forwardedHost) {
         return NextResponse.redirect(`https://${forwardedHost}${next}`);
