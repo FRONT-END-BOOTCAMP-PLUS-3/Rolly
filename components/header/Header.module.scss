@@ -12,7 +12,7 @@
   margin-left: calc(-1 * var(--size-gap));
   background-color: var(--color-bg);
 
-  h2 {
+  .header-title {
     font-size: var(--font-size-xl);
     color: var(--color-black);
     position: absolute;
@@ -21,7 +21,7 @@
     font-weight: normal;
   }
 
-  div:last-child {
+  .right-content {
     display: flex;
     gap: 8px;
   }

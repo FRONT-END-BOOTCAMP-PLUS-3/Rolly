@@ -19,10 +19,9 @@
   width: min(394px, 75%);
   text-align: center;
 
-  h2 {
+  .alert-title {
     font-family: SUIT-Bold, sans-serif;
     font-size: var(--font-size-md);
-    color: var(--color-error);
   }
 
   p {
