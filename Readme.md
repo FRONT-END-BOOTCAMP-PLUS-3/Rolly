@@ -23,8 +23,8 @@
 - [👩🏻‍💻 구성원](#-구성원)
 - [🛠️ 기술 스택](#-기술-스택)
 - [💾 ERD](#-ERD)
-- [📁 디렉토리 구조](#-디렉토리-구조)
-- [🤙🏻 협업 방식](#-협업-방식)
+- [📁 디렉터리 구조](#-디렉터리-구조)
+- [💻 협업 환경](#-협업-환경)
 
 <br/>
 
@@ -101,7 +101,7 @@
 
 ### ✔️ Frond-end
 
-<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black"> <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white"> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white"> <img src="https://img.shields.io/badge/CSS MODULES-000000?style=for-the-badge&logo=CSS MODULES&logoColor=white" /> <img src="https://img.shields.io/badge/SASS-CC6699?style=for-the-badge&logo=Sass&logoColor=white"> <img src="https://img.shields.io/badge/Zustand-8B5CF6?style=for-the-badge&logo=Zustand&logoColor=white">
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black"> <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white"> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white"> <img src="https://img.shields.io/badge/CSS%20MODULES-000000?style=for-the-badge&logo=CSS%20MODULES&logoColor=white" /> <img src="https://img.shields.io/badge/SASS-CC6699?style=for-the-badge&logo=Sass&logoColor=white"> <img src="https://img.shields.io/badge/Zustand-8B5CF6?style=for-the-badge&logo=Zustand&logoColor=white">
 
 ### ✔️ Back-end
 
