@@ -14,6 +14,7 @@ import Rolly from "@/components/rolly/Rolly";
 import MainButton from "@/components/mainButton/MainButton";
 import ImageDownloadButton from "@/components/imageDownloadButton/ImageDownloadButton";
 import Modal from "@/components/modal/Modal";
+import Alert from "@/components/alert/Alert";
 
 import { PostitDto } from "@/application/usecases/postit/dto/PostitDto";
 import { StickerDto } from "@/application/usecases/sticker/dto/StickerDto";
@@ -28,6 +29,22 @@ const Rollies = () => {
   const [isLocked, setIsLocekd] = useState(false);
   const [isConfirmModalOpen, toggleConfirmModal] = useToggle(false);
   const rollyRef = useRef<HTMLDivElement>(null);
+
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("");
+  const [alertBody, setAlertBody] = useState("");
+  const [alertType, setAlertType] = useState<"success" | "error">("success");
+
+  const openAlert = (
+    title: string,
+    body: string,
+    type: "success" | "error"
+  ) => {
+    setAlertTitle(title);
+    setAlertBody(body);
+    setAlertType(type);
+    setIsAlertOpen(true);
+  };
 
   useEffect(() => {
     const fetchRollyDetail = async () => {
@@ -125,7 +142,7 @@ const Rollies = () => {
         rightContent={
           <>
             {isLocked && <ImageDownloadButton targetRef={rollyRef} />}
-            <ShareButton />
+            <ShareButton openAlert={openAlert} />
           </>
         }
         title={title}
@@ -154,6 +171,13 @@ const Rollies = () => {
         onConfirm={handleSaveRolly}
         onCancel={toggleConfirmModal}
         isOpen={isConfirmModalOpen}
+      />
+      <Alert
+        title={alertTitle}
+        body={alertBody}
+        isOpen={isAlertOpen}
+        type={alertType}
+        onClose={() => setIsAlertOpen(false)}
       />
     </>
   );

@@ -27,9 +27,23 @@ const Rollies = () => {
   const [isLocked, setIsLocekd] = useState(false);
   const { userId } = useUserStore();
   const [isConfirmModalOpen, toggleConfirmModal] = useToggle(false);
-  const [isAlertOpen, setAlertOpen] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
   const rollyRef = useRef<HTMLDivElement>(null);
+
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("");
+  const [alertBody, setAlertBody] = useState("");
+  const [alertType, setAlertType] = useState<"success" | "error">("success");
+
+  const openAlert = (
+    title: string,
+    body: string,
+    type: "success" | "error"
+  ) => {
+    setAlertTitle(title);
+    setAlertBody(body);
+    setAlertType(type);
+    setIsAlertOpen(true);
+  };
 
   // 페이지에 접근할 때 현재 경로 저장
   useEffect(() => {
@@ -89,14 +103,18 @@ const Rollies = () => {
 
     if (error) {
       toggleConfirmModal();
-      setAlertMessage("잠시 후 다시 시도해주세요!");
-      setAlertOpen(true);
+      setAlertTitle("저장 중 오류가 발생했습니다.");
+      setAlertBody("잠시 후 다시 시도해주세요!");
+      setAlertType("error");
+      setIsAlertOpen(true);
       if (
         error.message.includes("duplicate key value violates unique constraint")
       ) {
         toggleConfirmModal();
-        setAlertMessage("이미 저장된 롤리입니다.");
-        setAlertOpen(true);
+        setAlertBody("이미 저장된 롤리입니다.");
+        setAlertBody("");
+        setAlertType("error");
+        setIsAlertOpen(true);
       }
       return false; // Indicate failure
     }
@@ -136,7 +154,7 @@ const Rollies = () => {
         rightContent={
           <>
             {isLocked && <ImageDownloadButton targetRef={rollyRef} />}
-            <ShareButton />
+            <ShareButton openAlert={openAlert} />
           </>
         }
         title={title}
@@ -155,6 +173,7 @@ const Rollies = () => {
         text={isLocked ? "롤리 저장하기" : "메시지 작성하기"}
         onClick={isLocked ? handleSaveButtonClick : navigateToPostIt}
       />
+
       <Modal
         contents={[
           {
@@ -166,10 +185,11 @@ const Rollies = () => {
         isOpen={isConfirmModalOpen}
       />
       <Alert
-        title="저장 중 오류가 발생했습니다. "
-        body={alertMessage}
+        title={alertTitle}
+        body={alertBody}
         isOpen={isAlertOpen}
-        onClose={() => setAlertOpen(false)}
+        type={alertType}
+        onClose={() => setIsAlertOpen(false)}
       />
     </>
   );
