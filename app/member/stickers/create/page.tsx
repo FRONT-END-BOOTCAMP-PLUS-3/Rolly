@@ -143,8 +143,7 @@ const Stickers: React.FC = () => {
     console.log(selectedStickers);
   };
 
-  const handleDragStart = (e: React.DragEvent) => {
-    e.preventDefault();
+  const handleDragStart = () => {
     setIsDragging(true);
   };
   // 드래그 중 위치 업데이트
@@ -174,49 +173,55 @@ const Stickers: React.FC = () => {
       >
         <div className={styles["sticker-field"]} ref={fieldRef}>
           {selectedStickers.map((sticker) => (
-            <Draggable
-              nodeRef={draggableRef as React.RefObject<HTMLElement>}
-              key={sticker.id}
-              position={{ x: sticker.x_position, y: sticker.y_position }}
-              onStart={() => setIsDragging(true)}
-              onDrag={(e, data) => handleDrag(e, data, sticker.id)}
-              onStop={() => setIsDragging(false)}
-              bounds={
-                fieldRef.current
-                  ? {
-                      top: 0,
-                      left: 0,
-                      right: fieldRef.current.clientWidth - 60,
-                      bottom: fieldRef.current.clientHeight - 55,
-                    }
-                  : undefined
-              }
-            >
-              <div
-                ref={draggableRef}
-                onDragStart={handleDragStart}
+            <React.Fragment key={sticker.id}>
+              <Draggable
+                nodeRef={draggableRef as React.RefObject<HTMLElement>}
+                position={{ x: sticker.x_position, y: sticker.y_position }}
+                onStart={() => setIsDragging(true)}
+                onDrag={(e, data) => handleDrag(e, data, sticker.id)}
+                onStop={() => setIsDragging(false)}
+                bounds={
+                  fieldRef.current
+                    ? {
+                        top: 0,
+                        left: 0,
+                        right: fieldRef.current.clientWidth - 60,
+                        bottom: fieldRef.current.clientHeight - 55,
+                      }
+                    : undefined
+                }
+              >
+                <div
+                  ref={draggableRef}
+                  onDragStart={handleDragStart}
+                  style={{ position: "absolute", zIndex: 999 }}
+                >
+                  <Image
+                    src={`/images/sticker/${sticker.name}.svg`}
+                    alt={`Sticker ${sticker.id}`}
+                    width={40}
+                    height={40}
+                    style={{ cursor: "pointer" }}
+                  />
+                </div>
+              </Draggable>
+
+              {/* 버튼은 바깥에 절대 위치로 렌더 */}
+              <button
+                className={styles["delete-button"]}
                 style={{
                   position: "absolute",
+                  left: sticker.x_position + 30,
+                  top: sticker.y_position - 10,
+                  zIndex: 1000,
+                }}
+                onClick={() => {
+                  handleDeleteSticker(sticker.id);
                 }}
               >
-                <Image
-                  src={`/images/sticker/${sticker.name}.svg`}
-                  // src={`/images/sticker/${sticker.src}`}
-                  alt={`Sticker ${sticker.id}`}
-                  width={40}
-                  height={40}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                />
-                <button
-                  className={styles["delete-button"]}
-                  onClick={() => handleDeleteSticker(sticker.id)}
-                >
-                  X
-                </button>
-              </div>
-            </Draggable>
+                X
+              </button>
+            </React.Fragment>
           ))}
         </div>
       </Rolly>
