@@ -47,10 +47,19 @@ const Rollies = () => {
   };
 
   useEffect(() => {
-    const fetchRollyDetail = async () => {
-      const response = await fetch(`/api/rollies/${rollyId}`);
-      const { success, rollyDetailDto } = await response.json();
-      if (success) {
+    const fetchAll = async () => {
+      const [rollyRes, postitsRes, stickersRes] = await Promise.all([
+        fetch(`/api/rollies/${rollyId}`),
+        fetch(`/api/postits?rollyId=${rollyId}`),
+        fetch(`/api/stickers?rollyId=${rollyId}`),
+      ]);
+
+      const { success: rollySuccess, rollyDetailDto } = await rollyRes.json();
+      const { success: postitsSuccess, postitsDto } = await postitsRes.json();
+      const { success: stickersSuccess, stickersDto } =
+        await stickersRes.json();
+
+      if (rollySuccess) {
         setRollyData({
           id: rollyDetailDto.id,
           typeId: rollyDetailDto.typeId,
@@ -61,27 +70,17 @@ const Rollies = () => {
         });
         setIsLocekd(rollyDetailDto.isLocked);
       }
-    };
 
-    const fetchPostits = async () => {
-      const response = await fetch(`/api/postits?rollyId=${rollyId}`);
-      const { success, postitsDto } = await response.json();
-      if (success) {
+      if (postitsSuccess) {
         setPostits(postitsDto);
       }
-    };
 
-    const fetcStickers = async () => {
-      const response = await fetch(`/api/stickers?rollyId=${rollyId}`);
-      const { success, stickersDto } = await response.json();
-      if (success) {
+      if (stickersSuccess) {
         setStickers(stickersDto);
       }
     };
 
-    fetchRollyDetail();
-    fetchPostits();
-    fetcStickers();
+    fetchAll();
   }, [rollyId, setRollyData]);
 
   const handleSaveButtonClick = async () => {
