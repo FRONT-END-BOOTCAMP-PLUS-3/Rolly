@@ -2,31 +2,35 @@
 import Image from "next/image";
 import styles from "./ShareButton.module.scss";
 
-interface ShareButtonProps {
-  onClick?: () => void;
-}
+type ShareButtonProps = {
+  openAlert: (title: string, body: string, type: "success" | "error") => void;
+};
 
-const ShareButton: React.FC<ShareButtonProps> = () => {
-  const currentUrl = window.location.href; // 현재 페이지의 URL을 가져옴
+const ShareButton = ({ openAlert }: ShareButtonProps) => {
+  const currentUrl = typeof window !== "undefined" ? window.location.href : ""; // 현재 페이지의 URL을 가져옴
   const modifiedUrl = currentUrl.replace("/member", ""); // '/member' 제거
 
   const handleShare = () => {
     navigator.clipboard
       .writeText(modifiedUrl) // 클립보드에 URL 복사
       .then(() => {
-        alert("클립보드에 복사되었습니다.");
+        openAlert(
+          "공유 링크 복사 완료!",
+          "링크가 클립보드에 복사되었습니다.",
+          "success"
+        );
       })
       .catch(() => {
-        alert("클립보드 복사에 실패했습니다.");
+        openAlert(
+          "공유 링크 복사 실패!",
+          "클립보드 복사에 실패했습니다.",
+          "error"
+        );
       });
   };
 
   return (
-    <button
-      className={styles["share-button"]}
-      onClick={handleShare}
-      aria-label="공유 버튼"
-    >
+    <button onClick={handleShare} aria-label="공유 버튼">
       <Image
         src="/icons/share.svg"
         width={24}

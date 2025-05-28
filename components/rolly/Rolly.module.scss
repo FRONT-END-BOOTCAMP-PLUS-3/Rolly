@@ -85,16 +85,16 @@
     top: 20%;
     left: 50%;
     transform: translateX(-50%);
-    width: 60%;
+    width: 70%;
     height: 60%;
     text-align: center;
 
     @media (max-width: 1200px) {
-      font-size: var(--font-size-xs);
+      font-size: 13px;
     }
 
     @media (max-width: 480px) {
-      font-size: var(--font-size-micro);
+      font-size: 11px
     }
   }
 }
